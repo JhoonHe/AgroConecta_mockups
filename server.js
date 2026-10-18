@@ -12,9 +12,36 @@ if (!fs.existsSync(capturasDir)) {
   fs.mkdirSync(capturasDir, { recursive: true });
 }
 
+// Soporte para recibir imágenes base64 de gran tamaño
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
 // Servir estáticos en / y /public para compatibilidad
 app.use(express.static(path.join(__dirname, "public")));
 app.use("/public", express.static(path.join(__dirname, "public")));
+
+// Endpoint para guardar capturas manuales directamente en la carpeta capturas/
+app.post("/guardar-captura", (req, res) => {
+  try {
+    const { filename, image } = req.body;
+    if (!filename || !image) {
+      return res.status(400).json({ error: "Faltan parámetros filename o image" });
+    }
+
+    const base64Data = image.replace(/^data:image\/\w+;base64,/, "");
+    const buffer = Buffer.from(base64Data, "base64");
+    const safeName = path.basename(filename);
+    const destPath = path.join(capturasDir, safeName);
+
+    fs.writeFileSync(destPath, buffer);
+    console.log(`📸 Captura manual guardada exitosamente en: capturas/${safeName}`);
+
+    return res.json({ success: true, filename: safeName, path: `capturas/${safeName}` });
+  } catch (err) {
+    console.error("❌ Error guardando captura:", err);
+    return res.status(500).json({ error: err.message });
+  }
+});
 
 // Servir index.html en la raíz
 app.get("/", (req, res) => {

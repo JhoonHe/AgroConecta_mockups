@@ -737,3 +737,125 @@ html.in-iframe .mobile-frame {
   height: 100% !important;
 }
 
+html.in-iframe .standalone-top-bar {
+  display: none !important;
+}
+
+/* ==========================================================================
+   Botón Superior y Funcionalidad de Captura de Pantalla Manual
+   ========================================================================== */
+.btn-top-captura {
+  background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+  color: #ffffff;
+  border: 1px solid #166534;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(22, 101, 52, 0.25);
+  transition: all 0.2s ease;
+  font-family: inherit;
+  text-decoration: none;
+}
+
+.btn-top-captura:hover {
+  background: #14532d;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(22, 101, 52, 0.35);
+}
+
+.btn-top-captura:active {
+  transform: translateY(0);
+}
+
+.btn-top-captura:disabled {
+  background: #94a3b8 !important;
+  border-color: #cbd5e1 !important;
+  cursor: wait !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.capture-chip {
+  background: #0f172a !important;
+  color: #ffffff !important;
+  border: 1px solid #334155 !important;
+  font-weight: 700 !important;
+  cursor: pointer;
+}
+
+.capture-chip:hover {
+  background: #1e293b !important;
+  border-color: #475569 !important;
+}
+
+.standalone-top-bar {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  justify-content: flex-end;
+  padding: 4px 0;
+  margin-bottom: 2px;
+}
+
+/* Toast flotante de confirmación */
+.toast-captura {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #0f172a;
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 99999;
+  font-size: 13px;
+  border: 1px solid #334155;
+  animation: toastSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-width: 380px;
+}
+
+.toast-captura img {
+  width: 44px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #475569;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.toast-captura-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.toast-captura-title {
+  font-weight: 800;
+  font-size: 13px;
+  color: #4ade80;
+}
+
+.toast-captura-name {
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@keyframes toastSlideIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+

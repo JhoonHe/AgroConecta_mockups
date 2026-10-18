@@ -202,8 +202,11 @@ npm run serve
 ```
 Abre en tu navegador `http://localhost:3000` para acceder al índice interactivo de los 6 componentes.
 
-### 3. Generar capturas automáticas
-```bash
-node server.js
-```
-Puppeteer recorrerá automáticamente las 21 pantallas y guardará las capturas de alta definición con fondo transparente en la carpeta `capturas/`.
+### 3. Captura Manual de Pantalla (Directo a la carpeta `capturas/`)
+Las capturas se realizan de forma **manual e interactiva** directamente desde el navegador y **se guardan en la carpeta `capturas/` del proyecto** (sin ir a la carpeta de descargas del sistema):
+1. Inicia el servidor con `npm run serve` y abre `http://localhost:3000`.
+2. Navega a la pantalla que deseas capturar (o interactúa con los botones, formularios y estados para preparar la vista).
+3. Haz clic en el botón superior **`📸 Tomar captura`** ubicado justo arriba del marco del celular.
+4. El sistema capturará **exactamente lo que está dentro del recuadro del móvil** en alta resolución (2x Retina) y enviará la imagen directamente al servidor local (`POST /guardar-captura`), guardándola en la carpeta `capturas/` con su nomenclatura oficial (ejemplo: `2_1_Selector_Rol_Principal.png`).
+5. Verás una confirmación visual en pantalla: `📁 ¡Guardada en capturas/!`.
+6. Si abres cualquier vista individual en pestaña aparte, el botón superior **`📸 Tomar captura`** también guardará la imagen directamente en `capturas/`.

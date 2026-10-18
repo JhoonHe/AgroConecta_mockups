@@ -194,6 +194,165 @@ const AgroConecta = {
     list.unshift(vacante);
     localStorage.setItem('agro_vacantes', JSON.stringify(list));
     return list;
+  },
+
+  // ----------------------------------------------------
+  // Captura Manual de Pantalla (lo que está dentro del recuadro mobile)
+  // ----------------------------------------------------
+  async asegurarHtml2Canvas() {
+    if (typeof html2canvas !== 'undefined') return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      // Detectar ruta relativa o absoluta
+      script.src = window.location.pathname.includes('/public/') ? 'js/html2canvas.min.js' : 'public/js/html2canvas.min.js';
+      script.onload = () => resolve();
+      script.onerror = () => {
+        // Fallback a CDN si falla la carga local
+        const cdn = document.createElement('script');
+        cdn.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        cdn.onload = () => resolve();
+        cdn.onerror = (e) => reject(new Error('No se pudo cargar la librería de captura.'));
+        document.head.appendChild(cdn);
+      };
+      document.head.appendChild(script);
+    });
+  },
+
+  async tomarCapturaManual(nombrePersonalizado) {
+    const btn = document.querySelector('.btn-top-captura') || document.querySelector('.capture-chip');
+    const originalText = btn ? btn.innerHTML : '';
+    if (btn) {
+      btn.innerHTML = '⏳ Capturando...';
+      btn.disabled = true;
+    }
+
+    try {
+      await this.asegurarHtml2Canvas();
+      const mobileFrame = document.querySelector('.mobile-frame') || document.body;
+
+      const mapaNombresOficiales = {
+        "mockup_login.html": "1_1_Onboarding_Cedula.png",
+        "mockup_ingresar_pin.html": "1_1_Ingresar_PIN.png",
+        "mockup_crear_pin.html": "1_1_Crear_PIN_Registro.png",
+        "mockup_crear_pin.html?error=formato": "1_1_Error_Formato_PIN.png",
+        "mockup_crear_pin.html?error=coincidencia": "1_1_Error_Coincidencia_PIN.png",
+        "mockup_otp.html": "1_2_Recuperacion_OTP_SMS.png",
+        "mockup_1_3_cierre_sesion.html": "1_3_Cierre_Sesion.png",
+        "mockup_selector_rol.html": "2_1_Selector_Rol_Principal.png",
+        "mockup_2_1_perfil_usuario.html": "2_1_Perfil_Usuario_Contacto.png",
+        "mockup_2_2_registro_colaborativo.html": "2_2_Registro_Colaborativo.png",
+        "mockup_2_3_gestion_pasivos.html": "2_3_Gestion_Perfiles_Pasivos.png",
+        "mockup_3_1_publicar_vacante.html": "3_1_Publicacion_Cierre_Vacante.png",
+        "mockup_3_2_postulacion_jornalero.html": "3_2_Postulacion_Jornalero.png",
+        "mockup_jornalero_estado.html?estado=enviada": "3_2_Estado_Postulacion_Enviada.png",
+        "mockup_jornalero_estado.html?estado=aceptada": "3_2_Estado_Postulacion_Aceptada.png",
+        "mockup_jornalero_estado.html": "3_2_Estado_Postulacion_Enviada.png",
+        "mockup_3_3_gestion_postulaciones.html": "3_3_Gestion_Postulacion_Productor.png",
+        "mockup_4_1_directorio_trabajadores.html": "4_1_Lista_Trabajadores_Region.png",
+        "mockup_4_2_directorio_fincas.html": "4_2_Lista_Fincas_Region.png",
+        "mockup_5_1_chat_interno.html": "5_1_Chat_Bidireccional_Interno.png",
+        "mockup_5_2_contacto_externo.html": "5_2_Contacto_Externo_Llamada_SMS.png",
+        "mockup_6_1_checkin_documento.html": "6_1_CheckIn_Captura_Documento.png",
+        "mockup_6_2_checkout_evidencia.html": "6_2_CheckOut_Evidencia_Actividad.png"
+      };
+
+      let filename = '';
+      if (nombrePersonalizado) {
+        filename = nombrePersonalizado.endsWith('.png') ? nombrePersonalizado : `AgroConecta_${nombrePersonalizado}.png`;
+      } else {
+        const fullHref = window.location.href;
+        const urlParts = fullHref.split('/');
+        const pageWithQuery = urlParts[urlParts.length - 1];
+        const pageOnly = pageWithQuery.split('?')[0];
+
+        if (mapaNombresOficiales[pageWithQuery]) {
+          filename = mapaNombresOficiales[pageWithQuery];
+        } else if (mapaNombresOficiales[pageOnly]) {
+          filename = mapaNombresOficiales[pageOnly];
+        } else {
+          const pageTitle = document.title ? document.title.replace('AgroConecta - ', '').trim() : 'pantalla';
+          const cleanName = pageTitle
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-zA-Z0-9_-]/g, '_')
+            .replace(/_+/g, '_');
+          filename = `AgroConecta_${cleanName}.png`;
+        }
+      }
+
+      const canvas = await html2canvas(mobileFrame, {
+        backgroundColor: '#ffffff',
+        scale: 2,
+        logging: false,
+        useCORS: true,
+        allowTaint: true,
+        windowWidth: 375
+      });
+
+      const dataUrl = canvas.toDataURL('image/png');
+
+      // Intentar guardar directamente en la carpeta capturas/ del servidor
+      let guardadoEnServidor = false;
+      try {
+        const resp = await fetch('/guardar-captura', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename, image: dataUrl })
+        });
+        if (resp.ok) {
+          const resJson = await resp.json();
+          guardadoEnServidor = resJson.success;
+        }
+      } catch (e) {}
+
+      if (guardadoEnServidor) {
+        this.mostrarToastCaptura(filename, dataUrl, true);
+      } else {
+        // Fallback a descarga regular
+        const link = document.createElement('a');
+        link.download = filename;
+        link.href = dataUrl;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        this.mostrarToastCaptura(filename, dataUrl, false);
+      }
+
+      return dataUrl;
+    } catch (err) {
+      console.error('Error al tomar captura:', err);
+      alert('No se pudo tomar la captura: ' + err.message);
+    } finally {
+      if (btn) {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    }
+  },
+
+  mostrarToastCaptura(filename, dataUrl, enCarpetaServidor = true) {
+    const existing = document.querySelector('.toast-captura');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-captura';
+    const badgeText = enCarpetaServidor 
+      ? '📁 ¡Guardada en capturas/!' 
+      : '⬇ ¡Descargada en tu carpeta de Descargas!';
+    const badgeColor = enCarpetaServidor ? '#4ade80' : '#60a5fa';
+
+    toast.innerHTML = `
+      <img src="${dataUrl}" alt="Miniatura">
+      <div class="toast-captura-info">
+        <span class="toast-captura-title" style="color: ${badgeColor};">${badgeText}</span>
+        <span class="toast-captura-name">capturas/${filename}</span>
+      </div>
+    `;
+
+    toast.onclick = () => toast.remove();
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      if (toast && toast.parentNode) toast.remove();
+    }, 5000);
   }
 };
 
@@ -203,5 +362,34 @@ AgroConecta.init();
 // Detectar si está embebido en el simulador de index.html
 if (window.self !== window.top) {
   document.documentElement.classList.add('in-iframe');
+} else {
+  // Standalone: Inyectar botón superior "Tomar captura" si no existe
+  window.addEventListener('DOMContentLoaded', () => {
+    const testBar = document.querySelector('.test-suite-bar');
+    if (testBar && !testBar.querySelector('.capture-chip')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'test-chip capture-chip';
+      btn.innerHTML = '📸 Tomar captura';
+      btn.title = 'Tomar captura de lo que está dentro del recuadro del mobile';
+      btn.onclick = () => AgroConecta.tomarCapturaManual();
+      testBar.appendChild(btn);
+    } else if (!testBar && !document.querySelector('.standalone-top-bar')) {
+      const bar = document.createElement('div');
+      bar.className = 'standalone-top-bar';
+      bar.innerHTML = '<button type="button" class="btn-top-captura" onclick="AgroConecta.tomarCapturaManual()" title="Tomar captura de la pantalla">📸 Tomar captura</button>';
+      document.body.insertBefore(bar, document.body.firstChild);
+    }
+  });
 }
+
+// Escuchar solicitudes de captura desde ventana padre (index.html)
+window.addEventListener('message', async (e) => {
+  if (e.data && e.data.action === 'TOMAR_CAPTURA_MANUAL') {
+    const dataUrl = await AgroConecta.tomarCapturaManual(e.data.filename);
+    if (window.parent) {
+      window.parent.postMessage({ action: 'CAPTURA_COMPLETA', dataUrl, filename: e.data.filename }, '*');
+    }
+  }
+});
 
