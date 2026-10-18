@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 2.1: Perfil de Usuario (Datos de Contacto) - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .profile-hero {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+      color: white;
+      padding: 22px 18px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      border-radius: 16px;
+    }
+
+    .profile-avatar {
+      font-size: 38px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      border: 3px solid white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Componente 2: Perfil & Roles • Módulos DFD</div>
+    <a href="mockup_selector_rol.html" class="test-chip">⇄ Selector de Rol</a>
+    <a href="mockup_2_2_registro_colaborativo.html" class="test-chip">2.2 Registro Colab</a>
+    <a href="mockup_2_3_gestion_pasivos.html" class="test-chip">2.3 Gestión Pasivos</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_selector_rol.html" class="header-back-btn" title="Volver al Menú Principal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>👤 Mi Perfil</h1>
+      <p>Subcomponente 2.1: Datos Personales y Contacto</p>
+    </div>
+
+    <!-- Contenido: Formulario de Edición de Datos de Contacto -->
+    <div class="content">
+
+      <!-- Ficha de Encabezado de Usuario -->
+      <div class="profile-hero">
+        <div class="profile-avatar">
+          👤
+        </div>
+        <div>
+          <h2 style="font-size: 19px; font-weight: 800; margin: 0 0 2px;">
+            Hernán Restrepo
+          </h2>
+          <span class="badge badge-green" style="font-size: 11px; background: rgba(255,255,255,0.25); color: white;">
+            Cuenta Unificada RBAC
+          </span>
+          <div style="font-size: 12px; opacity: 0.88; margin-top: 4px;">
+            📍 Vereda El Caimo (Armenia, Quindío)
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Edición de Datos Personales -->
+      <div class="card" style="padding: 20px; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">
+            ✏️ Editar Datos de Contacto
+          </h3>
+          <span style="font-size: 12px; color: var(--text-muted);">Campos requeridos</span>
+        </div>
+
+        <!-- CAMPO 1: Cédula (Inmutable / Llave Única) -->
+        <div class="input-group">
+          <label class="input-label" for="cedulaField">
+            Número de Cédula (Llave Única)
+          </label>
+          <input 
+            type="text" 
+            id="cedulaField" 
+            class="input-field" 
+            value="10.948.572" 
+            readonly 
+            style="background: #f1f5f9; color: #475569; font-weight: 700; cursor: not-allowed;"
+          >
+          <span class="input-helper">
+            🔒 Tu cédula es tu identificador único de seguridad y no se puede modificar.
+          </span>
+        </div>
+
+        <!-- CAMPO 2: Nombre Completo -->
+        <div class="input-group">
+          <label class="input-label" for="nombreField">
+            Nombre Completo
+          </label>
+          <input 
+            type="text" 
+            id="nombreField" 
+            class="input-field" 
+            value="Hernán Restrepo" 
+            placeholder="Tu nombre y apellidos"
+          >
+        </div>
+
+        <!-- CAMPO 3: Teléfono Celular -->
+        <div class="input-group">
+          <label class="input-label" for="celularField">
+            Número de Celular
+          </label>
+          <input 
+            type="tel" 
+            id="celularField" 
+            class="input-field" 
+            value="312 450 8921" 
+            placeholder="Ej: 312 000 0000"
+            inputmode="numeric"
+          >
+          <span class="input-helper">
+            Aquí recibirás las llamadas y los SMS automáticos de la plataforma.
+          </span>
+        </div>
+
+        <!-- CAMPO 4: Vereda de Residencia -->
+        <div class="input-group">
+          <label class="input-label" for="veredaField">
+            Vereda donde resides / Finca
+          </label>
+          <select id="veredaField" class="input-field" style="font-size: 15px;">
+            <option selected>📍 Vereda El Caimo (Armenia)</option>
+            <option>📍 Vereda Pantanillo (Armenia)</option>
+            <option>📍 Vereda La Linda (Montenegro)</option>
+            <option>📍 Vereda Puerto Espejo (Armenia)</option>
+          </select>
+          <span class="input-helper">
+            Sirve para priorizar las vacantes cercanas a menos de 5 km.
+          </span>
+        </div>
+
+        <!-- Botón Guardar Cambios -->
+        <button class="btn-primary" style="margin-top: 6px; padding: 15px; font-size: 16px;" onclick="guardarPerfil()">
+          <span>💾 Guardar Cambios</span>
+        </button>
+
+        <div id="alertaGuardado" class="alert alert-success" style="display: none; margin-top: 4px;">
+          <span>✓</span>
+          <span>¡Datos de contacto actualizados correctamente!</span>
+        </div>
+      </div>
+
+      <!-- Registro Colaborativo Comunitario (Subcomponente 2.2) -->
+      <a href="mockup_2_2_registro_colaborativo.html" class="collab-banner" style="text-decoration: none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 26px;">🤝</span>
+          <div>
+            <div style="font-weight: 800; font-size: 13.5px; color: #166534;">Registro Colaborativo (2.2)</div>
+            <div style="font-size: 11.5px; color: #15803d;">Inscribir a un trabajador sin smartphone</div>
+          </div>
+        </div>
+        <span class="badge badge-green" style="font-size: 12px; padding: 4px 8px;">Inscribir ➔</span>
+      </a>
+
+      <!-- Tarjeta de Seguridad y Salida -->
+      <div class="card" style="padding: 16px; gap: 12px; background: #f8fafc;">
+        <div style="font-size: 14px; font-weight: 800; color: var(--text-main);">
+          🔒 Seguridad y Acceso
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 13.5px;">
+          <span>PIN de Acceso: <strong>••••</strong></span>
+          <a href="mockup_otp.html" style="font-weight: 700; color: var(--primary); text-decoration: underline;">
+            Restablecer por SMS
+          </a>
+        </div>
+        <div style="border-top: 1px solid #e2e8f0; padding-top: 10px;">
+          <a href="mockup_1_3_cierre_sesion.html" class="btn-danger-outline" style="padding: 10px; font-size: 14px; width: 100%; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 6px;">
+            <span>🚪 Salir de mi Cuenta</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación de la App -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_selector_rol.html" class="app-nav-tab">
+        <span class="tab-icon">⇄</span>
+        <span>Cambiar Rol</span>
+      </a>
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Productor</span>
+      </a>
+      <a href="mockup_jornalero_directorio.html" class="app-nav-tab accent">
+        <span class="tab-icon">🌾</span>
+        <span>Jornalero</span>
+      </a>
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab active">
+        <span class="tab-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    function guardarPerfil() {
+      const alerta = document.getElementById('alertaGuardado');
+      alerta.style.display = 'flex';
+      setTimeout(() => {
+        alerta.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+      setTimeout(() => {
+        alerta.style.display = 'none';
+      }, 3500);
+    }
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 3.3: Gestión de Postulaciones - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .applicant-card {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.25s ease;
+    }
+
+    .applicant-card.is-accepted {
+      border-color: var(--primary);
+      background: #f0fdf4;
+    }
+
+    .applicant-card.is-rejected {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+      opacity: 0.6;
+    }
+
+    .action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .btn-accept {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 10px;
+      font-size: 16px;
+      font-weight: 800;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 0 4px 10px rgba(46, 125, 50, 0.25);
+    }
+
+    .btn-reject {
+      background-color: #f1f5f9;
+      color: #b91c1c;
+      border: 2px solid #fca5a5;
+      padding: 14px 10px;
+      font-size: 16px;
+      font-weight: 800;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 3:</span>
+    <button class="test-chip" onclick="aceptarTrabajador('post-01', 'José Albeiro Gómez')">✓ Aceptar 1°</button>
+    <button class="test-chip danger" onclick="rechazarTrabajador('post-01', 'José Albeiro Gómez')">✕ Rechazar 1°</button>
+    <a href="mockup_3_1_publicar_vacante.html" class="test-chip">3.1 Vacantes</a>
+    <a href="mockup_6_1_checkin_documento.html" class="test-chip">6.1 Check-in Cédula</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>👥 Gestión Postulaciones</h1>
+      <p>Subcomponente 3.3: Decisión de Contratación (Vista Productor)</p>
+    </div>
+
+    <!-- Contenido: Lista de Postulaciones y Decisión de Contratación -->
+    <div class="content">
+
+      <!-- Resumen de Cupos Disponibles -->
+      <div class="card" style="padding: 12px 16px; flex-direction: row; align-items: center; justify-content: space-between; background: #ffffff;">
+        <div>
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">Vacante en Curso</span>
+          <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">Recolección de Café</div>
+        </div>
+        <span id="cuposRestantes" class="badge badge-orange" style="font-size: 13px;">3 cupos libres</span>
+      </div>
+
+      <!-- CANDIDATO 1 -->
+      <div class="applicant-card" id="card-post-01">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="font-size: 32px; background: #e2e8f0; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👨‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">José Albeiro Gómez</h3>
+              <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">📍 Vereda El Caimo (Cerca)</div>
+            </div>
+          </div>
+          <span class="badge badge-green" style="font-size: 11px;">Postulado</span>
+        </div>
+
+        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 13.5px; color: var(--text-main);">
+          <div><strong>Labor:</strong> Recolección (12 años de exp.)</div>
+          <div><strong>Tel:</strong> 312 450 8921 • <strong>C.C:</strong> 79.854.120</div>
+        </div>
+
+        <!-- DOS BOTONES CLAROS PARA CERRAR EL CICLO DE CONTRATACIÓN -->
+        <div class="action-row" id="actions-post-01">
+          <button class="btn-accept" onclick="aceptarTrabajador('post-01', 'José Albeiro Gómez')">
+            <span>✓ Aceptar</span>
+          </button>
+          <button class="btn-reject" onclick="rechazarTrabajador('post-01', 'José Albeiro Gómez')">
+            <span>✕ Rechazar</span>
+          </button>
+        </div>
+
+        <div id="estado-post-01" style="display: none; padding: 8px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 14px;"></div>
+      </div>
+
+      <!-- CANDIDATO 2 -->
+      <div class="applicant-card" id="card-post-02">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="font-size: 32px; background: #e2e8f0; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👩‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">Marta Lucía Rendón</h3>
+              <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">📍 Vereda Pantanillo (2.5 km)</div>
+            </div>
+          </div>
+          <span class="badge badge-green" style="font-size: 11px;">Postulada</span>
+        </div>
+
+        <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 13.5px; color: var(--text-main);">
+          <div><strong>Labor:</strong> Recolectora destacada (80 kg/día)</div>
+          <div><strong>Tel:</strong> 314 882 1093 • <strong>C.C:</strong> 52.890.123</div>
+        </div>
+
+        <div class="action-row" id="actions-post-02">
+          <button class="btn-accept" onclick="aceptarTrabajador('post-02', 'Marta Lucía Rendón')">
+            <span>✓ Aceptar</span>
+          </button>
+          <button class="btn-reject" onclick="rechazarTrabajador('post-02', 'Marta Lucía Rendón')">
+            <span>✕ Rechazar</span>
+          </button>
+        </div>
+
+        <div id="estado-post-02" style="display: none; padding: 8px; border-radius: 8px; text-align: center; font-weight: 800; font-size: 14px;"></div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab active">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    let cupos = 3;
+
+    function aceptarTrabajador(id, nombre) {
+      const card = document.getElementById('card-' + id);
+      const actions = document.getElementById('actions-' + id);
+      const estado = document.getElementById('estado-' + id);
+
+      card.classList.add('is-accepted');
+      actions.style.display = 'none';
+
+      estado.style.display = 'block';
+      estado.style.background = '#dcfce7';
+      estado.style.color = '#166534';
+      estado.innerHTML = `✓ ¡Aceptado! Se notificó al jornalero: <em>"¡Aceptado! Ir a la finca"</em>`;
+
+      cupos = Math.max(0, cupos - 1);
+      document.getElementById('cuposRestantes').innerText = `${cupos} cupos libres`;
+
+      AgroConecta.setJornaleroEstado('aceptado');
+    }
+
+    function rechazarTrabajador(id, nombre) {
+      const card = document.getElementById('card-' + id);
+      const actions = document.getElementById('actions-' + id);
+      const estado = document.getElementById('estado-' + id);
+
+      card.classList.add('is-rejected');
+      actions.style.display = 'none';
+
+      estado.style.display = 'block';
+      estado.style.background = '#f1f5f9';
+      estado.style.color = '#64748b';
+      estado.innerText = "✕ Postulación descartada";
+    }
+  </script>
+
+</body>
+
+</html>

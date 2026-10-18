@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 2.2: Registro Colaborativo de Terceros - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 2:</span>
+    <a href="mockup_selector_rol.html" class="test-chip">2.1 Selector Rol</a>
+    <a href="mockup_2_1_perfil_usuario.html" class="test-chip">2.1 Perfil</a>
+    <a href="mockup_2_3_gestion_pasivos.html" class="test-chip">2.3 Gestión Pasivos</a>
+    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">4.1 Directorio</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_4_1_directorio_trabajadores.html" id="linkVolver" class="header-back-btn" title="Volver">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 Inscripción de Tercero</h1>
+      <p>Subcomponente 2.2: Registro Colaborativo</p>
+    </div>
+
+    <!-- Contenido: Registro Colaborativo de Jornalero Pasivo -->
+    <div class="content">
+
+      <!-- Badge Explicativo -->
+      <div class="alert alert-info">
+        <span style="font-size: 22px;">🤝</span>
+        <div style="font-size: 13px; line-height: 1.35;">
+          <strong>Registro Colaborativo Comunitario:</strong><br>
+          <strong>Cualquier usuario activo</strong> (Productor o Jornalero) puede inscribir a un compañero, familiar o vecino sin smartphone para que los mayordomos puedan llamarlo o enviarle ofertas por SMS.
+        </div>
+      </div>
+
+      <div class="card" style="padding: 20px; gap: 14px;">
+
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main);">
+            Datos del Trabajador
+          </h3>
+          <span class="badge badge-gray">Jornalero Pasivo</span>
+        </div>
+
+        <!-- CAMPO 1: Nombre Completo -->
+        <div class="input-group">
+          <label class="input-label" for="nombrePasivo">Nombre Completo</label>
+          <input type="text" id="nombrePasivo" class="input-field" placeholder="Ej: Carlos Mario Ocampo" autofocus>
+        </div>
+
+        <!-- CAMPO 2: Cédula (Llave Única con Verificación de Unicidad) -->
+        <div class="input-group">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <label class="input-label" for="cedulaPasivo" style="margin: 0;">Número de Cédula (Llave única)</label>
+            <span id="badgeVerificacionCedula" class="badge badge-gray" style="font-size: 11px;">Por verificar</span>
+          </div>
+          <div style="position: relative;">
+            <input type="tel" id="cedulaPasivo" class="input-field" placeholder="Ej: 1094000000" inputmode="numeric" oninput="verificarCedulaEnVivo()">
+            <span id="iconVerificacion" style="position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 18px; font-weight: 800; display: none;"></span>
+          </div>
+          <div id="cedulaFeedback" style="font-size: 12px; margin-top: 2px; display: none;"></div>
+          <span class="input-helper">La cédula se verifica en tiempo real para evitar duplicados en la base de datos.</span>
+        </div>
+
+        <!-- CAMPO 3: Teléfono Básico -->
+        <div class="input-group">
+          <label class="input-label" for="telPasivo">Número Celular (Básico o flecha)</label>
+          <input type="tel" id="telPasivo" class="input-field" placeholder="Ej: 310 123 4567" inputmode="numeric">
+          <span class="input-helper">Aquí recibirá las llamadas o los SMS de vacantes.</span>
+        </div>
+
+        <!-- CAMPO 4: Ubicación / Vereda -->
+        <div class="input-group">
+          <label class="input-label" for="veredaPasivo">Vereda donde vive</label>
+          <select id="veredaPasivo" class="input-field" style="font-size: 15px;">
+            <option>📍 Vereda El Caimo (Armenia)</option>
+            <option>📍 Vereda Pantanillo (Armenia)</option>
+            <option>📍 Vereda La Linda (Montenegro)</option>
+          </select>
+        </div>
+
+        <!-- CAMPO 5: Labor Principal -->
+        <div class="input-group">
+          <label class="input-label">Labor o Especialidad</label>
+          <select id="laborPasivo" class="input-field" style="font-size: 15px;">
+            <option>☕ Recolector de Café</option>
+            <option>🌿 Guadañador / Desyerbador</option>
+            <option>🐴 Cargador y Acarreo</option>
+            <option>🛡️ Fumigador y Plateo</option>
+          </select>
+        </div>
+
+        <!-- Botón de Registro -->
+        <button class="btn-primary" style="margin-top: 10px;" onclick="registrarJornaleroPasivo()">
+          <span>Inscribir Trabajador al Directorio</span>
+          <span style="font-size: 20px;">✓</span>
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab active">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const rolActual = AgroConecta.getRol();
+    if (rolActual === 'jornalero') {
+      document.getElementById('linkVolver').href = 'mockup_jornalero_directorio.html';
+    }
+
+    let cedulaEsValida = false;
+
+    function verificarCedulaEnVivo() {
+      const val = document.getElementById('cedulaPasivo').value.replace(/\D/g, '');
+      const badge = document.getElementById('badgeVerificacionCedula');
+      const icon = document.getElementById('iconVerificacion');
+      const feedback = document.getElementById('cedulaFeedback');
+      const input = document.getElementById('cedulaPasivo');
+
+      if (val.length < 6) {
+        badge.className = 'badge badge-gray';
+        badge.innerText = 'Por verificar (mín 6 dígitos)';
+        icon.style.display = 'none';
+        feedback.style.display = 'none';
+        input.classList.remove('is-invalid');
+        cedulaEsValida = false;
+        return;
+      }
+
+      // 1. Caso: Cédula ya existe como usuario Activo con App (Don Hernán o José Albeiro)
+      if (val === '79854120' || val === '10948572') {
+        badge.className = 'badge badge-orange';
+        badge.innerText = '⚠️ Ya es Usuario Activo';
+        icon.innerText = '⚠️';
+        icon.style.color = '#c2410c';
+        icon.style.display = 'block';
+        feedback.style.display = 'block';
+        feedback.style.color = '#c2410c';
+        feedback.innerHTML = '<strong>Esta cédula ya tiene cuenta activa con smartphone</strong> en AgroConecta. No requiere inscripción pasiva.';
+        input.classList.add('is-invalid');
+        cedulaEsValida = false;
+      }
+      // 2. Caso: Cédula ya inscrita previamente como Jornalero Pasivo
+      else if (val === '10940000') {
+        badge.className = 'badge badge-orange';
+        badge.innerText = '⚠️ Ya en Directorio';
+        icon.innerText = '⚠️';
+        icon.style.color = '#c2410c';
+        icon.style.display = 'block';
+        feedback.style.display = 'block';
+        feedback.style.color = '#c2410c';
+        feedback.innerHTML = '<strong>Esta persona ya fue inscrita como Jornalero Pasivo</strong> en esta vereda. Puedes solicitar cambio de datos si su teléfono cambió.';
+        input.classList.add('is-invalid');
+        cedulaEsValida = false;
+      }
+      // 3. Caso: Cédula disponible y única
+      else {
+        badge.className = 'badge badge-green';
+        badge.innerText = '✓ Cédula Disponible';
+        icon.innerText = '✓';
+        icon.style.color = '#16a34a';
+        icon.style.display = 'block';
+        feedback.style.display = 'block';
+        feedback.style.color = '#15803d';
+        feedback.innerHTML = '✓ Cédula verificada: no existe en el sistema. Lista para inscripción.';
+        input.classList.remove('is-invalid');
+        cedulaEsValida = true;
+      }
+    }
+
+    function registrarJornaleroPasivo() {
+      const nombre = document.getElementById('nombrePasivo').value.trim();
+      const cedula = document.getElementById('cedulaPasivo').value.trim();
+      const tel = document.getElementById('telPasivo').value.trim();
+
+      if (!nombre || !cedula || !tel) {
+        alert("⚠️ Por favor completa los datos básicos (Nombre, Cédula y Teléfono).");
+        return;
+      }
+
+      if (cedula === '79854120' || cedula === '10948572' || cedula === '10940000') {
+        alert("⚠️ No es posible registrar: la cédula ya se encuentra registrada en el sistema.");
+        return;
+      }
+
+      alert(`✅ ¡Cédula ${cedula} verificada y vinculada!\n${nombre} ha sido agregado con éxito al directorio veredal.`);
+      window.location.href = "mockup_2_3_gestion_pasivos.html?registrado=1";
+    }
+  </script>
+
+</body>
+
+</html>

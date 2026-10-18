@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 4: Dashboard Productor - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .producer-header {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+      color: white;
+      padding: 18px 20px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+
+    .stat-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Modo Productor • Módulos DFD</div>
+    <a href="mockup_3_1_publicar_vacante.html" class="test-chip">➕ 3.1 Crear Vacante</a>
+    <a href="mockup_3_3_gestion_postulaciones.html" class="test-chip">📋 3.3 Postulaciones</a>
+    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">👥 4.1 Trabajadores</a>
+    <a href="mockup_6_1_checkin_documento.html" class="test-chip">📸 6.1 Check-in</a>
+    <a href="mockup_selector_rol.html" class="test-chip danger">⇄ Cambiar Rol</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Identidad del Productor y Switch de Rol -->
+    <div class="producer-header">
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; opacity: 0.85; letter-spacing: 0.5px;">
+          Finca La Esperanza • Vereda El Caimo
+        </div>
+        <h2 style="font-size: 19px; font-weight: 800; margin: 2px 0 0;">
+          Don Hernán Restrepo
+        </h2>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <a href="mockup_2_1_perfil_usuario.html" class="badge" style="background: rgba(255,255,255,0.25); color: white; text-decoration: none; padding: 6px 8px;" title="Ver Mi Perfil">
+          👤 Perfil
+        </a>
+        <a href="mockup_selector_rol.html" class="badge badge-green" style="background: rgba(255,255,255,0.25); color: white; text-decoration: none; padding: 6px 10px;" title="Cambiar Rol">
+          ⇄ Cambiar Rol
+        </a>
+      </div>
+    </div>
+
+    <!-- Contenido del Dashboard -->
+    <div class="content">
+
+      <!-- ==========================================
+           BOTÓN PRINCIPAL REQUERIDO POR EL DFD:
+           "Botón principal para Crear Vacante (Labor a realizar y cantidad de personas)"
+           ========================================== -->
+      <a href="mockup_3_1_publicar_vacante.html" class="btn-primary" style="padding: 20px; font-size: 19px; border-radius: 16px; box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);">
+        <span style="font-size: 26px;">➕</span>
+        <div style="text-align: left; flex-grow: 1;">
+          <div style="font-size: 18px; font-weight: 800;">Crear Vacante</div>
+          <div style="font-size: 13px; font-weight: 500; opacity: 0.9;">Labor a realizar y cantidad de personas</div>
+        </div>
+        <span style="font-size: 20px;">➔</span>
+      </a>
+
+      <!-- ==========================================
+           SUBCOMPONENTE 4.1: DIRECTORIO DE TRABAJADORES (VISTA PRODUCTOR)
+           ========================================== -->
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <a href="mockup_4_1_directorio_trabajadores.html" class="stat-card" style="border-left: 5px solid #16a34a; background: #f0fdf4;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="font-size: 30px; background: #dcfce7; width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+              👥
+            </div>
+            <div>
+              <div style="font-size: 16px; font-weight: 800; color: var(--text-main);">
+                Directorio de Trabajadores (4.1)
+              </div>
+              <div style="font-size: 13px; color: #166534; font-weight: 700;">
+                Mano de obra disponible en la vereda
+              </div>
+            </div>
+          </div>
+          <span class="badge badge-green" style="font-size: 14px; padding: 6px 10px;">Ver ➔</span>
+        </a>
+        <div style="display: flex; justify-content: flex-end; padding: 0 4px;">
+          <a href="mockup_2_2_registro_colaborativo.html" style="font-size: 12px; color: var(--primary-dark); font-weight: 700; text-decoration: none; display: flex; align-items: center; gap: 4px;">
+            <span>🤝 + Inscribir Jornalero sin Smartphone (2.2)</span> ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- Tarjeta de Acceso a Lista de Revisión de Postulaciones (Subcomponente 3.3) -->
+      <a href="mockup_3_3_gestion_postulaciones.html" class="stat-card" style="border-left: 5px solid #d84315;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="font-size: 30px; background: var(--accent-light); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            📋
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--text-main);">
+              Postulaciones Recibidas (3.3)
+            </div>
+            <div style="font-size: 13px; color: var(--accent); font-weight: 700;">
+              3 jornaleros esperando respuesta
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-orange" style="font-size: 14px; padding: 6px 10px;">Revisar ➔</span>
+      </a>
+
+      <!-- Tarjeta de Acceso a Validación (Cámara Check-in / Check-out - Subcomponente 6.1) -->
+      <a href="mockup_6_1_checkin_documento.html" class="stat-card" style="border-left: 5px solid #1565c0;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="font-size: 30px; background: var(--blue-light); width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            📸
+          </div>
+          <div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--text-main);">
+              Validar Asistencia en Campo (6.1)
+            </div>
+            <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">
+              Foto de Cédula (Llegada) / Evidencia (Salida)
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-blue">Cámara ➔</span>
+      </a>
+
+      <!-- Sección: Vacantes Activas en la Finca -->
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main);">Tus Vacantes Activas</h3>
+          <span style="font-size: 13px; color: var(--primary); font-weight: 700;">2 publicadas</span>
+        </div>
+
+        <div class="card" style="padding: 14px; gap: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span class="badge badge-green" style="font-size: 11px;">En curso</span>
+              <h4 style="font-size: 17px; font-weight: 800; margin: 4px 0 2px;">Recolección de Café</h4>
+              <p style="font-size: 13px; color: var(--text-muted);">Pago al destajo: $850 / kilo</p>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 18px; font-weight: 800; color: var(--primary);">3 de 5</div>
+              <div style="font-size: 11px; color: var(--text-muted);">cupos libres</div>
+            </div>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 6px;">
+            <a href="mockup_3_3_gestion_postulaciones.html" class="btn-secondary" style="padding: 8px; font-size: 13px; flex: 1;">
+              Ver 3 Postulados
+            </a>
+            <a href="mockup_6_1_checkin_documento.html" class="btn-secondary" style="padding: 8px; font-size: 13px; flex: 1;">
+              Tomar Asistencia
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab active">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+</body>
+
+</html>
+

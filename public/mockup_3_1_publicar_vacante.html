@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 3.1: Publicación y Cierre de Vacantes - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .labor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .labor-btn {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 10px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .labor-btn:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .labor-btn.active {
+      border-color: var(--primary);
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+    }
+
+    .counter-box {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border: 2.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      background: white;
+      overflow: hidden;
+    }
+
+    .btn-counter {
+      width: 64px;
+      height: 58px;
+      background: #f1f5f9;
+      border: none;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--text-main);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .counter-value {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary-dark);
+      text-align: center;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 3:</span>
+    <a href="mockup_productor_dashboard.html" class="test-chip">Dashboard</a>
+    <button class="test-chip danger" onclick="simularCierreVacante()">🔒 Probar Cerrar Vacante</button>
+    <a href="mockup_productor_revision.html" class="test-chip">3.3 Postulaciones</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 Publicación y Cierre</h1>
+      <p>Subcomponente 3.1: Ofertas de Empleo (Vista Productor)</p>
+    </div>
+
+    <!-- Contenido -->
+    <div class="content">
+
+      <!-- VACANTE ACTIVA ACTUAL CON OPCIÓN DE CIERRE (Requerido por Subcomponente 3.1) -->
+      <div class="card" id="cardVacanteActiva" style="border: 2px solid var(--primary); background: #f0fdf4; padding: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <span id="badgeEstadoVacante" class="badge badge-green" style="font-size: 11px;">Activa en Cartelera Pública</span>
+            <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 4px 0 2px;">
+              Recolección de Café (Finca La Esperanza)
+            </h3>
+            <p style="font-size: 13px; color: var(--text-muted); margin: 0;">5 personas solicitadas • $850/kg</p>
+          </div>
+        </div>
+
+        <div style="border-top: 1px dashed var(--primary-border); padding-top: 10px; margin-top: 4px;">
+          <!-- FUNCIONALIDAD CLAVE: Modificar estado a Completada/Cerrada -->
+          <button id="btnCerrarVacante" class="btn-danger-outline" style="padding: 10px; font-size: 13.5px; width: 100%;" onclick="simularCierreVacante()">
+            <span>🔒 Modificar a "Completada / Cerrada" (Retirar de la vista)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- FORMULARIO DE PUBLICACIÓN DE NUEVA VACANTE -->
+      <div class="card" style="padding: 18px; gap: 14px;">
+        <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">
+          ➕ Publicar Nueva Necesidad
+        </h3>
+
+        <!-- Labor agrícola -->
+        <div class="input-group">
+          <label class="input-label" style="font-size: 15px;">1. Labor a realizar</label>
+          <div class="labor-grid">
+            <button type="button" class="labor-btn active" onclick="seleccionarLabor(this, 'Recolección de Café')">
+              <span style="font-size: 24px;">☕</span>
+              <span>Recolección</span>
+            </button>
+            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Guadaña / Desyerba')">
+              <span style="font-size: 24px;">🌿</span>
+              <span>Guadaña</span>
+            </button>
+            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Fumigación y Plateo')">
+              <span style="font-size: 24px;">🛡️</span>
+              <span>Fumigación</span>
+            </button>
+            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Carga y Acarreo')">
+              <span style="font-size: 24px;">🐴</span>
+              <span>Carga</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Cantidad de personas -->
+        <div class="input-group">
+          <label class="input-label" style="font-size: 15px;">2. Cantidad de personas</label>
+          <div class="counter-box">
+            <button type="button" class="btn-counter" onclick="cambiarCantidad(-1)">-</button>
+            <div class="counter-value" id="cantPersonas">5 personas</div>
+            <button type="button" class="btn-counter" onclick="cambiarCantidad(1)">+</button>
+          </div>
+        </div>
+
+        <!-- Pago ofrecido -->
+        <div class="input-group">
+          <label class="input-label" style="font-size: 15px;">3. Pago ofrecido</label>
+          <select id="pagoSelect" class="input-field" style="font-size: 15px;">
+            <option value="A destajo ($850 / kilo)">A destajo ($850 por kilo)</option>
+            <option value="$55.000 / día">$55.000 por jornal del día</option>
+          </select>
+        </div>
+
+        <button class="btn-primary" style="margin-top: 6px;" onclick="publicarNuevaVacante()">
+          <span>Publicar Oferta en la Vereda</span>
+          <span>📢</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab active">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    let cantidad = 5;
+    let laborSeleccionada = "Recolección de Café";
+
+    function seleccionarLabor(elem, labor) {
+      document.querySelectorAll('.labor-btn').forEach(btn => btn.classList.remove('active'));
+      elem.classList.add('active');
+      laborSeleccionada = labor;
+    }
+
+    function cambiarCantidad(delta) {
+      cantidad = Math.max(1, Math.min(50, cantidad + delta));
+      document.getElementById('cantPersonas').innerText = `${cantidad} ${cantidad === 1 ? 'persona' : 'personas'}`;
+    }
+
+    function simularCierreVacante() {
+      const card = document.getElementById('cardVacanteActiva');
+      const badge = document.getElementById('badgeEstadoVacante');
+      const btn = document.getElementById('btnCerrarVacante');
+
+      card.style.background = "#f8fafc";
+      card.style.borderColor = "#cbd5e1";
+
+      badge.className = "badge badge-gray";
+      badge.innerText = "Completada / Cerrada (Fuera de vista)";
+
+      btn.disabled = true;
+      btn.innerText = "✓ Vacante Cerrada y Archivada";
+      btn.style.color = "#64748b";
+      btn.style.borderColor = "#cbd5e1";
+
+      alert("🔒 Vacante marcada como 'Completada / Cerrada'. Ya no es visible para postulaciones en el directorio.");
+    }
+
+    function publicarNuevaVacante() {
+      alert("📢 ¡Nueva vacante publicada con éxito!");
+      window.location.href = "mockup_productor_dashboard.html";
+    }
+  </script>
+
+</body>
+
+</html>
+

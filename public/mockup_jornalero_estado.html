@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 5: Estado de Postulación - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .status-hero {
+      border-radius: var(--radius-lg);
+      padding: 24px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .status-hero.enviada {
+      background: #fefce8;
+      border: 2px solid #fef08a;
+      color: #854d0e;
+    }
+
+    .status-hero.aceptada {
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      color: #166534;
+      box-shadow: 0 8px 20px rgba(74, 222, 128, 0.2);
+    }
+
+    .hero-icon-bubble {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 42px;
+    }
+
+    .status-hero.enviada .hero-icon-bubble {
+      background: #fef08a;
+    }
+
+    .status-hero.aceptada .hero-icon-bubble {
+      background: #dcfce7;
+      border: 4px solid #4ade80;
+    }
+
+    .stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      margin: 14px 0 6px;
+      position: relative;
+    }
+
+    .stepper::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: #cbd5e1;
+      z-index: 1;
+    }
+
+    .step-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      z-index: 2;
+    }
+
+    .step-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: white;
+      border: 3px solid #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      color: #64748b;
+    }
+
+    .step-circle.done {
+      border-color: #2e7d32;
+      background: #2e7d32;
+      color: white;
+    }
+
+    .step-circle.active {
+      border-color: #f59e0b;
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .instruction-card {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD para Alternar Estados Requeridos (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Alternar Estado:</span>
+    <button class="test-chip" onclick="mostrarEstado('enviada')">⏳ 1. Postulación enviada</button>
+    <button class="test-chip" onclick="mostrarEstado('aceptada')">🎉 2. ¡Aceptado! Ir a finca</button>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header jornalero">
+      <a href="mockup_jornalero_directorio.html" class="header-back-btn" title="Volver al Directorio">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 Estado de Postulación</h1>
+      <p>Finca La Esperanza • Don Hernán</p>
+    </div>
+
+    <!-- Contenido: Pantalla de Notificaciones y Estado -->
+    <div class="content">
+
+      <!-- ==========================================
+           ESTADO 1: POSTULACIÓN ENVIADA
+           ========================================== -->
+      <div id="vistaEstadoEnviada" style="display: none; flex-direction: column; gap: 16px;">
+        
+        <div class="status-hero enviada">
+          <div class="hero-icon-bubble">⏳</div>
+          <h2 style="font-size: 22px; font-weight: 900; margin: 0; color: #854d0e;">
+            Postulación enviada
+          </h2>
+          <p style="font-size: 14px; margin: 0; line-height: 1.4; color: #713f12;">
+            Tu postulación para <strong>Recolección de Café</strong> fue recibida por Don Hernán. Está revisando la disponibilidad de cupos.
+          </p>
+
+          <!-- Stepper de Progreso -->
+          <div class="stepper">
+            <div class="step-node">
+              <div class="step-circle done">✓</div>
+              <span class="step-label">Enviada</span>
+            </div>
+            <div class="step-node">
+              <div class="step-circle active">⏳</div>
+              <span class="step-label">Revisión</span>
+            </div>
+            <div class="step-node">
+              <div class="step-circle">3</div>
+              <span class="step-label">Respuesta</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="padding: 16px; gap: 10px;">
+          <h4 style="font-size: 15px; font-weight: 800; color: var(--text-main); margin: 0;">
+            ¿Qué debes hacer ahora?
+          </h4>
+          <p style="font-size: 13.5px; color: var(--text-muted); line-height: 1.4; margin: 0;">
+            No tienes que hacer nada más. En cuanto el productor responda recibirás una alerta en tu celular y un mensaje SMS gratis.
+          </p>
+          <a href="tel:3124508921" class="btn-secondary" style="margin-top: 6px; padding: 12px; font-size: 15px;">
+            <span>📞 Llamar al Mayordomo (Opcional)</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- ==========================================
+           ESTADO 2: ¡ACEPTADO! IR A LA FINCA
+           ========================================== -->
+      <div id="vistaEstadoAceptada" style="display: flex; flex-direction: column; gap: 16px;">
+
+        <div class="status-hero aceptada">
+          <div class="hero-icon-bubble">✅</div>
+          <h2 style="font-size: 24px; font-weight: 900; margin: 0; color: #15803d;">
+            ¡Aceptado! Ir a la finca
+          </h2>
+          <p style="font-size: 14.5px; margin: 0; line-height: 1.4; color: #166534; font-weight: 600;">
+            ¡Don Hernán confirmó tu cupo para la cosecha de café! Preséntate mañana temprano.
+          </p>
+        </div>
+
+        <!-- Instrucciones Claras y de Baja Fricción -->
+        <div class="instruction-card">
+          <h4 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0; border-bottom: 1px solid #f1f5f9; padding-bottom: 8px;">
+            📋 Instrucciones de Presentación
+          </h4>
+
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <span style="font-size: 22px;">📍</span>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">LUGAR</div>
+              <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">Finca La Esperanza</div>
+              <div style="font-size: 12.5px; color: var(--text-muted);">Vereda El Caimo (Sector La Ye, portón verde)</div>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 10px; align-items: flex-start;">
+            <span style="font-size: 22px;">⏰</span>
+            <div>
+              <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">HORA DE ENTRADA</div>
+              <div style="font-size: 15px; font-weight: 800; color: var(--primary-dark);">Mañana a las 6:00 AM puntual</div>
+            </div>
+          </div>
+
+          <!-- AVISO CLAVE SOBRE LA CÉDULA PARA EL CHECK-IN -->
+          <div style="background: #fef2f2; border: 1.5px solid #fca5a5; padding: 12px; border-radius: 10px; display: flex; gap: 10px; align-items: center;">
+            <span style="font-size: 24px;">🪪</span>
+            <div style="font-size: 13px; color: #991b1b; line-height: 1.3;">
+              <strong>IMPORTANTE:</strong> Lleva tu <strong>cédula física original</strong>. El mayordomo le tomará foto con la app al llegar para validar tu asistencia.
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción para el Jornalero -->
+        <a href="https://maps.google.com" target="_blank" class="btn-primary" style="padding: 18px; font-size: 17px;">
+          <span>🗺️ Ver Cómo Llegar a la Finca</span>
+        </a>
+
+        <a href="tel:3124508921" class="btn-secondary" style="padding: 14px; font-size: 16px;">
+          <span>📞 Llamar a Don Hernán (312 450 8921)</span>
+        </a>
+
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Jornalero) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_jornalero_directorio.html" class="app-nav-tab">
+        <span class="tab-icon">🌾</span>
+        <span>Vacantes</span>
+      </a>
+      <a href="mockup_4_2_directorio_fincas.html" class="app-nav-tab">
+        <span class="tab-icon">🏡</span>
+        <span>Fincas</span>
+      </a>
+      <a href="mockup_jornalero_estado.html" class="app-nav-tab active accent">
+        <span class="tab-icon">🔔</span>
+        <span>Mi Estado</span>
+      </a>
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab">
+        <span class="tab-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    // Determinar qué estado mostrar por query param o por defecto
+    const paramEstado = AgroConecta.getQueryParam('estado');
+    if (paramEstado === 'enviada') {
+      mostrarEstado('enviada');
+    } else {
+      mostrarEstado('aceptada'); // Por defecto para mostrar la pantalla de éxito
+    }
+
+    function mostrarEstado(estado) {
+      const vistaEnviada = document.getElementById('vistaEstadoEnviada');
+      const vistaAceptada = document.getElementById('vistaEstadoAceptada');
+
+      if (estado === 'enviada') {
+        vistaEnviada.style.display = 'flex';
+        vistaAceptada.style.display = 'none';
+      } else {
+        vistaEnviada.style.display = 'none';
+        vistaAceptada.style.display = 'flex';
+      }
+    }
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 2.3: Gestión de Perfiles Pasivos y Permisos - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .rule-card {
+      background: white;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 2:</span>
+    <a href="mockup_selector_rol.html" class="test-chip">2.1 Selector Rol</a>
+    <a href="mockup_2_1_perfil_usuario.html" class="test-chip">2.1 Perfil</a>
+    <a href="mockup_2_2_registro_colaborativo.html" class="test-chip">2.2 Registro Colab</a>
+    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">4.1 Directorio</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_4_1_directorio_trabajadores.html" class="header-back-btn" title="Volver al Directorio">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>👥 Perfil Pasivo</h1>
+      <p>Subcomponente 2.3: Reglas de Permisos y Edición</p>
+    </div>
+
+    <!-- Contenido: Lógica de permisos de perfiles pasivos -->
+    <div class="content">
+
+      <!-- Ficha de Datos del Trabajador Pasivo -->
+      <div class="card" style="padding: 16px; gap: 10px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <div style="font-size: 32px; background: #e2e8f0; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👨‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">Carlos Mario Ocampo</h3>
+              <span id="badgeEstadoPasivo" class="badge badge-gray" style="font-size: 11px;">Jornalero Pasivo (Sin App)</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top: 1px solid #f1f5f9; padding-top: 10px; display: flex; flex-direction: column; gap: 6px; font-size: 13.5px;">
+          <div>🪪 <strong>Cédula (Llave única inmutable):</strong> 10.940.000</div>
+          <div>📱 <strong>Celular básico:</strong> 310 889 4455</div>
+          <div>📍 <strong>Vereda:</strong> El Caimo • 🌿 <strong>Oficio:</strong> Guadaña</div>
+        </div>
+      </div>
+
+      <!-- REGLA 1: PROPIEDAD INICIAL DE EDICIÓN (CREADOR ORIGINAL) -->
+      <div class="rule-card" style="border-left: 4px solid var(--primary);">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12px; font-weight: 800; color: var(--primary-dark); text-transform: uppercase;">
+            1. Propiedad de Edición
+          </span>
+          <span class="badge badge-green" style="font-size: 10.5px;">Tú eres el creador</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.35;">
+          Como creador original tienes permisos para actualizar directamente el teléfono o la vereda si el trabajador te lo solicita.
+        </p>
+        <button class="btn-secondary" style="padding: 10px; font-size: 13.5px;" onclick="abrirEdicionDirecta()">
+          ✏️ Editar Datos Directamente
+        </button>
+
+        <!-- Formulario de Edición Directa (Creador) -->
+        <div id="formEdicionDirecta" style="display: none; background: #f8fafc; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-top: 6px;">
+          <label style="font-size: 12px; font-weight: 700; color: var(--text-main); display: block; margin-bottom: 4px;">Nuevo Teléfono Celular:</label>
+          <input type="tel" id="inputNuevoTel" class="input-field" style="font-size: 15px; padding: 8px; margin-bottom: 8px;" value="310 889 4455">
+          <button class="btn-primary" style="padding: 8px; font-size: 13px; width: 100%;" onclick="guardarEdicionDirecta()">
+            💾 Guardar Cambio Inmediato
+          </button>
+        </div>
+      </div>
+
+      <!-- REGLA 2: RECLAMAR PERFIL VÍA SMS (PASIVO -> ACTIVO) -->
+      <div class="rule-card" style="border-left: 4px solid #1565c0;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12px; font-weight: 800; color: #1565c0; text-transform: uppercase;">
+            2. Reclamo de Cuenta (SMS)
+          </span>
+          <span class="badge badge-blue" style="font-size: 10.5px;">Autonomía</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.35;">
+          Si Carlos Mario adquiere un smartphone, puede validar su cédula vía SMS OTP para tomar propiedad y volverse <strong>Jornalero Activo</strong>.
+        </p>
+        <button id="btnReclamar" class="btn-primary" style="padding: 12px; font-size: 14px; background: #1565c0;" onclick="simularReclamoSms()">
+          <span>📲 Simular Reclamo vía SMS (Volver Activo)</span>
+        </button>
+      </div>
+
+      <!-- REGLA 3: CORRECCIÓN COMUNITARIA / SOLICITAR CAMBIO DE DATOS -->
+      <div class="rule-card" style="border-left: 4px solid #f59e0b;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12px; font-weight: 800; color: #92400e; text-transform: uppercase;">
+            3. Corrección Comunitaria
+          </span>
+          <span class="badge badge-orange" style="font-size: 10.5px;">Comunidad</span>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin: 0; line-height: 1.35;">
+          Cualquier usuario de la vereda puede <strong>solicitar cambio de datos</strong> si el número no responde, cambió de residencia o labor.
+        </p>
+        <button id="btnToggleSugerir" class="btn-secondary" style="padding: 10px; font-size: 13.5px; border-color: #f59e0b; color: #b45309;" onclick="toggleFormSugerir()">
+          📢 Solicitar Cambio de Datos (Sugerir Corrección)
+        </button>
+
+        <!-- Formulario Interactivo de Solicitud de Cambio de Datos -->
+        <div id="formSugerirCorreccion" style="display: none; background: #fffbeb; padding: 12px; border-radius: 8px; border: 1.5px solid #fde68a; margin-top: 8px; flex-direction: column; gap: 8px;">
+          <div style="font-weight: 800; font-size: 13px; color: #92400e;">¿Qué dato deseas solicitar corregir?</div>
+          
+          <select id="selectMotivoCambio" class="input-field" style="font-size: 13px; padding: 8px;">
+            <option value="tel">📱 El número de teléfono no contesta / cambió</option>
+            <option value="vereda">📍 Se mudó a otra vereda</option>
+            <option value="labor">🌿 Cambió de especialidad o labor</option>
+            <option value="inactivo">🚫 Ya no presta servicios agrícolas</option>
+          </select>
+
+          <input type="text" id="inputDatoSugerido" class="input-field" placeholder="Escribe el nuevo número o dato correcto..." style="font-size: 13px; padding: 8px;">
+
+          <button class="btn-primary" style="padding: 10px; font-size: 13px; background: #d97706;" onclick="enviarSolicitudCambio()">
+            ✓ Enviar Solicitud de Cambio a la Comunidad
+          </button>
+        </div>
+
+        <div id="toastSugerenciaEnviada" style="display: none; background: #ecfdf5; border: 1px solid #10b981; padding: 10px; border-radius: 8px; font-size: 12.5px; color: #065f46; margin-top: 6px;">
+          ✅ <strong>¡Solicitud enviada!</strong> Se notificó al creador original y quedó registrada para moderación comunitaria.
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab active">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    function abrirEdicionDirecta() {
+      const f = document.getElementById('formEdicionDirecta');
+      f.style.display = f.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function guardarEdicionDirecta() {
+      const nuevoTel = document.getElementById('inputNuevoTel').value;
+      alert(`✅ Teléfono actualizado directamente a ${nuevoTel} por ser el creador original.`);
+      document.getElementById('formEdicionDirecta').style.display = 'none';
+    }
+
+    function toggleFormSugerir() {
+      const f = document.getElementById('formSugerirCorreccion');
+      f.style.display = f.style.display === 'none' ? 'flex' : 'none';
+    }
+
+    function enviarSolicitudCambio() {
+      const motivo = document.getElementById('selectMotivoCambio').value;
+      const dato = document.getElementById('inputDatoSugerido').value.trim();
+      if (!dato) {
+        alert("⚠️ Por favor ingresa el nuevo dato o explicación del cambio.");
+        return;
+      }
+      document.getElementById('formSugerirCorreccion').style.display = 'none';
+      document.getElementById('toastSugerenciaEnviada').style.display = 'block';
+    }
+
+    function simularReclamoSms() {
+      const badge = document.getElementById('badgeEstadoPasivo');
+      const btn = document.getElementById('btnReclamar');
+
+      badge.className = "badge badge-green";
+      badge.innerText = "¡Perfil Reclamado! Jornalero Activo en App";
+
+      btn.disabled = true;
+      btn.innerText = "✓ Cuenta Activada por SMS OTP";
+      btn.style.background = "#16a34a";
+
+      alert("🎉 ¡Carlos Mario reclamó su perfil vía SMS!\nAhora es un Jornalero Activo en AgroConecta.");
+    }
+  </script>
+
+</body>
+
+</html>

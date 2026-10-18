@@ -2,163 +2,949 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prototipo AgroConecta - Índice</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f4f6f8;
-            margin: 0;
-            padding: 40px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroConecta - Mapa Arquitectónico y Mockups DFD (6 Componentes)</title>
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --primary-dark: #1b5e20;
+      --primary-light: #e8f5e9;
+      --accent: #d84315;
+      --accent-dark: #bf360c;
+      --accent-light: #fbe9e7;
+      --blue: #1565c0;
+      --blue-light: #e3f2fd;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --text-muted: #475569;
+    }
 
-        .dashboard {
-            background-color: #ffffff;
-            width: 100%;
-            max-width: 600px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        .header {
-            background-color: #212529;
-            color: white;
-            padding: 30px;
-            text-align: center;
-        }
+    body {
+      font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      padding: 30px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
 
-        .header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background-color: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      border: 1px solid #cbd5e1;
+    }
 
-        .header p {
-            margin: 10px 0 0;
-            color: #adb5bd;
-        }
+    .hero-header {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+      color: white;
+      padding: 38px 30px;
+      text-align: center;
+      position: relative;
+    }
 
-        .menu {
-            padding: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
+    .hero-header h1 {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
 
-        .menu-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            background-color: #f8f9fa;
-            border: 1px solid #dee2e6;
-            padding: 15px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: #212529;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
+    .hero-header p {
+      font-size: 15.5px;
+      opacity: 0.94;
+      max-width: 680px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
+    }
 
-        .menu-item:hover {
-            background-color: #e9ecef;
-            border-color: #ced4da;
-            transform: translateX(5px);
-        }
+    .quick-launch-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 14px;
+    }
 
-        .badge {
-            background-color: #2e7d32;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
+    .quick-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.18);
+      color: white;
+      padding: 8px 14px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.2s ease;
+    }
 
-        .section-title {
-            margin: 20px 0 10px;
-            font-size: 18px;
-            color: #495057;
-            border-bottom: 2px solid #e9ecef;
-            padding-bottom: 5px;
-        }
-    </style>
+    .quick-btn:hover {
+      background: #ffffff;
+      color: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .quick-btn.primary {
+      background: #ffffff;
+      color: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .filter-section {
+      padding: 20px 30px 10px;
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-bar {
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 12px;
+      border: 1.5px solid #cbd5e1;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-bar:focus {
+      border-color: var(--primary);
+    }
+
+    .filter-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-chip {
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .module-list {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .module-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .module-title-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .module-title {
+      font-size: 17.5px;
+      font-weight: 800;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .module-badge {
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      padding: 14px 18px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s ease;
+      gap: 14px;
+    }
+
+    .menu-item:hover {
+      background-color: #f1f5f9;
+      border-color: #94a3b8;
+      transform: translateX(4px);
+    }
+
+    .menu-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .item-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .item-tag {
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+      text-transform: uppercase;
+    }
+
+    .tag-producer { background: #dcfce7; color: #166534; }
+    .tag-jornalero { background: #ffedd5; color: #c2410c; }
+    .tag-general { background: #e0f2fe; color: #0369a1; }
+
+    .item-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      font-weight: normal;
+      line-height: 1.4;
+    }
+
+    .btn-tag {
+      background-color: var(--primary);
+      color: white;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-tag.orange { background-color: var(--accent); }
+    .btn-tag.blue { background-color: var(--blue); }
+    .btn-tag.subtle { background-color: #e2e8f0; color: var(--text); }
+
+    .rbac-note {
+      background: #eff6ff;
+      border: 1.5px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 16px 20px;
+      font-size: 13.5px;
+      line-height: 1.45;
+      color: #1e3a8a;
+    }
+
+    /* ========================================================
+       Simulador de Dispositivo Móvil en index.html
+       (Header y Navegación del Teléfono centralizados)
+       ======================================================== */
+    .simulator-section {
+      background: #f1f5f9;
+      border-bottom: 2px solid #e2e8f0;
+      padding: 26px 20px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .simulator-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .badge-screen-title {
+      background: #e2e8f0;
+      color: #0f172a;
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      max-width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .phone-simulator-frame {
+      width: 360px;
+      height: 680px;
+      background: #0f172a;
+      border-radius: 36px;
+      box-shadow: 0 20px 48px rgba(15, 23, 42, 0.22);
+      border: 10px solid #1e293b;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* 1. Header del Teléfono (Barra de Estado Android) */
+    .phone-status-bar {
+      height: 24px;
+      background-color: var(--primary-dark);
+      color: #ffffff;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      user-select: none;
+      z-index: 10;
+      transition: background-color 0.25s ease;
+    }
+
+    .phone-status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .phone-screen-container {
+      flex-grow: 1;
+      width: 100%;
+      background: #ffffff;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phone-screen-container iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* 2. Barra de Navegación del Teléfono (Android) */
+    .phone-android-nav {
+      height: 40px;
+      background: #000000;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      user-select: none;
+      z-index: 10;
+      border-top: 1px solid #1e293b;
+    }
+
+    .phone-nav-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      width: 54px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .phone-nav-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .nav-back-shape {
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+      border-right: 10px solid #94a3b8;
+      transition: border-color 0.2s;
+    }
+
+    .nav-home-shape {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      border: 2px solid #94a3b8;
+      transition: border-color 0.2s;
+    }
+
+    .nav-recent-shape {
+      width: 11px;
+      height: 11px;
+      border-radius: 2.5px;
+      border: 2px solid #94a3b8;
+      transition: border-color 0.2s;
+    }
+
+    .phone-nav-btn:hover .nav-back-shape { border-right-color: #ffffff; }
+    .phone-nav-btn:hover .nav-home-shape { border-color: #ffffff; }
+    .phone-nav-btn:hover .nav-recent-shape { border-color: #ffffff; }
+  </style>
 </head>
 
 <body>
 
-    <div class="dashboard">
-        <div class="header">
-            <h1>AgroConecta</h1>
-            <p>Mapa de Navegación - Prototipos Baja Fidelidad</p>
-        </div>
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <div class="hero-header">
+      <h1>🌾 AgroConecta</h1>
+      <p>
+        Mapa Arquitectónico y Prototipos interactivos descompuestos en <strong>6 Componentes</strong> bajo el modelo <strong>RBAC (Control de Acceso Basado en Roles)</strong> y el principio de <strong>Baja Fricción Tecnológica</strong>.
+      </p>
 
-        <div class="menu">
-            <div class="section-title">Módulo 1: Gestión de Usuarios</div>
-
-            <!-- Asegúrate de que los nombres de los archivos coincidan con los que guardaste -->
-            <a href="/public/mockup_login.html" class="menu-item">
-                1.1 Inicio de Sesión (Cédula + PIN) <span class="badge">Ver Pantalla</span>
-            </a>
-            <a href="/public/mockup_registro.html" class="menu-item">
-                1.2 Registro de Usuario <span class="badge">Ver Pantalla</span>
-            </a>
-            <a href="/public/mockup_colaborativo.html" class="menu-item">
-                1.3 Registro Colaborativo (Terceros) <span class="badge">Ver Pantalla</span>
-            </a>
-            <a href="/public/mockup_otp.html" class="menu-item">
-                1.4 Recuperación de PIN (OTP) <span class="badge">Ver Pantalla</span>
-            </a>
-
-            <div class="section-title">Módulo 2: Publicaciones y Ofertas</div>
-
-            <a href="/public/mockup_publicar_vacante.html" class="menu-item">
-                2.1 Publicar Vacante (Productor) <span class="badge" style="background-color: #d84315;">Ver
-                    Pantalla</span>
-            </a>
-            <a href="/public/mockup_postulacion.html" class="menu-item">
-                2.2 Postulación (Jornalero) <span class="badge" style="background-color: #d84315;">Ver Pantalla</span>
-            </a>
-
-            <div class="section-title">Módulo 3: Directorio y Geolocalización</div>
-
-            <a href="/public/mockup_directorio_trabajadores.html" class="menu-item">
-                3.1 Directorio Trabajadores (Productor) <span class="badge" style="background-color: #283593;">Ver
-                    Pantalla</span>
-            </a>
-            <a href="/public/mockup_directorio_fincas.html" class="menu-item">
-                3.2 Directorio Fincas (Jornalero) <span class="badge" style="background-color: #283593;">Ver
-                    Pantalla</span>
-            </a>
-
-            <div class="section-title">Módulo 4: Interacción y Contacto</div>
-            <a href="/public/mockup_4_1_chat.html" class="menu-item">
-                4.1 Chat Interno (Jornalero Activo) <span class="badge" style="background-color: #00695c;">Ver
-                    Pantalla</span>
-            </a>
-            <a href="/public/mockup_4_2_enrutamiento.html" class="menu-item">
-                4.2 Contacto Externo (Jornalero Pasivo) <span class="badge" style="background-color: #455a64;">Ver
-                    Pantalla</span>
-            </a>
-            <a href="/public/mockup_chat.html" class="menu-item">
-                4.3 Chat y Contacto (General) <span class="badge" style="background-color: #00796b;">Ver
-                    Pantalla</span>
-            </a>
-
-            <div class="section-title">Módulo 5: Validación y Cierre de Jornada</div>
-            <a href="/public/mockup_5_1_inicio.html" class="menu-item">
-                5.1 Captura de Documento (Inicio) <span class="badge" style="background-color: #4caf50;">Ver
-                    Pantalla</span>
-            </a>
-            <a href="/public/mockup_5_2_cierre.html" class="menu-item">
-                5.2 Evidencia de Actividad (Cierre) <span class="badge" style="background-color: #ff9800;">Ver
-                    Pantalla</span>
-            </a>
-        </div>
+      <!-- Barra de Accesos Rápidos Principales -->
+      <div class="quick-launch-grid">
+        <a href="public/mockup_login.html" class="quick-btn primary">
+          <span>▶ Iniciar desde Onboarding (1.1)</span>
+        </a>
+        <a href="public/mockup_selector_rol.html" class="quick-btn">
+          <span>⇄ Selector de Rol (2.1)</span>
+        </a>
+        <a href="public/mockup_productor_dashboard.html" class="quick-btn">
+          <span>🚜 Dashboard Productor</span>
+        </a>
+        <a href="public/mockup_4_1_directorio_trabajadores.html" class="quick-btn">
+          <span>👥 Trabajadores (4.1)</span>
+        </a>
+        <a href="public/mockup_jornalero_directorio.html" class="quick-btn">
+          <span>👨‍🌾 Vacantes Jornalero</span>
+        </a>
+        <a href="public/mockup_4_2_directorio_fincas.html" class="quick-btn">
+          <span>🏡 Fincas (4.2)</span>
+        </a>
+        <a href="public/mockup_6_1_checkin_documento.html" class="quick-btn">
+          <span>📸 Check-in (6.1)</span>
+        </a>
+      </div>
     </div>
+
+    <!-- ========================================================
+         SIMULADOR CENTRALIZADO DE DISPOSITIVO MÓVIL
+         (Header del teléfono y Navegación Android centralizados)
+         ======================================================== -->
+    <div class="simulator-section" id="simuladorContainer">
+      <div class="simulator-top-bar">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 13px; font-weight: 800; color: #1e293b;">📱 Simulador Interactivo</span>
+          <span class="badge-screen-title" id="screenTitleBadge">Selector de Rol (2.1)</span>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <a id="openTabBtn" href="public/mockup_selector_rol.html" target="_blank" class="quick-btn" style="background: #ffffff; color: var(--text); border-color: #cbd5e1; font-size: 11px; padding: 4px 10px;">
+            Abrir directo ↗
+          </a>
+        </div>
+      </div>
+
+      <div class="phone-simulator-frame">
+        <!-- 1. Header del Teléfono (Barra de Estado Android) -->
+        <div class="phone-status-bar" id="phoneStatusBar">
+          <span id="phoneClock">07:30</span>
+          <div class="phone-status-icons">
+            <span>4G</span>
+            <span>📶</span>
+            <span>🔋 94%</span>
+          </div>
+        </div>
+
+        <!-- Pantalla Iframe con la vista activa -->
+        <div class="phone-screen-container">
+          <iframe id="deviceIframe" name="deviceIframe" src="public/mockup_selector_rol.html" title="AgroConecta Mobile Screen"></iframe>
+        </div>
+
+        <!-- 2. Barra de Navegación del Teléfono (Android) -->
+        <div class="phone-android-nav">
+          <button class="phone-nav-btn" onclick="phoneBack()" title="Atrás (Teléfono)" aria-label="Atrás">
+            <div class="nav-back-shape"></div>
+          </button>
+          <button class="phone-nav-btn" onclick="phoneHome()" title="Inicio (Selector de Rol)" aria-label="Inicio">
+            <div class="nav-home-shape"></div>
+          </button>
+          <button class="phone-nav-btn" onclick="phoneReload()" title="Recargar pantalla" aria-label="Recargar">
+            <div class="nav-recent-shape"></div>
+          </button>
+        </div>
+      </div>
+
+      <p style="font-size: 12px; color: #64748b; margin-top: 4px; text-align: center;">
+        💡 <em>Haz clic en cualquier pantalla del catálogo abajo para cargarla en el teléfono. Los botones Android (Atrás, Inicio, Recargar) son plenamente interactivos.</em>
+      </p>
+    </div>
+
+    <!-- Filtro y Búsqueda Interactiva -->
+    <div class="filter-section">
+      <input type="text" id="filtroTexto" class="search-bar" placeholder="🔍 Filtrar por nombre de pantalla, labor o subcomponente (ej: trabajadores, vacante, pin, evidencia)..." oninput="filtrarPantallas()">
+      
+      <div class="filter-chips">
+        <button class="filter-chip active" onclick="filtrarPorCategoria('todos', this)">Todos (14 Subcomponentes)</button>
+        <button class="filter-chip" onclick="filtrarPorCategoria('productor', this)">🚜 Modo Productor</button>
+        <button class="filter-chip" onclick="filtrarPorCategoria('jornalero', this)">👨‍🌾 Modo Jornalero</button>
+        <button class="filter-chip" onclick="filtrarPorCategoria('seguridad', this)">🔒 Autenticación & Seguridad</button>
+        <button class="filter-chip" onclick="filtrarPorCategoria('directorio', this)">📍 Directorios (4.1 / 4.2)</button>
+      </div>
+    </div>
+
+    <div class="module-list">
+
+      <div class="rbac-note">
+        <strong>📌 Nota del Modelo RBAC:</strong> Existe un único tipo de usuario general en la base de datos, y la interfaz gráfica de la aplicación (frontend) se adapta dinámicamente, ocultando o mostrando funcionalidades según el rol seleccionado por el usuario en ese momento (<strong>Productor</strong> o <strong>Jornalero</strong>).
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 1: AUTENTICACIÓN Y SEGURIDAD
+           ======================================================== -->
+      <div class="module-group" data-categoria="seguridad">
+        <div class="module-title-bar">
+          <span class="module-title">🔒 Componente 1: Autenticación y Seguridad</span>
+          <span class="module-badge" style="background: var(--primary-light); color: var(--primary-dark);">Puerta de Entrada</span>
+        </div>
+
+        <a href="public/mockup_login.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 1.1</span>
+              <strong>Registro e Inicio de Sesión (Cédula + PIN 4 dígitos)</strong>
+            </div>
+            <span class="item-desc">Onboarding unificado sin botones redundantes. Si la cédula existe pide PIN; si no, pasa a Crear PIN con doble validación (errores de formato y coincidencia con persistencia).</span>
+          </div>
+          <span class="btn-tag">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_otp.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 1.2</span>
+              <strong>Recuperación de Acceso (OTP vía SMS)</strong>
+            </div>
+            <span class="item-desc">Restablece el PIN mediante el envío de código temporal (OTP de 4 números) por SMS al celular validado.</span>
+          </div>
+          <span class="btn-tag">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_1_3_cierre_sesion.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 1.3</span>
+              <strong>Cierre de Sesión Seguro</strong>
+            </div>
+            <span class="item-desc">Funcionalidad básica de seguridad para salir de la cuenta de forma segura en el dispositivo móvil compartido.</span>
+          </div>
+          <span class="btn-tag subtle">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 2: GESTIÓN DE USUARIOS Y ROLES
+           ======================================================== -->
+      <div class="module-group" data-categoria="general">
+        <div class="module-title-bar">
+          <span class="module-title">👥 Componente 2: Gestión de Usuarios y Roles</span>
+          <span class="module-badge" style="background: var(--blue-light); color: var(--blue);">RBAC Dinámico</span>
+        </div>
+
+        <!-- 2.1 PRINCIPAL: SELECTOR DINÁMICO DE ROL -->
+        <a href="public/mockup_selector_rol.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 2.1 (Principal)</span>
+              <strong>Selector Dinámico de Rol (Menú Principal Post-Login)</strong>
+            </div>
+            <span class="item-desc">Pantalla inicial tras validar PIN. Saludo de bienvenida y únicamente 2 tarjetas grandes: "Modo Productor" y "Modo Jornalero". Cero fricción.</span>
+          </div>
+          <span class="btn-tag blue">Ver Pantalla ➔</span>
+        </a>
+
+        <!-- 2.1 SECUNDARIO: PERFIL DE USUARIO -->
+        <a href="public/mockup_2_1_perfil_usuario.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 2.1 (Secundario)</span>
+              <strong>Perfil del Usuario (Datos de Contacto)</strong>
+            </div>
+            <span class="item-desc">Pantalla secundaria independiente para consultar y editar Cédula (inmutable), nombre, celular y vereda de residencia.</span>
+          </div>
+          <span class="btn-tag subtle">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_2_2_registro_colaborativo.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 2.2</span>
+              <strong>Registro Colaborativo de Terceros</strong>
+            </div>
+            <span class="item-desc">Cualquier usuario activo puede inscribir al directorio a un trabajador sin smartphone (Jornalero Pasivo) con cédula, teléfono y ubicación.</span>
+          </div>
+          <span class="btn-tag blue">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_2_3_gestion_pasivos.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 2.3</span>
+              <strong>Gestión de Perfiles Pasivos (Reglas de Edición y Solicitud de Cambio)</strong>
+            </div>
+            <span class="item-desc">Lógica de permisos: Cédula es llave única; propiedad del creador original; formulario comunitario para solicitar cambio de datos; y reclamo vía SMS OTP para volverse Activo.</span>
+          </div>
+          <span class="btn-tag blue">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 3: MÓDULO DE PUBLICACIONES Y OFERTAS
+           ======================================================== -->
+      <div class="module-group" data-categoria="publicaciones">
+        <div class="module-title-bar">
+          <span class="module-title">📢 Componente 3: Módulo de Publicaciones y Ofertas</span>
+          <span class="module-badge" style="background: var(--accent-light); color: var(--accent);">Motor Transaccional</span>
+        </div>
+
+        <a href="public/mockup_3_1_publicar_vacante.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 3.1 • Vista Productor</span>
+              <strong>Publicación y Cierre de Vacantes</strong>
+            </div>
+            <span class="item-desc">Detalla la necesidad del día (labor agrícola y cantidad de personas), con opción de modificar su estado a "Completada/Cerrada" para retirarla de la vista pública.</span>
+          </div>
+          <span class="btn-tag orange">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_3_2_postulacion_jornalero.html" class="menu-item" data-role="jornalero">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-jornalero">Subcomponente 3.2 • Vista Jornalero</span>
+              <strong>Postulación de Jornaleros</strong>
+            </div>
+            <span class="item-desc">El jornalero revisa la lista de fincas con vacantes activas y se postula con botón destacado [Postularme]. Pantalla de estado ("Postulación enviada" / "¡Aceptado! Ir a finca").</span>
+          </div>
+          <span class="btn-tag orange">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_3_3_gestion_postulaciones.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 3.3 • Vista Productor</span>
+              <strong>Gestión de la Postulación</strong>
+            </div>
+            <span class="item-desc">El productor recibe las notificaciones de los trabajadores postulados y toma la decisión de "Aceptar" o "Rechazar" a cada candidato.</span>
+          </div>
+          <span class="btn-tag orange">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 4: DIRECTORIO Y GEOLOCALIZACIÓN
+           ======================================================== -->
+      <div class="module-group" data-categoria="directorio">
+        <div class="module-title-bar">
+          <span class="module-title">📍 Componente 4: Directorio y Geolocalización (Módulo Lista)</span>
+          <span class="module-badge" style="background: var(--primary-light); color: var(--primary-dark);">Baja Conectividad</span>
+        </div>
+
+        <a href="public/mockup_4_1_directorio_trabajadores.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 4.1 • Vista Productor</span>
+              <strong>Lista de Trabajadores por Región (Directorio Mano de Obra)</strong>
+            </div>
+            <span class="item-desc">Directorio filtrable por texto que muestra a los productores qué jornaleros (activos o pasivos) residen cerca de su finca para contratación directa.</span>
+          </div>
+          <span class="btn-tag">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_4_2_directorio_fincas.html" class="menu-item" data-role="jornalero">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-jornalero">Subcomponente 4.2 • Vista Jornalero</span>
+              <strong>Lista de Fincas en la Región (Directorio de Productores)</strong>
+            </div>
+            <span class="item-desc">Repositorio visible para jornaleros donde ven qué productores están registrados y activos en su área para búsqueda proactiva de trabajo.</span>
+          </div>
+          <span class="btn-tag">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 5: INTERACCIÓN Y CONTACTO
+           ======================================================== -->
+      <div class="module-group" data-categoria="contacto">
+        <div class="module-title-bar">
+          <span class="module-title">💬 Componente 5: Interacción y Contacto</span>
+          <span class="module-badge" style="background: #e0f2f1; color: #00695c;">Canales Adaptativos</span>
+        </div>
+
+        <a href="public/mockup_5_1_chat_interno.html" class="menu-item" data-role="general">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-general">Subcomponente 5.1</span>
+              <strong>Chat Bidireccional Interno</strong>
+            </div>
+            <span class="item-desc">Módulo de mensajería integrado en la app para que productores y jornaleros activos coordinen detalles logísticos sin salir de la plataforma.</span>
+          </div>
+          <span class="btn-tag" style="background: #00695c;">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_5_2_contacto_externo.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 5.2</span>
+              <strong>Enrutamiento de Contacto Externo (Llamada / SMS)</strong>
+            </div>
+            <span class="item-desc">Accesos directos que abren las funciones nativas del celular del productor para llamada directa o SMS estándar con jornaleros pasivos.</span>
+          </div>
+          <span class="btn-tag subtle">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+      <!-- ========================================================
+           COMPONENTE 6: VALIDACIÓN DE ASISTENCIA EN CAMPO
+           ======================================================== -->
+      <div class="module-group" data-categoria="asistencia">
+        <div class="module-title-bar">
+          <span class="module-title">📸 Componente 6: Validación de Asistencia en Campo (Evidencia)</span>
+          <span class="module-badge" style="background: #fef3c7; color: #92400e;">Control Operativo</span>
+        </div>
+
+        <a href="public/mockup_6_1_checkin_documento.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 6.1 • Vista Productor</span>
+              <strong>Captura Fotográfica de Documento (Check-in)</strong>
+            </div>
+            <span class="item-desc">Toma de foto de la cédula física al iniciar labor en la finca, validando identidad y registrando la hora de inicio formal.</span>
+          </div>
+          <span class="btn-tag" style="background: #16a34a;">Ver Pantalla ➔</span>
+        </a>
+
+        <a href="public/mockup_6_2_checkout_evidencia.html" class="menu-item" data-role="productor">
+          <div class="menu-item-info">
+            <div class="item-header">
+              <span class="item-tag tag-producer">Subcomponente 6.2 • Vista Productor</span>
+              <strong>Evidencia de Actividad Realizada (Check-out)</strong>
+            </div>
+            <span class="item-desc">Fotografía del resultado del trabajo al finalizar el día (sacos de café, lote limpio) como soporte visual del destajo cumplido para contabilidad.</span>
+          </div>
+          <span class="btn-tag orange">Ver Pantalla ➔</span>
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // ----------------------------------------------------
+    // Lógica del Simulador de Dispositivo Móvil
+    // ----------------------------------------------------
+    function cargarEnSimulador(url, title, themeColor) {
+      const iframe = document.getElementById('deviceIframe');
+      const badge = document.getElementById('screenTitleBadge');
+      const statusBar = document.getElementById('phoneStatusBar');
+      const openBtn = document.getElementById('openTabBtn');
+
+      if (iframe) iframe.src = url;
+      if (badge && title) badge.textContent = title;
+      if (openBtn) openBtn.href = url;
+
+      // Color dinámico de la barra de estado según el modo
+      if (statusBar) {
+        if (themeColor) {
+          statusBar.style.backgroundColor = themeColor;
+        } else if (url.includes('jornalero') || url.includes('3_2')) {
+          statusBar.style.backgroundColor = '#bf360c'; // Terracota jornalero
+        } else if (url.includes('checkin') || url.includes('checkout') || url.includes('6_1') || url.includes('6_2')) {
+          statusBar.style.backgroundColor = '#000000'; // Cámara/evidencia
+        } else {
+          statusBar.style.backgroundColor = '#1b5e20'; // Verde productor / general
+        }
+      }
+
+      // Desplazamiento suave al simulador
+      const sim = document.getElementById('simuladorContainer');
+      if (sim) {
+        sim.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }
+
+    function phoneBack() {
+      const iframe = document.getElementById('deviceIframe');
+      try {
+        iframe.contentWindow.history.back();
+      } catch (e) {
+        console.warn('Error navegando atrás en iframe:', e);
+      }
+    }
+
+    function phoneHome() {
+      cargarEnSimulador('public/mockup_selector_rol.html', 'Selector de Rol (2.1)', '#1b5e20');
+    }
+
+    function phoneReload() {
+      const iframe = document.getElementById('deviceIframe');
+      try {
+        iframe.contentWindow.location.reload();
+      } catch (e) {
+        iframe.src = iframe.src;
+      }
+    }
+
+    function updatePhoneClock() {
+      const clockEl = document.getElementById('phoneClock');
+      if (!clockEl) return;
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      clockEl.textContent = `${h}:${m}`;
+    }
+    setInterval(updatePhoneClock, 30000);
+    updatePhoneClock();
+
+    // Sincronizar título y estado cuando el iframe navega internamente
+    const iframe = document.getElementById('deviceIframe');
+    if (iframe) {
+      iframe.addEventListener('load', () => {
+        try {
+          const loc = iframe.contentWindow.location.href;
+          const docTitle = iframe.contentWindow.document.title;
+          const badge = document.getElementById('screenTitleBadge');
+          const openBtn = document.getElementById('openTabBtn');
+          const statusBar = document.getElementById('phoneStatusBar');
+
+          if (docTitle && badge) {
+            badge.textContent = docTitle.replace('AgroConecta - ', '');
+          }
+          if (openBtn) {
+            openBtn.href = loc;
+          }
+          if (statusBar) {
+            if (loc.includes('jornalero') || loc.includes('3_2')) {
+              statusBar.style.backgroundColor = '#bf360c';
+            } else if (loc.includes('checkin') || loc.includes('checkout') || loc.includes('6_1') || loc.includes('6_2')) {
+              statusBar.style.backgroundColor = '#000000';
+            } else {
+              statusBar.style.backgroundColor = '#1b5e20';
+            }
+          }
+        } catch (err) {
+          // fallback para restricciones locales
+        }
+      });
+    }
+
+    // Interceptar clicks de botones de acceso rápido para cargarlos en el simulador
+    document.querySelectorAll('.quick-btn').forEach(btn => {
+      // Ignorar el botón de "Abrir directo"
+      if (btn.id === 'openTabBtn') return;
+      btn.addEventListener('click', (e) => {
+        const href = btn.getAttribute('href');
+        if (href && href.startsWith('public/')) {
+          e.preventDefault();
+          const title = btn.querySelector('span')?.textContent.trim() || 'Pantalla AgroConecta';
+          cargarEnSimulador(href, title);
+        }
+      });
+    });
+
+    // Interceptar clicks de los items del catálogo para cargarlos en el simulador
+    document.querySelectorAll('.menu-item').forEach(item => {
+      item.addEventListener('click', (e) => {
+        if (e.ctrlKey || e.metaKey || e.shiftKey || e.button !== 0) return;
+        e.preventDefault();
+        const href = item.getAttribute('href');
+        const title = item.querySelector('strong')?.textContent.trim() || 'Pantalla';
+        const role = item.getAttribute('data-role');
+        let color = '#1b5e20';
+        if (role === 'jornalero') color = '#bf360c';
+        if (href.includes('6_1') || href.includes('6_2')) color = '#000000';
+        cargarEnSimulador(href, title, color);
+      });
+    });
+
+    // ----------------------------------------------------
+    // Lógica de Filtros y Búsqueda
+    // ----------------------------------------------------
+    function filtrarPantallas() {
+      const q = document.getElementById('filtroTexto').value.toLowerCase();
+      document.querySelectorAll('.menu-item').forEach(item => {
+        const text = item.innerText.toLowerCase();
+        item.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+
+      // Ocultar grupos vacíos
+      document.querySelectorAll('.module-group').forEach(group => {
+        const items = group.querySelectorAll('.menu-item');
+        const visibles = Array.from(items).filter(i => i.style.display !== 'none');
+        group.style.display = visibles.length > 0 ? 'flex' : 'none';
+      });
+    }
+
+    function filtrarPorCategoria(cat, btn) {
+      document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('.menu-item').forEach(item => {
+        const role = item.getAttribute('data-role');
+        const parentGroup = item.closest('.module-group');
+        const groupCat = parentGroup ? parentGroup.getAttribute('data-categoria') : '';
+
+        if (cat === 'todos') {
+          item.style.display = 'flex';
+        } else if (cat === 'productor') {
+          item.style.display = (role === 'productor' || role === 'general') ? 'flex' : 'none';
+        } else if (cat === 'jornalero') {
+          item.style.display = (role === 'jornalero' || role === 'general') ? 'flex' : 'none';
+        } else if (cat === 'seguridad') {
+          item.style.display = groupCat === 'seguridad' ? 'flex' : 'none';
+        } else if (cat === 'directorio') {
+          item.style.display = groupCat === 'directorio' ? 'flex' : 'none';
+        }
+      });
+
+      // Ocultar grupos vacíos
+      document.querySelectorAll('.module-group').forEach(group => {
+        const items = group.querySelectorAll('.menu-item');
+        const visibles = Array.from(items).filter(i => i.style.display !== 'none');
+        group.style.display = visibles.length > 0 ? 'flex' : 'none';
+      });
+    }
+  </script>
 
 </body>
 

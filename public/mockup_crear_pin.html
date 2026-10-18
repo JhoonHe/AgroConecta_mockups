@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 1.1: Creación de PIN (Doble Validación) - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 13px;
+      font-weight: 700;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+      margin-bottom: 10px;
+    }
+
+    .pin-display-card {
+      background: #f8fafc;
+      border: 1.5px dashed var(--primary-border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD para el Evaluador (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Simular:</span>
+    <button class="test-chip danger" onclick="simularErrorFormato()">⚠️ Error Formato</button>
+    <button class="test-chip danger" onclick="simularErrorCoincidencia()">❌ Error Coincidencia</button>
+    <button class="test-chip" onclick="simularExito()">✓ Flujo Correcto</button>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_login.html" class="header-back-btn" title="Volver a Cédula">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 AgroConecta</h1>
+      <p id="headerSubtitle">Registro de usuario nuevo</p>
+    </div>
+
+    <!-- Contenido Principal: Flujo Micro de Doble Validación -->
+    <div class="content">
+
+      <!-- Ficha de usuario identificado -->
+      <div class="card" style="padding: 12px 16px; flex-direction: row; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">✨</span>
+          <div>
+            <div style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Cédula no registrada:</div>
+            <div id="cedulaDisplay" style="font-size: 17px; font-weight: 800; color: var(--text-main);">99887766</div>
+          </div>
+        </div>
+        <span class="badge badge-green">Paso 1 de 2</span>
+      </div>
+
+      <!-- Tarjeta Principal del Formulario -->
+      <div class="card" style="padding: 24px 20px; gap: 18px; text-align: center;">
+
+        <!-- ==========================================
+             PASO 1: INGRESAR PIN (4 NÚMEROS)
+             ========================================== -->
+        <div id="seccionPaso1">
+          <div style="font-size: 38px; margin-bottom: 6px;">🔐</div>
+
+          <div class="step-pill">
+            <span>Paso 1: Elige tu PIN</span>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label" for="pin1" style="font-size: 18px; justify-content: center;">
+              Ingresar PIN (4 números)
+            </label>
+            <span class="input-helper" style="text-align: center; display: block; margin-bottom: 8px;">
+              Escribe 4 números que no se te vayan a olvidar.
+            </span>
+            <input 
+              type="password" 
+              id="pin1" 
+              class="input-field input-pin" 
+              placeholder="••••" 
+              maxlength="4" 
+              inputmode="numeric"
+              autofocus
+            >
+          </div>
+
+          <!-- Mensaje de Error de Formato -->
+          <div id="errorFormato" class="alert alert-error" style="display: none; margin-top: 14px; text-align: left;">
+            <span>⚠️</span>
+            <span id="txtErrorFormato">El PIN debe tener 4 números exactos.</span>
+          </div>
+
+          <!-- Botón Continuar del Paso 1 -->
+          <button id="btnPaso1Continuar" class="btn-primary" style="margin-top: 18px;" onclick="procesarPaso1()">
+            <span>Continuar</span>
+            <span style="font-size: 20px;">➔</span>
+          </button>
+        </div>
+
+        <!-- ==========================================
+             PASO 2: CONFIRMAR PIN (SEGUNDO CAMPO/VISTA)
+             ========================================== -->
+        <div id="seccionPaso2" style="display: none;">
+          <div style="font-size: 38px; margin-bottom: 6px;">🛡️</div>
+
+          <div class="step-pill" style="background: var(--blue-light); color: var(--blue-role);">
+            <span>Paso 2: Confirmación</span>
+          </div>
+
+          <!-- Muestra de primer PIN intacto -->
+          <div class="pin-display-card">
+            <div style="text-align: left;">
+              <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">PRIMER PIN INGRESADO:</div>
+              <div style="font-size: 16px; font-weight: 800; color: var(--primary-dark); letter-spacing: 4px;">
+                ● ● ● ● <span style="font-size: 13px; letter-spacing: normal; color: var(--success-text);">✓ Intacto</span>
+              </div>
+            </div>
+            <button onclick="volverAPaso1()" style="background: none; border: none; color: var(--primary); font-weight: 700; font-size: 13px; cursor: pointer; text-decoration: underline;">
+              Editar
+            </button>
+          </div>
+
+          <div class="input-group" style="margin-top: 10px;">
+            <label class="input-label" for="pin2" style="font-size: 18px; justify-content: center;">
+              Confirmar PIN
+            </label>
+            <span class="input-helper" style="text-align: center; display: block; margin-bottom: 8px;">
+              Vuelve a escribir exactamente los mismos 4 números.
+            </span>
+            <input 
+              type="password" 
+              id="pin2" 
+              class="input-field input-pin" 
+              placeholder="••••" 
+              maxlength="4" 
+              inputmode="numeric"
+            >
+          </div>
+
+          <!-- Mensaje de Error de Coincidencia -->
+          <div id="errorCoincidencia" class="alert alert-error" style="display: none; margin-top: 14px; text-align: left;">
+            <span>⚠️</span>
+            <span id="txtErrorCoincidencia">Los PIN no coinciden. Escribe de nuevo la confirmación.</span>
+          </div>
+
+          <!-- Botón Guardar PIN del Paso 2 -->
+          <button id="btnGuardarPin" class="btn-primary" style="margin-top: 18px;" onclick="procesarPaso2()">
+            <span>Guardar PIN y Continuar</span>
+            <span style="font-size: 20px;">✓</span>
+          </button>
+        </div>
+
+        <!-- Alerta de Éxito al validar -->
+        <div id="alertExito" class="alert alert-success" style="display: none; text-align: center; flex-direction: column; align-items: center; gap: 8px;">
+          <span style="font-size: 28px;">🎉</span>
+          <div>
+            <strong>¡PIN creado con éxito!</strong><br>
+            Entrando a AgroConecta...
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Nota de Seguridad Rural -->
+      <div style="text-align: center; padding: 10px;">
+        <span style="font-size: 13px; color: var(--text-muted);">
+          🔒 Tu PIN protege tus pagos al destajo y tus vacantes.
+        </span>
+      </div>
+
+    </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const cedula = AgroConecta.getCedula();
+    document.getElementById('cedulaDisplay').innerText = cedula;
+
+    if (AgroConecta.getQueryParam('recuperacion')) {
+      document.getElementById('headerSubtitle').innerText = "Crear nuevo PIN por recuperación";
+    }
+
+    const seccionPaso1 = document.getElementById('seccionPaso1');
+    const seccionPaso2 = document.getElementById('seccionPaso2');
+    const pin1 = document.getElementById('pin1');
+    const pin2 = document.getElementById('pin2');
+    const errorFormato = document.getElementById('errorFormato');
+    const errorCoincidencia = document.getElementById('errorCoincidencia');
+    const alertExito = document.getElementById('alertExito');
+
+    let primerPinGuardado = "";
+
+    // Tecla Enter para avanzar
+    pin1.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') procesarPaso1();
+    });
+    pin2.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') procesarPaso2();
+    });
+
+    pin1.addEventListener('input', function() {
+      errorFormato.style.display = 'none';
+      pin1.classList.remove('is-invalid');
+    });
+
+    pin2.addEventListener('input', function() {
+      errorCoincidencia.style.display = 'none';
+      pin2.classList.remove('is-invalid');
+    });
+
+    /* ==========================================================================
+       VALIDACIÓN PASO 1: ERROR DE FORMATO
+       "El PIN debe tener 4 números exactos (devuelve al primer campo)"
+       ========================================================================== */
+    function procesarPaso1() {
+      const val = pin1.value.trim();
+
+      // Validación de formato estricta: exactamente 4 dígitos numéricos
+      if (val.length !== 4 || isNaN(val)) {
+        pin1.classList.add('is-invalid');
+        pin1.classList.add('shake-animation');
+        setTimeout(() => pin1.classList.remove('shake-animation'), 400);
+
+        errorFormato.style.display = 'flex';
+        document.getElementById('txtErrorFormato').innerText = "El PIN debe tener 4 números exactos.";
+        pin1.focus();
+        return;
+      }
+
+      // Si es válido, guardamos en memoria el primer PIN y mostramos el campo de confirmación
+      primerPinGuardado = val;
+      errorFormato.style.display = 'none';
+      seccionPaso1.style.display = 'none';
+      seccionPaso2.style.display = 'block';
+      pin2.value = '';
+      pin2.focus();
+    }
+
+    /* ==========================================================================
+       VALIDACIÓN PASO 2: ERROR DE COINCIDENCIA
+       "Los PIN no coinciden. MUY IMPORTANTE: En este error, la UI solo debe 
+       limpiar y pedir de nuevo el campo de 'Confirmar PIN', manteniendo el primer 
+       PIN ingresado intacto (no se reinicia todo el proceso)."
+       ========================================================================== */
+    function procesarPaso2() {
+      const val2 = pin2.value.trim();
+
+      // Validación de formato en confirmación
+      if (val2.length !== 4 || isNaN(val2)) {
+        pin2.classList.add('is-invalid');
+        pin2.classList.add('shake-animation');
+        setTimeout(() => pin2.classList.remove('shake-animation'), 400);
+
+        errorCoincidencia.style.display = 'flex';
+        document.getElementById('txtErrorCoincidencia').innerText = "El PIN debe tener 4 números exactos.";
+        pin2.focus();
+        return;
+      }
+
+      // Comprobación de coincidencia
+      if (val2 !== primerPinGuardado) {
+        // CUMPLIMIENTO ESTRICTO:
+        // Solo limpiamos pin2 y volvemos a pedirlo, pin1 queda intacto
+        pin2.classList.add('is-invalid');
+        pin2.classList.add('shake-animation');
+        setTimeout(() => pin2.classList.remove('shake-animation'), 400);
+
+        errorCoincidencia.style.display = 'flex';
+        document.getElementById('txtErrorCoincidencia').innerText = "Los PIN no coinciden. Por favor confirma de nuevo.";
+
+        pin2.value = ''; // Limpia ÚNICAMENTE el campo de Confirmar PIN
+        pin2.focus();   // Pide de nuevo el campo de Confirmar PIN
+        return;
+      }
+
+      // ¡ÉXITO! Ambos PIN coinciden
+      AgroConecta.registrarNuevaCedula(cedula, primerPinGuardado);
+      
+      seccionPaso2.style.display = 'none';
+      alertExito.style.display = 'flex';
+
+      setTimeout(() => {
+        // Pasa a MÓDULO 3: Selector Dinámico de Rol (RBAC)
+        window.location.href = `mockup_selector_rol.html?cedula=${encodeURIComponent(cedula)}&bienvenida=1`;
+      }, 1200);
+    }
+
+    function volverAPaso1() {
+      seccionPaso2.style.display = 'none';
+      seccionPaso1.style.display = 'block';
+      errorCoincidencia.style.display = 'none';
+      pin1.focus();
+    }
+
+    function manejarBotonAtrasAndroid() {
+      if (seccionPaso2.style.display === 'block') {
+        volverAPaso1();
+      } else {
+        window.location.href = `mockup_login.html?cedula=${encodeURIComponent(cedula)}`;
+      }
+    }
+
+    /* Funciones para demostración inmediata del Evaluador */
+    function simularErrorFormato() {
+      volverAPaso1();
+      pin1.value = "12"; // Solo 2 dígitos
+      procesarPaso1();
+    }
+
+    function simularErrorCoincidencia() {
+      volverAPaso1();
+      pin1.value = "1234";
+      procesarPaso1();
+      pin2.value = "5678"; // No coincide
+      procesarPaso2();
+    }
+
+    function simularExito() {
+      volverAPaso1();
+      pin1.value = "1234";
+      procesarPaso1();
+      pin2.value = "1234"; // Coincide exactamente
+      procesarPaso2();
+    }
+
+    // Auto-activación por parámetro URL si se desea tomar captura específica
+    const paramError = AgroConecta.getQueryParam('error');
+    if (paramError === 'formato') {
+      simularErrorFormato();
+    } else if (paramError === 'coincidencia') {
+      simularErrorCoincidencia();
+    }
+  </script>
+
+</body>
+
+</html>
+

@@ -2,202 +2,169 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mockup AgroConecta - Inicio de Sesión</title>
-    <style>
-        /* Estilos generales para centrar el celular en la pantalla */
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #e9ecef;
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        /* Contenedor que simula la pantalla del celular (Wireframe) */
-        .mobile-frame {
-            width: 360px;
-            height: 640px;
-            background-color: #ffffff;
-            border-radius: 24px;
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            border: 10px solid #212529;
-            /* Borde del celular */
-        }
-
-        /* Encabezado de la App */
-        .header {
-            background-color: #2e7d32;
-            /* Verde agrícola */
-            color: white;
-            padding: 50px 20px 25px;
-            text-align: center;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .header h1 {
-            margin: 0;
-            font-size: 32px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
-
-        .header p {
-            margin: 8px 0 0;
-            font-size: 15px;
-            opacity: 0.9;
-        }
-
-        /* Contenedor del formulario */
-        .content {
-            padding: 40px 30px;
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        /* Campos de texto UX rural (Grandes y claros) */
-        .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .input-group label {
-            font-size: 16px;
-            font-weight: 600;
-            color: #495057;
-        }
-
-        .input-group input {
-            padding: 16px;
-            font-size: 20px;
-            border: 2px solid #ced4da;
-            border-radius: 12px;
-            outline: none;
-            text-align: center;
-            letter-spacing: 2px;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: #2e7d32;
-            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
-        }
-
-        /* Botón de acción principal */
-        .btn-primary {
-            background-color: #2e7d32;
-            color: white;
-            border: none;
-            padding: 20px;
-            font-size: 18px;
-            font-weight: bold;
-            border-radius: 12px;
-            cursor: pointer;
-            margin-top: 15px;
-            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
-            transition: background-color 0.3s;
-        }
-
-        .btn-primary:hover {
-            background-color: #1b5e20;
-        }
-
-        /* Enlace de recuperación OTP */
-        .links {
-            text-align: center;
-            margin-top: 20px;
-        }
-
-        .links a {
-            color: #2e7d32;
-            text-decoration: underline;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        /* Simulación de barra de navegación de Android */
-        .android-nav {
-            background-color: #f8f9fa;
-            height: 48px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #e9ecef;
-        }
-
-        .nav-icon {
-            background-color: #adb5bd;
-        }
-
-        .nav-back {
-            width: 0;
-            height: 0;
-            border-top: 8px solid transparent;
-            border-bottom: 8px solid transparent;
-            border-right: 14px solid #adb5bd;
-        }
-
-        .nav-home {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-        }
-
-        .nav-recent {
-            width: 16px;
-            height: 16px;
-            border-radius: 2px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 1.1: Registro e Inicio de Sesión - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
 </head>
 
 <body>
 
-    <!-- Mockup del dispositivo -->
-    <div class="mobile-frame">
+  <!-- Barra de Pruebas DFD para el Evaluador (FUERA de la captura del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Modo DFD:</span>
+    <button class="test-chip" onclick="probarCedula('10948572')">👤 Cédula Existente</button>
+    <button class="test-chip" onclick="probarCedula('99887766')">✨ Cédula Nueva</button>
+    <a href="../index.html" class="test-chip">🏠 Menú</a>
+  </div>
 
-        <div class="header">
-            <h1>AgroConecta</h1>
-            <p>Trabajo seguro, sin filas</p>
+  <div class="mobile-frame">
+
+    <!-- Encabezado de la App (Limpio y campestre) -->
+    <div class="header">
+      <h1>🌾 AgroConecta</h1>
+      <p>Trabajo seguro en el campo, sin trámites</p>
+    </div>
+
+    <!-- Contenido Principal: Flujo Onboarding Unificado -->
+    <div class="content">
+
+      <!-- Badge de Principio UX Rural -->
+      <div style="text-align: center; margin-top: 5px;">
+        <span class="badge badge-green">Acceso con Cero Fricción</span>
+      </div>
+
+      <div class="card" style="padding: 24px 20px; gap: 20px; text-align: center; margin-top: 10px;">
+        
+        <div style="font-size: 40px; margin-bottom: -5px;">🪪</div>
+
+        <!-- Único campo principal requerido por el DFD -->
+        <div class="input-group" style="text-align: left;">
+          <label class="input-label" for="cedulaInput" style="font-size: 18px; justify-content: center;">
+            Ingresa tu número de Cédula
+          </label>
+          <span class="input-helper" style="text-align: center; display: block; margin-bottom: 5px;">
+            Sin correos ni contraseñas. Solo tu número de documento.
+          </span>
+          <input 
+            type="tel" 
+            id="cedulaInput" 
+            class="input-field input-center" 
+            placeholder="Ej: 10948572" 
+            maxlength="10"
+            autocomplete="off"
+            inputmode="numeric"
+            autofocus
+          >
         </div>
 
-        <div class="content">
-            <div class="input-group">
-                <label for="cedula">Número de Cédula</label>
-                <input type="number" id="cedula" placeholder="Ej: 1094000000">
-            </div>
-
-            <div class="input-group">
-                <label for="pin">PIN de seguridad</label>
-                <input type="password" id="pin" placeholder="••••" maxlength="4">
-            </div>
-
-            <button class="btn-primary">Ingresar</button>
-
-            <div class="links">
-                <a href="#">¿Olvidaste tu PIN? (Recuperar por SMS)</a>
-            </div>
+        <!-- Alerta de validación inline (Oculta por defecto) -->
+        <div id="errorAlert" class="alert alert-error" style="display: none; text-align: left;">
+          <span>⚠️</span>
+          <span id="errorMsg">Por favor ingresa un número de cédula válido (mínimo 6 dígitos).</span>
         </div>
 
-        <div class="android-nav">
-            <div class="nav-back"></div>
-            <div class="nav-icon nav-home"></div>
-            <div class="nav-icon nav-recent"></div>
+        <!-- Banner de detección DFD en vivo -->
+        <div id="detectionBanner" class="alert alert-info" style="display: none; text-align: left; font-size: 13px;">
+          <span id="detectionIcon">🔍</span>
+          <span id="detectionText">Verificando documento...</span>
         </div>
+
+        <!-- Botón Principal: Único llamado a la acción (Continuar) -->
+        <button id="btnContinuar" class="btn-primary" onclick="validarYContinuar()">
+          <span>Continuar</span>
+          <span style="font-size: 22px;">➔</span>
+        </button>
+
+      </div>
+
+      <!-- Explicación de baja fricción -->
+      <div style="background: rgba(46, 125, 50, 0.08); padding: 14px; border-radius: 12px; border: 1px dashed var(--primary-border); text-align: center;">
+        <p style="font-size: 13px; color: var(--primary-dark); font-weight: 600; line-height: 1.4;">
+          💡 <strong>¿Cómo funciona?</strong><br>
+          Si ya estás registrado, te pediremos tu PIN.<br>
+          Si es tu primera vez, crearás tu PIN en 10 segundos.
+        </p>
+      </div>
 
     </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const cedulaInput = document.getElementById('cedulaInput');
+    const errorAlert = document.getElementById('errorAlert');
+    const errorMsg = document.getElementById('errorMsg');
+    const detectionBanner = document.getElementById('detectionBanner');
+    const detectionIcon = document.getElementById('detectionIcon');
+    const detectionText = document.getElementById('detectionText');
+
+    // Prellenar con parámetro de URL si existe
+    const paramCedula = AgroConecta.getQueryParam('cedula');
+    if (paramCedula) {
+      cedulaInput.value = paramCedula;
+    }
+
+    // Permitir enviar con Enter
+    cedulaInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        validarYContinuar();
+      }
+    });
+
+    // Retroalimentación visual mientras escribe
+    cedulaInput.addEventListener('input', function() {
+      errorAlert.style.display = 'none';
+      cedulaInput.classList.remove('is-invalid');
+
+      const val = cedulaInput.value.trim();
+      if (val.length >= 6) {
+        detectionBanner.style.display = 'flex';
+        if (AgroConecta.cedulaExiste(val)) {
+          detectionBanner.className = 'alert alert-success';
+          detectionIcon.innerText = '👤';
+          detectionText.innerHTML = `<strong>Cédula registrada:</strong> Te pediremos tu PIN.`;
+        } else {
+          detectionBanner.className = 'alert alert-info';
+          detectionIcon.innerText = '✨';
+          detectionText.innerHTML = `<strong>Cédula nueva:</strong> Pasarás a crear tu PIN.`;
+        }
+      } else {
+        detectionBanner.style.display = 'none';
+      }
+    });
+
+    function probarCedula(numero) {
+      cedulaInput.value = numero;
+      cedulaInput.dispatchEvent(new Event('input'));
+      cedulaInput.focus();
+    }
+
+    function validarYContinuar() {
+      const cedula = cedulaInput.value.trim();
+
+      // Validación de longitud básica
+      if (!cedula || cedula.length < 6 || isNaN(cedula)) {
+        cedulaInput.classList.add('is-invalid');
+        cedulaInput.classList.add('shake-animation');
+        setTimeout(() => cedulaInput.classList.remove('shake-animation'), 400);
+        errorMsg.innerText = "Por favor escribe un número de cédula válido (al menos 6 números).";
+        errorAlert.style.display = 'flex';
+        cedulaInput.focus();
+        return;
+      }
+
+      AgroConecta.setCedula(cedula);
+
+      // LÓGICA DFD MÓDULO 1:
+      // Si la cédula existe -> Pasa a la vista de "Ingresar PIN"
+      // Si la cédula NO existe -> Pasa automáticamente a la vista de "Crear PIN"
+      if (AgroConecta.cedulaExiste(cedula)) {
+        window.location.href = `mockup_ingresar_pin.html?cedula=${encodeURIComponent(cedula)}`;
+      } else {
+        window.location.href = `mockup_crear_pin.html?cedula=${encodeURIComponent(cedula)}&nuevo=1`;
+      }
+    }
+  </script>
 
 </body>
 

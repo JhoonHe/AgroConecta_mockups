@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 1.3: Cierre de Sesión Seguro - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 1:</span>
+    <a href="mockup_login.html" class="test-chip">1.1 Login / Cédula</a>
+    <a href="mockup_otp.html" class="test-chip">1.2 Recuperar OTP</a>
+    <a href="../index.html" class="test-chip">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_selector_rol.html" class="header-back-btn" title="Volver al Menú Principal">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 AgroConecta</h1>
+      <p>Subcomponente 1.3: Seguridad y Salida</p>
+    </div>
+
+    <!-- Contenido: Confirmación de Cierre de Sesión -->
+    <div class="content" style="justify-content: center;">
+
+      <div class="card" style="padding: 26px 20px; text-align: center; gap: 18px;">
+        <div style="font-size: 52px; margin-bottom: -5px;">🔒</div>
+
+        <div>
+          <h2 style="font-size: 22px; font-weight: 800; color: var(--text-main); margin-bottom: 6px;">
+            ¿Deseas cerrar tu sesión?
+          </h2>
+          <p style="font-size: 14px; color: var(--text-muted); line-height: 1.4;">
+            Al salir de tu cuenta, nadie más podrá modificar tus ofertas, revisar postulaciones ni ver tus pagos en este teléfono.
+          </p>
+        </div>
+
+        <div style="background: #f8fafc; border: 1.5px solid var(--border-color); border-radius: 12px; padding: 12px; text-align: left;">
+          <div style="font-size: 12px; color: var(--text-muted); font-weight: 700;">SESIÓN ACTIVA:</div>
+          <div style="font-size: 16px; font-weight: 800; color: var(--text-main); margin-top: 2px;">
+            Cédula: <span id="cedulaSalida">10948572</span>
+          </div>
+          <div style="font-size: 13px; color: var(--primary); font-weight: 600;">
+            Rol actual: Modo Adaptativo
+          </div>
+        </div>
+
+        <!-- Botón Principal: Salir de Forma Segura -->
+        <button class="btn-danger-outline" style="padding: 16px; font-size: 17px; width: 100%; border-color: #ef4444;" onclick="confirmarCierreSesion()">
+          <span>🚪 Sí, Cerrar Sesión Ahora</span>
+        </button>
+
+        <!-- Botón Secundario: Seguir en la App -->
+        <a href="mockup_selector_rol.html" class="btn-secondary" style="padding: 14px; font-size: 16px;">
+          <span>← Cancelar y Continuar en la App</span>
+        </a>
+      </div>
+
+      <div style="text-align: center; font-size: 12.5px; color: var(--text-muted); padding: 0 10px;">
+        💡 Recuerda que para volver a entrar solo necesitarás escribir tu cédula y tu PIN de 4 números.
+      </div>
+
+    </div>
+
+    <!-- Barra Inferior de Navegación -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_selector_rol.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Volver a la App</span>
+      </a>
+      <a href="mockup_1_3_cierre_sesion.html" class="app-nav-tab active">
+        <span class="tab-icon">🔒</span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const cedula = AgroConecta.getCedula();
+    document.getElementById('cedulaSalida').innerText = cedula;
+
+    function confirmarCierreSesion() {
+      sessionStorage.removeItem('agro_cedula_activa');
+      sessionStorage.removeItem('agro_rol_activo');
+      alert("✅ Sesión cerrada de forma segura.");
+      window.location.href = "mockup_login.html";
+    }
+  </script>
+
+</body>
+
+</html>
+

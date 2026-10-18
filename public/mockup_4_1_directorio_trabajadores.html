@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 4.1: Directorio de Trabajadores - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Componente 4: Directorio • Vista Productor</div>
+    <a href="mockup_productor_dashboard.html" class="test-chip">🏠 Dashboard</a>
+    <a href="mockup_4_2_directorio_fincas.html" class="test-chip">🏡 4.2 Fincas</a>
+    <a href="mockup_5_1_chat_interno.html" class="test-chip">💬 5.1 Chat Activo</a>
+    <a href="mockup_5_2_contacto_externo.html" class="test-chip">📞 5.2 Llamada Pasivo</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>👥 Directorio Mano de Obra</h1>
+      <p>Subcomponente 4.1: Lista por Región (Vista Productor)</p>
+    </div>
+
+    <!-- Barra de Búsqueda y Filtro Rural -->
+    <div style="background: white; padding: 12px 16px; border-bottom: 1px solid var(--border-color);">
+      <input type="text" id="busquedaInput" class="input-field" placeholder="🔍 Filtrar por nombre, labor o vereda..." style="font-size: 15px; padding: 12px;" oninput="filtrarTrabajadores()">
+    </div>
+
+    <!-- ACCIÓN DESTACADA: REGISTRO COLABORATIVO (SUBCOMPONENTE 2.2) -->
+    <div style="padding: 12px 16px 0;">
+      <a href="mockup_2_2_registro_colaborativo.html" class="collab-banner">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 26px;">🤝</span>
+          <div>
+            <div style="font-weight: 800; font-size: 13.5px; color: #166534;">+ Inscribir Jornalero sin Smartphone (2.2)</div>
+            <div style="font-size: 11.5px; color: #15803d;">Registro colaborativo para trabajadores sin app</div>
+          </div>
+        </div>
+        <span class="badge badge-green" style="font-size: 12px; padding: 4px 8px;">Inscribir ➔</span>
+      </a>
+    </div>
+
+    <!-- Contenido: Lista de Trabajadores de la Región -->
+    <div class="content" id="listaTrabajadores">
+
+      <!-- TRABAJADOR ACTIVO 1 -->
+      <div class="card worker-item" style="padding: 14px; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="font-size: 32px; background: var(--primary-light); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👨‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0;">José Albeiro Gómez</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin: 2px 0;">☕ Recolección de Café • 📍 Vereda El Caimo</p>
+              <span class="badge badge-green" style="font-size: 11px;">Jornalero Activo (En App)</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="mockup_5_1_chat_interno.html" class="btn-secondary" style="padding: 6px 10px; font-size: 13px;" title="Chat Interno">
+              💬 Chat
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRABAJADOR PASIVO 2 -->
+      <div class="card worker-item" style="padding: 14px; gap: 10px; border-left: 4px solid #64748b;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="font-size: 32px; background: #f1f5f9; width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👨‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0;">Carlos Mario Ocampo</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin: 2px 0;">🌿 Guadaña y Machete • 📍 Vereda El Caimo</p>
+              <span class="badge badge-gray" style="font-size: 11px;">Jornalero Pasivo (Sin App)</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="mockup_5_2_contacto_externo.html" class="btn-secondary" style="padding: 6px 10px; font-size: 13px; border-color: #d84315; color: #d84315;" title="Llamada / SMS">
+              📞 Llamar
+            </a>
+          </div>
+        </div>
+        <!-- ACCIÓN SUBCOMPONENTE 2.3: GESTIÓN DE PERFIL PASIVO Y SOLICITAR CAMBIO DE DATOS -->
+        <div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 11.5px; color: var(--text-muted);">Inscrito por ti • Celular básico</span>
+          <a href="mockup_2_3_gestion_pasivos.html" class="badge badge-orange" style="text-decoration: none; font-size: 11.5px; padding: 4px 8px;">
+            ⚙️ Reglas y Corrección de Datos (2.3) ➔
+          </a>
+        </div>
+      </div>
+
+      <!-- TRABAJADOR ACTIVO 3 -->
+      <div class="card worker-item" style="padding: 14px; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div style="display: flex; gap: 10px; align-items: center;">
+            <div style="font-size: 32px; background: var(--primary-light); width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+              👩‍🌾
+            </div>
+            <div>
+              <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0;">Marta Lucía Rendón</h3>
+              <p style="font-size: 13px; color: var(--text-muted); margin: 2px 0;">☕ Recolectora • 📍 Vereda Pantanillo</p>
+              <span class="badge badge-green" style="font-size: 11px;">Jornalero Activo (En App)</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 6px;">
+            <a href="mockup_5_1_chat_interno.html" class="btn-secondary" style="padding: 6px 10px; font-size: 13px;">
+              💬 Chat
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab active">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    function filtrarTrabajadores() {
+      const q = document.getElementById('busquedaInput').value.toLowerCase();
+      document.querySelectorAll('.worker-item').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    }
+  </script>
+
+</body>
+
+</html>

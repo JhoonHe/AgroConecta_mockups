@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 6.2: Evidencia de Actividad Realizada (Check-out) - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .viewfinder {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: radial-gradient(circle, #2a1505 0%, #000 100%);
+      padding: 20px;
+    }
+    .target-box {
+      width: 270px;
+      height: 200px;
+      border: 3px dashed rgba(251, 146, 60, 0.9);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-weight: 700;
+      font-size: 14px;
+      background-color: rgba(0, 0, 0, 0.4);
+      box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
+    }
+    .shutter-btn {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background-color: white;
+      border: 6px solid #fb923c;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: transform 0.1s;
+    }
+    .shutter-btn:active {
+      transform: scale(0.92);
+    }
+    .shutter-btn-inner {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background-color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 6:</span>
+    <a href="mockup_6_1_checkin_documento.html" class="test-chip">6.1 Check-in Documento</a>
+    <a href="mockup_productor_dashboard.html" class="test-chip">Dashboard</a>
+    <a href="../index.html" class="test-chip">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame" style="background: black; border-color: #0f172a;">
+
+    <!-- Encabezado -->
+    <div class="header" style="background: rgba(0, 0, 0, 0.85); border-radius: 0;">
+      <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h2 style="font-size: 18px; color: #fb923c;">⚖️ Check-out: Cierre de Jornada</h2>
+      <p>Subcomponente 6.2: Evidencia y Liquidación Destajo</p>
+    </div>
+
+    <!-- Visor de Cámara para Evidencia -->
+    <div class="viewfinder">
+      <div class="target-box">
+        <span style="font-size: 38px; margin-bottom: 6px;">⚖️</span>
+        <span style="color: #fb923c; font-weight: 800; font-size: 15px;">FOTO DEL TRABAJO CUMPLIDO</span>
+        <span style="font-size: 12.5px; opacity: 0.9; margin-top: 4px;">Encuadre los sacos pesados o el lote terminado como soporte visual.</span>
+      </div>
+
+      <div id="checkoutAlert" class="alert alert-success" style="display: none; margin-top: 16px; width: 85%;">
+        <span>✓</span>
+        <div>
+          <strong>¡Labor Liquidada y Registrada!</strong><br>
+          Cosecha: <strong>115 Kg de café</strong><br>
+          Liquidación hoy: <strong>$97.750 COP</strong>
+        </div>
+      </div>
+    </div>
+
+    <!-- Control de Pesaje y Disparador -->
+    <div style="background: #000; padding: 14px 20px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; border-top: 1px solid #1e293b;">
+      <div style="display: flex; gap: 8px; align-items: center;">
+        <span style="color: white; font-size: 13px; font-weight: 700;">Pesaje registrado:</span>
+        <input type="number" value="115" style="width: 80px; padding: 6px; font-size: 18px; font-weight: 900; text-align: center; border-radius: 8px; border: 2px solid #fb923c;">
+        <span style="color: white; font-weight: 800;">KG</span>
+      </div>
+
+      <div class="shutter-btn" onclick="tomarFotoCheckout()">
+        <div class="shutter-btn-inner"></div>
+      </div>
+      <span style="color: white; font-size: 13px; font-weight: 700;">Tomar foto a la actividad / pesaje</span>
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab active">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    function tomarFotoCheckout() {
+      document.getElementById('checkoutAlert').style.display = 'flex';
+    }
+  </script>
+
+  <script src="js/agroconecta.js"></script>
+</body>
+
+</html>
+

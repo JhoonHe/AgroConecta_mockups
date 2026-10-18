@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 2.1: Selector Dinámico de Rol (Menú Principal) - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .role-main-card {
+      border: 3px solid var(--border-color);
+      border-radius: 20px;
+      padding: 24px 20px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.25s ease;
+      position: relative;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .role-main-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    .role-main-card.productor {
+      border-color: #2e7d32;
+    }
+
+    .role-main-card.productor:hover {
+      background: #f0fdf4;
+      border-color: #1b5e20;
+    }
+
+    .role-main-card.jornalero {
+      border-color: #d84315;
+    }
+
+    .role-main-card.jornalero:hover {
+      background: #fff7ed;
+      border-color: #bf360c;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      font-weight: 800;
+      padding: 4px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      align-self: flex-start;
+    }
+
+    .top-user-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .btn-header-profile {
+      background: #f1f5f9;
+      color: var(--text-main);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s;
+    }
+
+    .btn-header-profile:hover {
+      background: #e2e8f0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Selector Dinámico de Rol (RBAC) • Módulos DFD</div>
+    <button class="test-chip" onclick="seleccionarRol('productor')">🚜 Modo Productor</button>
+    <button class="test-chip danger" onclick="seleccionarRol('jornalero')">👨‍🌾 Modo Jornalero</button>
+    <a href="mockup_2_1_perfil_usuario.html" class="test-chip">👤 Ver Mi Perfil</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado de la App -->
+    <div class="header">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="text-align: left;">
+          <h1 style="font-size: 22px;">🌾 AgroConecta</h1>
+          <p style="font-size: 13px; margin: 0; opacity: 0.9;">Menú Principal • Elección de Modo</p>
+        </div>
+        <a href="mockup_2_1_perfil_usuario.html" class="btn-header-profile" title="Abrir Mi Perfil">
+          <span>👤 Mi Perfil</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Barra de Usuario Identificado -->
+    <div class="top-user-bar">
+      <div class="user-pill">
+        <span>👋</span>
+        <span>¡Hola, <strong id="nombreDisplay">Hernán Restrepo</strong>!</span>
+      </div>
+      <a href="mockup_1_3_cierre_sesion.html" style="font-size: 12px; color: #b91c1c; font-weight: 700; text-decoration: underline;" title="Cerrar Sesión">
+        Salir
+      </a>
+    </div>
+
+    <!-- Contenido Principal: Selector Dinámico de Rol (Pantalla Inicial Post-Login) -->
+    <div class="content" style="gap: 18px; padding-top: 18px;">
+
+      <!-- Pregunta de Bienvenida RBAC -->
+      <div style="text-align: center;">
+        <h2 style="font-size: 23px; font-weight: 900; color: var(--text-main); line-height: 1.25;">
+          ¿Cómo vas a ingresar hoy?
+        </h2>
+        <p style="font-size: 14.5px; color: var(--text-muted); margin-top: 6px;">
+          Toca el modo en el que deseas trabajar:
+        </p>
+      </div>
+
+      <!-- ==========================================
+           TARJETA 1: MODO PRODUCTOR (Buscar trabajadores)
+           ========================================== -->
+      <div class="role-main-card productor" onclick="seleccionarRol('productor')">
+        <span class="card-badge" style="background: var(--primary-light); color: var(--primary-dark);">
+          🚜 Fincas y Mayordomos
+        </span>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div style="font-size: 46px; width: 64px; height: 64px; border-radius: 16px; background: var(--primary-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            🚜
+          </div>
+          <div>
+            <h3 style="font-size: 21px; font-weight: 900; color: var(--primary-dark); margin: 0;">
+              Modo Productor
+            </h3>
+            <span style="font-size: 15px; font-weight: 700; color: var(--text-main);">
+              (Buscar trabajadores)
+            </span>
+          </div>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+          Publica vacantes al destajo, revisa postulaciones de recolectores y valida asistencia por cámara.
+        </p>
+
+        <button class="btn-primary" style="padding: 15px; font-size: 16.5px; font-weight: 800; margin-top: 4px; box-shadow: 0 4px 12px rgba(46, 125, 50, 0.3);">
+          <span>Ingresar como Productor</span>
+          <span style="font-size: 20px;">➔</span>
+        </button>
+      </div>
+
+      <!-- ==========================================
+           TARJETA 2: MODO JORNALERO (Buscar trabajo)
+           ========================================== -->
+      <div class="role-main-card jornalero" onclick="seleccionarRol('jornalero')">
+        <span class="card-badge" style="background: var(--accent-light); color: #c2410c;">
+          👨‍🌾 Cosecha y Labores
+        </span>
+
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <div style="font-size: 46px; width: 64px; height: 64px; border-radius: 16px; background: var(--accent-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            👨‍🌾
+          </div>
+          <div>
+            <h3 style="font-size: 21px; font-weight: 900; color: #c2410c; margin: 0;">
+              Modo Jornalero
+            </h3>
+            <span style="font-size: 15px; font-weight: 700; color: var(--text-main);">
+              (Buscar trabajo)
+            </span>
+          </div>
+        </div>
+
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+          Encuentra fincas con vacantes activas cerca de tu vereda, postúlate sin intermediarios y recibe confirmación.
+        </p>
+
+        <button class="btn-accent" style="padding: 15px; font-size: 16.5px; font-weight: 800; margin-top: 4px; box-shadow: 0 4px 12px rgba(216, 67, 21, 0.3);">
+          <span>Ingresar como Jornalero</span>
+          <span style="font-size: 20px;">➔</span>
+        </button>
+      </div>
+
+      <div style="text-align: center; margin-top: 2px;">
+        <span style="font-size: 12.5px; color: var(--text-muted);">
+          💡 Con tu misma cédula puedes alternar de modo cuando lo necesites.
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Barra Inferior de Acceso Rápido -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_1_3_cierre_sesion.html" class="app-nav-tab" title="Cerrar Sesión">
+        <span class="tab-icon">🔒</span>
+        <span>Cerrar Sesión</span>
+      </a>
+      <a href="mockup_selector_rol.html" class="app-nav-tab active">
+        <span class="tab-icon">⇄</span>
+        <span>Elegir Rol</span>
+      </a>
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab" title="Mi Perfil">
+        <span class="tab-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const cedula = AgroConecta.getCedula() || '10948572';
+
+    function seleccionarRol(rol) {
+      AgroConecta.setRol(rol);
+      if (rol === 'productor') {
+        window.location.href = `mockup_productor_dashboard.html?cedula=${encodeURIComponent(cedula)}&rol=productor`;
+      } else {
+        window.location.href = `mockup_jornalero_directorio.html?cedula=${encodeURIComponent(cedula)}&rol=jornalero`;
+      }
+    }
+  </script>
+
+</body>
+
+</html>

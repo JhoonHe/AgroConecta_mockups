@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 4.2: Lista de Fincas en la Región - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Componente 4: Directorio • Vista Jornalero</div>
+    <a href="mockup_jornalero_directorio.html" class="test-chip">🌾 Vacantes Vereda</a>
+    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">👥 4.1 Trabajadores</a>
+    <a href="mockup_selector_rol.html" class="test-chip danger">⇄ Cambiar Rol</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header jornalero">
+      <a href="mockup_jornalero_directorio.html" class="header-back-btn" title="Volver al Directorio">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🏡 Directorio de Fincas</h1>
+      <p>Subcomponente 4.2: Productores en la Región (Vista Jornalero)</p>
+    </div>
+
+    <div style="background: white; padding: 12px 16px; border-bottom: 1px solid var(--border-color);">
+      <select class="input-field" style="font-size: 15px; padding: 10px;">
+        <option>📍 Vereda El Caimo (Armenia)</option>
+        <option>📍 Vereda Pantanillo (Armenia)</option>
+        <option>📍 Vereda La Linda (Montenegro)</option>
+      </select>
+    </div>
+
+    <div class="content">
+
+      <!-- Finca 1 -->
+      <div class="card" style="text-align: center; gap: 8px;">
+        <div style="font-size: 38px;">🏡</div>
+        <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: var(--text-main);">Finca La Esperanza</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Mayordomo: Don Hernán Restrepo</p>
+        <p style="font-size: 13px; font-weight: 800; color: var(--accent); margin: 0;">📍 Vereda El Caimo (A 1.2 km)</p>
+        <span class="badge badge-green" style="margin: 4px auto;">☕ 3 vacantes activas de Café</span>
+        <a href="mockup_3_2_postulacion_jornalero.html" class="btn-primary" style="margin-top: 8px; padding: 12px; font-size: 15px;">
+          <span>Ver Finca y Postularme</span>
+          <span>➔</span>
+        </a>
+      </div>
+
+      <!-- Finca 2 -->
+      <div class="card" style="text-align: center; gap: 8px;">
+        <div style="font-size: 38px;">🧑‍🌾</div>
+        <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: var(--text-main);">Finca El Paraíso</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Propietaria: Doña Clara Inés</p>
+        <p style="font-size: 13px; font-weight: 800; color: var(--accent); margin: 0;">📍 Vereda Pantanillo (A 2.8 km)</p>
+        <span class="badge badge-orange" style="margin: 4px auto;">🌿 1 vacante de Guadaña</span>
+        <a href="mockup_3_2_postulacion_jornalero.html" class="btn-secondary" style="margin-top: 8px; padding: 12px; font-size: 15px;">
+          <span>Ver Finca y Postularme</span>
+          <span>➔</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Jornalero) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_jornalero_directorio.html" class="app-nav-tab">
+        <span class="tab-icon">🌾</span>
+        <span>Vacantes</span>
+      </a>
+      <a href="mockup_4_2_directorio_fincas.html" class="app-nav-tab active accent">
+        <span class="tab-icon">🏡</span>
+        <span>Fincas (4.2)</span>
+      </a>
+      <a href="mockup_jornalero_estado.html" class="app-nav-tab">
+        <span class="tab-icon">🔔</span>
+        <span>Mi Estado</span>
+      </a>
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab">
+        <span class="tab-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+</body>
+
+</html>
+

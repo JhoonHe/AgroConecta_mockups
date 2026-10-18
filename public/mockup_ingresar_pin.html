@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 1.1: Ingreso de PIN - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Atajos:</span>
+    <button class="test-chip" onclick="probarPin('1234')">🔑 PIN Correcto (1234)</button>
+    <button class="test-chip danger" onclick="probarPin('9999')">❌ PIN Incorrecto</button>
+    <a href="mockup_otp.html" class="test-chip">📩 Olvidé PIN</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Botón Volver -->
+    <div class="header">
+      <a href="mockup_login.html" class="header-back-btn" title="Cambiar cédula">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <h1>🌾 AgroConecta</h1>
+      <p>Cédula encontrada en el sistema</p>
+    </div>
+
+    <!-- Contenido Principal: Ingreso de PIN -->
+    <div class="content">
+
+      <!-- Ficha de usuario identificado -->
+      <div class="card" style="padding: 14px 18px; flex-direction: row; align-items: center; justify-content: space-between; background: #ffffff;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="font-size: 28px; background: var(--primary-light); width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            👤
+          </div>
+          <div>
+            <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">Cédula ingresada:</div>
+            <div id="cedulaDisplay" style="font-size: 18px; font-weight: 800; color: var(--text-main);">10948572</div>
+          </div>
+        </div>
+        <a href="mockup_login.html" style="font-size: 13px; color: var(--primary); font-weight: 700; text-decoration: underline;">
+          Cambiar
+        </a>
+      </div>
+
+      <!-- Tarjeta para ingresar PIN -->
+      <div class="card" style="padding: 24px 20px; gap: 20px; text-align: center;">
+
+        <div style="font-size: 38px;">🔒</div>
+
+        <div class="input-group">
+          <label class="input-label" for="pinInput" style="font-size: 18px; justify-content: center;">
+            Ingresa tu PIN de seguridad
+          </label>
+          <span class="input-helper" style="text-align: center; display: block;">
+            Escribe tus 4 números secretos
+          </span>
+          <input 
+            type="password" 
+            id="pinInput" 
+            class="input-field input-pin" 
+            placeholder="••••" 
+            maxlength="4" 
+            inputmode="numeric"
+            autofocus
+          >
+        </div>
+
+        <!-- Alerta de Error -->
+        <div id="errorAlert" class="alert alert-error" style="display: none; text-align: left;">
+          <span>⚠️</span>
+          <span id="errorMsg">PIN incorrecto. Intenta de nuevo o recupéralo por SMS.</span>
+        </div>
+
+        <!-- Botón Principal: Ingresar -->
+        <button id="btnIngresar" class="btn-primary" onclick="validarPin()">
+          <span>Ingresar a AgroConecta</span>
+          <span style="font-size: 20px;">✓</span>
+        </button>
+
+        <!-- Enlace Solicitado por el DFD: Olvidé mi PIN (flujo OTP SMS) -->
+        <div style="margin-top: 6px; padding-top: 14px; border-top: 1px solid var(--border-color);">
+          <a href="mockup_otp.html" id="linkOlvidePin" style="color: var(--primary-dark); font-weight: 700; font-size: 15px; text-decoration: underline; display: inline-flex; align-items: center; gap: 6px;">
+            <span>💬 ¿Olvidaste tu PIN? (Recuperar por SMS)</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    const cedula = AgroConecta.getCedula();
+    document.getElementById('cedulaDisplay').innerText = cedula;
+    document.getElementById('linkOlvidePin').href = `mockup_otp.html?cedula=${encodeURIComponent(cedula)}`;
+
+    const pinInput = document.getElementById('pinInput');
+    const errorAlert = document.getElementById('errorAlert');
+    const errorMsg = document.getElementById('errorMsg');
+
+    pinInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        validarPin();
+      }
+    });
+
+    pinInput.addEventListener('input', function() {
+      errorAlert.style.display = 'none';
+      pinInput.classList.remove('is-invalid');
+      if (pinInput.value.length === 4) {
+        // Enfoque inmediato o auto-submit opcional
+      }
+    });
+
+    function probarPin(valor) {
+      pinInput.value = valor;
+      validarPin();
+    }
+
+    function validarPin() {
+      const pin = pinInput.value.trim();
+
+      if (pin.length !== 4 || isNaN(pin)) {
+        pinInput.classList.add('is-invalid');
+        pinInput.classList.add('shake-animation');
+        setTimeout(() => pinInput.classList.remove('shake-animation'), 400);
+        errorMsg.innerText = "El PIN debe tener 4 números exactos.";
+        errorAlert.style.display = 'flex';
+        pinInput.focus();
+        return;
+      }
+
+      // Simulación de clave
+      if (pin === "9999") {
+        pinInput.classList.add('is-invalid');
+        pinInput.classList.add('shake-animation');
+        setTimeout(() => pinInput.classList.remove('shake-animation'), 400);
+        errorMsg.innerText = "PIN incorrecto. Si no lo recuerdas, pulsa '¿Olvidaste tu PIN?'.";
+        errorAlert.style.display = 'flex';
+        pinInput.value = "";
+        pinInput.focus();
+        return;
+      }
+
+      // Login exitoso -> Pasa a MÓDULO 3: Selector Dinámico de Rol (RBAC)
+      window.location.href = `mockup_selector_rol.html?cedula=${encodeURIComponent(cedula)}`;
+    }
+  </script>
+
+</body>
+
+</html>
+

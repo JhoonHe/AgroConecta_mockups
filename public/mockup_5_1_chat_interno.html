@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subcomponente 5.1: Chat Bidireccional Interno - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .chat-header {
+      background: #00695c;
+      color: white;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-messages {
+      padding: 16px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      overflow-y: auto;
+      background: #e0f2f1;
+    }
+    .msg-bubble {
+      max-width: 78%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.4;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .msg-received {
+      background: white;
+      color: var(--text-main);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    .msg-sent {
+      background: #00695c;
+      color: white;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+    .msg-time {
+      font-size: 10px;
+      opacity: 0.75;
+      display: block;
+      margin-top: 4px;
+      text-align: right;
+    }
+    .chat-input-bar {
+      background: white;
+      padding: 10px 14px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      border-top: 1px solid var(--border-color);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <span style="opacity: 0.8;">Componente 5:</span>
+    <a href="mockup_5_2_contacto_externo.html" class="test-chip">5.2 Contacto Externo (SMS/Llamada)</a>
+    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">4.1 Directorio</a>
+    <a href="../index.html" class="test-chip">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado del Chat Interno -->
+    <div class="chat-header" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
+      <a href="mockup_4_1_directorio_trabajadores.html" class="header-back-btn" style="position: static; transform: none;" title="Volver al Directorio">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </a>
+      <div style="font-size: 28px; background: white; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+        👨‍🌾
+      </div>
+      <div>
+        <h3 style="font-size: 16px; font-weight: 800; margin: 0;">José Albeiro Gómez</h3>
+        <span class="badge" style="background: #a7f3d0; color: #065f46; font-size: 10.5px; padding: 2px 6px;">
+          ● En línea (App activa)
+        </span>
+      </div>
+    </div>
+
+    <!-- Área de Mensajes del Chat Interno -->
+    <div class="chat-messages" id="chatArea">
+      <div class="msg-bubble msg-received">
+        Buenos días Don Hernán, ¿a qué horas nos vemos mañana en la Finca La Esperanza para la cosecha de café?
+        <span class="msg-time">06:15 PM</span>
+      </div>
+      <div class="msg-bubble msg-sent" style="background: var(--primary);">
+        Hola José Albeiro. A las 6:00 AM en el portón verde de La Ye. Trae el canasto.
+        <span class="msg-time">06:20 PM</span>
+      </div>
+      <div class="msg-bubble msg-received">
+        Listo patrón, allá estaré puntual con mi cédula física para la foto de entrada.
+        <span class="msg-time">06:22 PM</span>
+      </div>
+    </div>
+
+    <!-- Entrada de Texto -->
+    <div class="chat-input-bar">
+      <input type="text" id="mensajeTexto" class="input-field" placeholder="Escribe un mensaje de coordinación..." style="font-size: 14px; padding: 10px 14px; border-radius: 20px;">
+      <button class="btn-primary" style="width: 44px; height: 44px; padding: 0; border-radius: 50%; font-size: 18px;" onclick="enviarMensaje()">
+        ➤
+      </button>
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Productor) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_productor_dashboard.html" class="app-nav-tab">
+        <span class="tab-icon">🏠</span>
+        <span>Inicio</span>
+      </a>
+      <a href="mockup_4_1_directorio_trabajadores.html" class="app-nav-tab active">
+        <span class="tab-icon">👥</span>
+        <span>Mano Obra</span>
+      </a>
+      <a href="mockup_3_1_publicar_vacante.html" class="app-nav-tab">
+        <span class="tab-icon">➕</span>
+        <span>Vacante</span>
+      </a>
+      <a href="mockup_3_3_gestion_postulaciones.html" class="app-nav-tab">
+        <span class="tab-icon">📋</span>
+        <span>Postulados</span>
+      </a>
+      <a href="mockup_6_1_checkin_documento.html" class="app-nav-tab">
+        <span class="tab-icon">📸</span>
+        <span>Asistencia</span>
+      </a>
+    </nav>
+
+  </div>
+
+  <script>
+    function enviarMensaje() {
+      const input = document.getElementById('mensajeTexto');
+      const val = input.value.trim();
+      if (!val) return;
+
+      const chat = document.getElementById('chatArea');
+      const msg = document.createElement('div');
+      msg.className = "msg-bubble msg-sent";
+      msg.innerHTML = `${val} <span class="msg-time">Ahora</span>`;
+      chat.appendChild(msg);
+      input.value = "";
+      chat.scrollTop = chat.scrollHeight;
+    }
+  </script>
+
+  <script src="js/agroconecta.js"></script>
+</body>
+
+</html>
+

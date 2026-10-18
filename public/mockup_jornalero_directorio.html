@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 5: Directorio y Vacantes en Vereda - AgroConecta</title>
+  <link rel="stylesheet" href="css/agroconecta.css">
+  <style>
+    .jornalero-header {
+      background: linear-gradient(135deg, #bf360c 0%, #d84315 100%);
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .view-toggle {
+      display: flex;
+      background: #e2e8f0;
+      padding: 4px;
+      border-radius: var(--radius-md);
+      gap: 4px;
+    }
+
+    .view-toggle button {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #64748b;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .view-toggle button.active {
+      background: white;
+      color: var(--text-main);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .vacancy-card {
+      background: white;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+
+    .vacancy-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    }
+
+    .map-preview {
+      background: #e8f5e9;
+      border: 2px dashed var(--primary-border);
+      border-radius: var(--radius-lg);
+      height: 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .map-pin {
+      position: absolute;
+      background: var(--accent);
+      color: white;
+      padding: 6px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 800;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <div class="test-suite-bar">
+    <div class="bar-title">🛠️ Modo Jornalero • Módulos DFD</div>
+    <a href="mockup_3_2_postulacion_jornalero.html" class="test-chip">🌾 3.2 Postulación</a>
+    <a href="mockup_4_2_directorio_fincas.html" class="test-chip">🏡 4.2 Fincas en Región</a>
+    <a href="mockup_jornalero_estado.html" class="test-chip">🔔 3.2 Mi Estado</a>
+    <a href="mockup_selector_rol.html" class="test-chip danger">⇄ Cambiar Rol</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
+  </div>
+
+  <div class="mobile-frame">
+
+    <!-- Encabezado con Identidad del Jornalero y Switch de Rol -->
+    <div class="jornalero-header">
+      <div>
+        <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; opacity: 0.85;">
+          📍 Vereda El Caimo
+        </div>
+        <h2 style="font-size: 18px; font-weight: 800; margin: 2px 0 0;">
+          José Albeiro Gómez
+        </h2>
+      </div>
+      <div style="display: flex; gap: 6px;">
+        <a href="mockup_2_1_perfil_usuario.html" class="badge" style="background: rgba(255,255,255,0.25); color: white; text-decoration: none; padding: 6px 8px;" title="Ver Mi Perfil">
+          👤 Perfil
+        </a>
+        <a href="mockup_selector_rol.html" class="badge" style="background: rgba(255,255,255,0.25); color: white; text-decoration: none; padding: 6px 10px;" title="Cambiar Rol">
+          ⇄ Cambiar Rol
+        </a>
+      </div>
+    </div>
+
+    <!-- Contenido Principal: Directorio y Mapa de Vacantes Activas -->
+    <div class="content">
+
+      <!-- Notificación rápida de estado -->
+      <a href="mockup_jornalero_estado.html" class="alert alert-info" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <span style="font-size: 20px;">🔔</span>
+          <span style="font-size: 13px; font-weight: 700;">Tienes 1 postulación activa</span>
+        </div>
+        <span style="font-size: 12px; font-weight: 800; color: var(--primary-dark);">Ver Estado ➔</span>
+      </a>
+
+      <!-- ==========================================
+           SUBCOMPONENTE 4.2: DIRECTORIO DE FINCAS (VISTA JORNALERO)
+           ========================================== -->
+      <a href="mockup_4_2_directorio_fincas.html" class="stat-card" style="border-left: 5px solid #d84315; background: #fff7ed; padding: 12px 14px; text-decoration: none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <div style="font-size: 26px; background: #ffedd5; width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+            🏡
+          </div>
+          <div>
+            <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">
+              Directorio de Fincas (4.2)
+            </div>
+            <div style="font-size: 12px; color: #c2410c; font-weight: 700;">
+              Ver todos los productores de la vereda
+            </div>
+          </div>
+        </div>
+        <span class="badge badge-orange" style="font-size: 13px; padding: 5px 10px;">Ver ➔</span>
+      </a>
+
+      <!-- REGISTRO COLABORATIVO: JORNALERO INSCRIBE A UN COMPAÑERO PASIVO (SUBCOMPONENTE 2.2) -->
+      <a href="mockup_2_2_registro_colaborativo.html" class="collab-banner" style="border-color: #fb923c; background: #fff7ed; text-decoration: none;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">🤝</span>
+          <div>
+            <div style="font-weight: 800; font-size: 13.5px; color: #9a3412;">+ Inscribir Compañero sin Smartphone (2.2)</div>
+            <div style="font-size: 11.5px; color: #c2410c;">Ayuda a un vecino o colega a recibir ofertas por llamada o SMS</div>
+          </div>
+        </div>
+        <span class="badge badge-orange" style="font-size: 12px; padding: 4px 8px;">Inscribir ➔</span>
+      </a>
+
+      <!-- Selector de Vista: Lista vs Mapa -->
+      <div class="view-toggle">
+        <button id="btnVistaLista" class="active" onclick="cambiarVista('lista')">
+          📋 Lista de Fincas
+        </button>
+        <button id="btnVistaMapa" onclick="cambiarVista('mapa')">
+          🗺️ Ver en Mapa
+        </button>
+      </div>
+
+      <!-- VISTA 1: LISTA DE FINCAS CON VACANTES ACTIVAS -->
+      <div id="vistaLista" style="display: flex; flex-direction: column; gap: 14px;">
+
+        <!-- VACANTE 1 (Destacada) -->
+        <a href="mockup_3_2_postulacion_jornalero.html?id=vac-01" class="vacancy-card" style="border-left: 5px solid #2e7d32;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span class="badge badge-orange" style="font-size: 11px;">Empieza Mañana 6:00 AM</span>
+              <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin: 6px 0 2px;">
+                Finca La Esperanza
+              </h3>
+              <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">
+                Don Hernán Restrepo • 📍 A 1.2 km de tu casa
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge badge-green" style="font-size: 12px;">3 cupos</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 14px;">
+            <div>🌾 Labor: <strong>Recolección de Café</strong></div>
+            <div style="color: var(--accent); font-weight: 800; margin-top: 2px;">
+              💰 Pago: A destajo ($850 por kilo)
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 12.5px; color: var(--text-muted);">🍲 Almuerzo incluido</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--primary);">Ver y Postularme ➔</span>
+          </div>
+        </a>
+
+        <!-- VACANTE 2 -->
+        <a href="mockup_3_2_postulacion_jornalero.html?id=vac-02" class="vacancy-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span class="badge badge-gray" style="font-size: 11px;">Jornal Diario</span>
+              <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin: 6px 0 2px;">
+                Finca El Paraíso
+              </h3>
+              <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">
+                Doña Clara Inés • 📍 A 2.8 km (Pantanillo)
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge badge-orange" style="font-size: 12px;">1 cupo</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 14px;">
+            <div>🌿 Labor: <strong>Guadaña y Desyerba</strong></div>
+            <div style="color: var(--text-main); font-weight: 700; margin-top: 2px;">
+              💰 Pago: $55.000 / día completo
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 12.5px; color: var(--text-muted);">Requiere guadaña propia</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--primary);">Ver y Postularme ➔</span>
+          </div>
+        </a>
+
+        <!-- VACANTE 3 -->
+        <a href="mockup_3_2_postulacion_jornalero.html?id=vac-03" class="vacancy-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <div>
+              <span class="badge badge-gray" style="font-size: 11px;">Viernes</span>
+              <h3 style="font-size: 18px; font-weight: 800; color: var(--text-main); margin: 6px 0 2px;">
+                Hacienda Buenavista
+              </h3>
+              <div style="font-size: 13px; color: var(--text-muted); font-weight: 600;">
+                Don Mario • 📍 A 3.5 km
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <span class="badge badge-green" style="font-size: 12px;">2 cupos</span>
+            </div>
+          </div>
+
+          <div style="background: #f8fafc; padding: 10px 12px; border-radius: 8px; font-size: 14px;">
+            <div>🛡️ Labor: <strong>Fumigación y Plateo</strong></div>
+            <div style="color: var(--text-main); font-weight: 700; margin-top: 2px;">
+              💰 Pago: $60.000 / día (con almuerzo)
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span style="font-size: 12.5px; color: var(--text-muted);">Llevar botas</span>
+            <span style="font-size: 14px; font-weight: 800; color: var(--primary);">Ver y Postularme ➔</span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- VISTA 2: MAPA DE LA VEREDA -->
+      <div id="vistaMapa" style="display: none;">
+        <div class="map-preview">
+          <div style="font-size: 42px; margin-bottom: 8px;">🗺️</div>
+          <h4 style="font-size: 16px; font-weight: 800; color: var(--primary-dark);">Mapa de Vereda El Caimo</h4>
+          <p style="font-size: 13px; color: var(--text-muted);">Fincas con vacantes a menos de 5 km</p>
+
+          <a href="mockup_3_2_postulacion_jornalero.html?id=vac-01" class="map-pin" style="top: 20px; left: 30px;">
+            📍 Finca La Esperanza (3 cupos)
+          </a>
+          <a href="mockup_3_2_postulacion_jornalero.html?id=vac-02" class="map-pin" style="bottom: 30px; right: 25px; background: #e65100;">
+            📍 Finca El Paraíso (1 cupo)
+          </a>
+          <div class="map-pin" style="bottom: 75px; left: 60px; background: #2e7d32;">
+            🏡 Tu Casa (Aquí estás)
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Barra de Navegación Móvil de la App (Modo Jornalero) -->
+    <nav class="app-bottom-nav">
+      <a href="mockup_jornalero_directorio.html" class="app-nav-tab active accent">
+        <span class="tab-icon">🌾</span>
+        <span>Vacantes</span>
+      </a>
+      <a href="mockup_4_2_directorio_fincas.html" class="app-nav-tab">
+        <span class="tab-icon">🏡</span>
+        <span>Fincas (4.2)</span>
+      </a>
+      <a href="mockup_jornalero_estado.html" class="app-nav-tab">
+        <span class="tab-icon">🔔</span>
+        <span>Mi Estado</span>
+      </a>
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab">
+        <span class="tab-icon">👤</span>
+        <span>Mi Perfil</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="js/agroconecta.js"></script>
+  <script>
+    function cambiarVista(vista) {
+      const btnLista = document.getElementById('btnVistaLista');
+      const btnMapa = document.getElementById('btnVistaMapa');
+      const vistaLista = document.getElementById('vistaLista');
+      const vistaMapa = document.getElementById('vistaMapa');
+
+      if (vista === 'lista') {
+        btnLista.className = 'active';
+        btnMapa.className = '';
+        vistaLista.style.display = 'flex';
+        vistaMapa.style.display = 'none';
+      } else {
+        btnLista.className = '';
+        btnMapa.className = 'active';
+        vistaLista.style.display = 'none';
+        vistaMapa.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+
+</html>
+

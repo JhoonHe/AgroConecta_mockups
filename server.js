@@ -12,37 +12,50 @@ if (!fs.existsSync(capturasDir)) {
   fs.mkdirSync(capturasDir, { recursive: true });
 }
 
+// Servir estáticos en / y /public para compatibilidad
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
+// Servir index.html en la raíz
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "index.html"));
+});
+
+// Descomposición oficial en 6 Componentes DFD y sus subcomponentes
 const pantallas = [
-  { archivo: "mockup_login.html", nombre: "1_1_Inicio_Sesion.png" },
-  { archivo: "mockup_registro.html", nombre: "1_2_Registro_Usuario.png" },
-  {
-    archivo: "mockup_colaborativo.html",
-    nombre: "1_3_Registro_Colaborativo.png",
-  },
-  { archivo: "mockup_otp.html", nombre: "1_4_Recuperacion_OTP.png" },
-  {
-    archivo: "mockup_publicar_vacante.html",
-    nombre: "2_1_Publicar_Vacante.png",
-  },
-  { archivo: "mockup_postulacion.html", nombre: "2_2_Postulacion.png" },
-  {
-    archivo: "mockup_directorio_trabajadores.html",
-    nombre: "3_1_Directorio_Trabajadores.png",
-  },
-  {
-    archivo: "mockup_directorio_fincas.html",
-    nombre: "3_2_Directorio_Fincas.png",
-  },
-  { archivo: "mockup_4_1_chat.html", nombre: "4_1_Chat_Interno.png" },
-  {
-    archivo: "mockup_4_2_enrutamiento.html",
-    nombre: "4_2_Contacto_Externo.png",
-  },
-  { archivo: "mockup_chat.html", nombre: "4_3_Chat_General.png" },
-  { archivo: "mockup_5_1_inicio.html", nombre: "5_1_Inicio_Jornada.png" },
-  { archivo: "mockup_5_2_cierre.html", nombre: "5_2_Cierre_Jornada.png" },
+  // Componente 1: Autenticación y Seguridad
+  { archivo: "mockup_login.html", nombre: "1_1_Onboarding_Cedula.png" },
+  { archivo: "mockup_ingresar_pin.html", nombre: "1_1_Ingresar_PIN.png" },
+  { archivo: "mockup_crear_pin.html", nombre: "1_1_Crear_PIN_Registro.png" },
+  { archivo: "mockup_crear_pin.html?error=formato", nombre: "1_1_Error_Formato_PIN.png" },
+  { archivo: "mockup_crear_pin.html?error=coincidencia", nombre: "1_1_Error_Coincidencia_PIN.png" },
+  { archivo: "mockup_otp.html", nombre: "1_2_Recuperacion_OTP_SMS.png" },
+  { archivo: "mockup_1_3_cierre_sesion.html", nombre: "1_3_Cierre_Sesion.png" },
+
+  // Componente 2: Gestión de Usuarios y Roles
+  { archivo: "mockup_selector_rol.html", nombre: "2_1_Selector_Rol_Principal.png" },
+  { archivo: "mockup_2_1_perfil_usuario.html", nombre: "2_1_Perfil_Usuario_Contacto.png" },
+  { archivo: "mockup_2_2_registro_colaborativo.html", nombre: "2_2_Registro_Colaborativo.png" },
+  { archivo: "mockup_2_3_gestion_pasivos.html", nombre: "2_3_Gestion_Perfiles_Pasivos.png" },
+
+  // Componente 3: Módulo de Publicaciones y Ofertas
+  { archivo: "mockup_3_1_publicar_vacante.html", nombre: "3_1_Publicacion_Cierre_Vacante.png" },
+  { archivo: "mockup_3_2_postulacion_jornalero.html", nombre: "3_2_Postulacion_Jornalero.png" },
+  { archivo: "mockup_jornalero_estado.html?estado=enviada", nombre: "3_2_Estado_Postulacion_Enviada.png" },
+  { archivo: "mockup_jornalero_estado.html?estado=aceptada", nombre: "3_2_Estado_Postulacion_Aceptada.png" },
+  { archivo: "mockup_3_3_gestion_postulaciones.html", nombre: "3_3_Gestion_Postulacion_Productor.png" },
+
+  // Componente 4: Directorio y Geolocalización (Módulo Lista)
+  { archivo: "mockup_4_1_directorio_trabajadores.html", nombre: "4_1_Lista_Trabajadores_Region.png" },
+  { archivo: "mockup_4_2_directorio_fincas.html", nombre: "4_2_Lista_Fincas_Region.png" },
+
+  // Componente 5: Interacción y Contacto
+  { archivo: "mockup_5_1_chat_interno.html", nombre: "5_1_Chat_Bidireccional_Interno.png" },
+  { archivo: "mockup_5_2_contacto_externo.html", nombre: "5_2_Contacto_Externo_Llamada_SMS.png" },
+
+  // Componente 6: Validación de Asistencia en Campo (Evidencia)
+  { archivo: "mockup_6_1_checkin_documento.html", nombre: "6_1_CheckIn_Captura_Documento.png" },
+  { archivo: "mockup_6_2_checkout_evidencia.html", nombre: "6_2_CheckOut_Evidencia_Actividad.png" }
 ];
 
 async function generarCapturas(puerto) {
@@ -53,7 +66,7 @@ async function generarCapturas(puerto) {
     const page = await browser.newPage();
     await page.setViewport({ width: 800, height: 1000 });
 
-    console.log(`📸 Generando capturas para ${pantallas.length} pantallas...\n`);
+    console.log(`📸 Generando capturas para ${pantallas.length} pantallas (6 Componentes DFD)...\n`);
 
     for (const [index, pantalla] of pantallas.entries()) {
       process.stdout.write(
@@ -91,23 +104,22 @@ async function generarCapturas(puerto) {
   }
 }
 
-// Endpoint opcional por si también se visita desde el navegador
 app.get("/generar-todas", async (req, res) => {
   const exito = await generarCapturas(PORT);
   if (exito) {
-    res.send("¡Éxito! Todas las capturas fueron generadas correctamente.");
+    res.send("¡Éxito! Todas las capturas de los 6 componentes fueron generadas correctamente.");
   } else {
     res.status(500).send("Error al generar las capturas");
   }
 });
 
-// Si se pasa --serve o -s, mantiene el servidor abierto. Si no, genera y termina.
 const modoServidor = process.argv.includes("--serve") || process.argv.includes("-s");
 
 const server = app.listen(PORT, async () => {
   if (modoServidor) {
     console.log(`🌐 Servidor Express corriendo en http://localhost:${PORT}`);
-    console.log(`Abre en tu navegador para generar: http://localhost:${PORT}/generar-todas`);
+    console.log(`Abre en tu navegador: http://localhost:${PORT}`);
+    console.log(`Generar capturas vía web: http://localhost:${PORT}/generar-todas`);
   } else {
     console.log(`🌐 Servidor iniciado temporalmente en http://localhost:${PORT}`);
     await generarCapturas(PORT);
@@ -125,12 +137,3 @@ server.on("error", (err) => {
     console.error("\n❌ Error en el servidor:", err);
   }
 });
-
-server.on("error", (err) => {
-  if (err.code === "EADDRINUSE") {
-    console.error(`\n❌ Error: El puerto ${PORT} ya está en uso.`);
-  } else {
-    console.error("\n❌ Error en el servidor:", err);
-  }
-});
-
