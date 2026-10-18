@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup AgroConecta - Inicio de Sesión</title>
+    <style>
+        /* Estilos generales para centrar el celular en la pantalla */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Contenedor que simula la pantalla del celular (Wireframe) */
+        .mobile-frame {
+            width: 360px;
+            height: 640px;
+            background-color: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 10px solid #212529;
+            /* Borde del celular */
+        }
+
+        /* Encabezado de la App */
+        .header {
+            background-color: #2e7d32;
+            /* Verde agrícola */
+            color: white;
+            padding: 50px 20px 25px;
+            text-align: center;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        /* Contenedor del formulario */
+        .content {
+            padding: 40px 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        /* Campos de texto UX rural (Grandes y claros) */
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .input-group label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .input-group input {
+            padding: 16px;
+            font-size: 20px;
+            border: 2px solid #ced4da;
+            border-radius: 12px;
+            outline: none;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #2e7d32;
+            box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.2);
+        }
+
+        /* Botón de acción principal */
+        .btn-primary {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 15px;
+            box-shadow: 0 4px 10px rgba(46, 125, 50, 0.3);
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #1b5e20;
+        }
+
+        /* Enlace de recuperación OTP */
+        .links {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: #2e7d32;
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        /* Simulación de barra de navegación de Android */
+        .android-nav {
+            background-color: #f8f9fa;
+            height: 48px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .nav-icon {
+            background-color: #adb5bd;
+        }
+
+        .nav-back {
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 14px solid #adb5bd;
+        }
+
+        .nav-home {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .nav-recent {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mockup del dispositivo -->
+    <div class="mobile-frame">
+
+        <div class="header">
+            <h1>AgroConecta</h1>
+            <p>Trabajo seguro, sin filas</p>
+        </div>
+
+        <div class="content">
+            <div class="input-group">
+                <label for="cedula">Número de Cédula</label>
+                <input type="number" id="cedula" placeholder="Ej: 1094000000">
+            </div>
+
+            <div class="input-group">
+                <label for="pin">PIN de seguridad</label>
+                <input type="password" id="pin" placeholder="••••" maxlength="4">
+            </div>
+
+            <button class="btn-primary">Ingresar</button>
+
+            <div class="links">
+                <a href="#">¿Olvidaste tu PIN? (Recuperar por SMS)</a>
+            </div>
+        </div>
+
+        <div class="android-nav">
+            <div class="nav-back"></div>
+            <div class="nav-icon nav-home"></div>
+            <div class="nav-icon nav-recent"></div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

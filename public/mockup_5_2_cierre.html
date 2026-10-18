@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup - Cierre de Jornada</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .mobile-frame {
+            width: 360px;
+            height: 640px;
+            background-color: #000;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 10px solid #212529;
+            position: relative;
+        }
+
+        .camera-header {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), transparent);
+            color: white;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 10;
+        }
+
+        .camera-header h3 {
+            margin: 0;
+            font-size: 18px;
+            color: #ff9800;
+        }
+
+        /* Naranja para cierre/alerta */
+        .camera-header p {
+            margin: 5px 0 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .viewfinder {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .target-box {
+            width: 260px;
+            height: 260px;
+            border: 3px dashed rgba(255, 152, 0, 0.8);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .controls {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            z-index: 10;
+            border-top: 1px solid #333;
+        }
+
+        .shutter-btn {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background-color: white;
+            border: 6px solid #ff9800;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .shutter-btn-inner {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: white;
+            border: 1px solid #eee;
+        }
+
+        .shutter-btn:active .shutter-btn-inner {
+            background-color: #e0e0e0;
+        }
+
+        .android-nav {
+            background-color: #000;
+            height: 48px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-icon {
+            background-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-back {
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 14px solid rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+
+        .nav-home {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .nav-recent {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-frame">
+        <div class="camera-header">
+            <h3>Paso 2: Cierre de Jornada</h3>
+            <p>Validación de labor terminada</p>
+        </div>
+
+        <div class="viewfinder">
+            <div class="target-box">Encuadre la EVIDENCIA del trabajo aquí (Ej: Sacos de café recolectados)</div>
+        </div>
+
+        <div class="controls">
+            <div class="shutter-btn">
+                <div class="shutter-btn-inner"></div>
+            </div>
+            <span style="color:white; font-size: 14px; font-weight: bold;">Tomar foto a la actividad</span>
+        </div>
+
+        <div class="android-nav">
+            <a href="index.html">
+                <div class="nav-back"></div>
+            </a>
+            <div class="nav-icon nav-home"></div>
+            <div class="nav-icon nav-recent"></div>
+        </div>
+    </div>
+</body>
+
+</html>

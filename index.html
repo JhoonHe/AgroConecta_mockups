@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prototipo AgroConecta - Índice</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .dashboard {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 600px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background-color: #212529;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 10px 0 0;
+            color: #adb5bd;
+        }
+
+        .menu {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-decoration: none;
+            color: #212529;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .menu-item:hover {
+            background-color: #e9ecef;
+            border-color: #ced4da;
+            transform: translateX(5px);
+        }
+
+        .badge {
+            background-color: #2e7d32;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .section-title {
+            margin: 20px 0 10px;
+            font-size: 18px;
+            color: #495057;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard">
+        <div class="header">
+            <h1>AgroConecta</h1>
+            <p>Mapa de Navegación - Prototipos Baja Fidelidad</p>
+        </div>
+
+        <div class="menu">
+            <div class="section-title">Módulo 1: Gestión de Usuarios</div>
+
+            <!-- Asegúrate de que los nombres de los archivos coincidan con los que guardaste -->
+            <a href="/public/mockup_login.html" class="menu-item">
+                1.1 Inicio de Sesión (Cédula + PIN) <span class="badge">Ver Pantalla</span>
+            </a>
+            <a href="/public/mockup_registro.html" class="menu-item">
+                1.2 Registro de Usuario <span class="badge">Ver Pantalla</span>
+            </a>
+            <a href="/public/mockup_colaborativo.html" class="menu-item">
+                1.3 Registro Colaborativo (Terceros) <span class="badge">Ver Pantalla</span>
+            </a>
+            <a href="/public/mockup_otp.html" class="menu-item">
+                1.4 Recuperación de PIN (OTP) <span class="badge">Ver Pantalla</span>
+            </a>
+
+            <div class="section-title">Módulo 2: Publicaciones y Ofertas</div>
+
+            <a href="/public/mockup_publicar_vacante.html" class="menu-item">
+                2.1 Publicar Vacante (Productor) <span class="badge" style="background-color: #d84315;">Ver
+                    Pantalla</span>
+            </a>
+            <a href="/public/mockup_postulacion.html" class="menu-item">
+                2.2 Postulación (Jornalero) <span class="badge" style="background-color: #d84315;">Ver Pantalla</span>
+            </a>
+
+            <div class="section-title">Módulo 3: Directorio y Geolocalización</div>
+
+            <a href="/public/mockup_directorio_trabajadores.html" class="menu-item">
+                3.1 Directorio Trabajadores (Productor) <span class="badge" style="background-color: #283593;">Ver
+                    Pantalla</span>
+            </a>
+            <a href="/public/mockup_directorio_fincas.html" class="menu-item">
+                3.2 Directorio Fincas (Jornalero) <span class="badge" style="background-color: #283593;">Ver
+                    Pantalla</span>
+            </a>
+
+            <div class="section-title">Módulo 4: Interacción y Contacto</div>
+            <a href="/public/mockup_4_1_chat.html" class="menu-item">
+                4.1 Chat Interno (Jornalero Activo) <span class="badge" style="background-color: #00695c;">Ver
+                    Pantalla</span>
+            </a>
+            <a href="/public/mockup_4_2_enrutamiento.html" class="menu-item">
+                4.2 Contacto Externo (Jornalero Pasivo) <span class="badge" style="background-color: #455a64;">Ver
+                    Pantalla</span>
+            </a>
+            <a href="/public/mockup_chat.html" class="menu-item">
+                4.3 Chat y Contacto (General) <span class="badge" style="background-color: #00796b;">Ver
+                    Pantalla</span>
+            </a>
+
+            <div class="section-title">Módulo 5: Validación y Cierre de Jornada</div>
+            <a href="/public/mockup_5_1_inicio.html" class="menu-item">
+                5.1 Captura de Documento (Inicio) <span class="badge" style="background-color: #4caf50;">Ver
+                    Pantalla</span>
+            </a>
+            <a href="/public/mockup_5_2_cierre.html" class="menu-item">
+                5.2 Evidencia de Actividad (Cierre) <span class="badge" style="background-color: #ff9800;">Ver
+                    Pantalla</span>
+            </a>
+        </div>
+    </div>
+
+</body>
+
+</html>

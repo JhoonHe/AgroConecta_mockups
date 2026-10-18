@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mockup - OTP</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e9ecef;
+            margin: 0;
+            font-family: sans-serif;
+        }
+
+        .mobile-frame {
+            width: 360px;
+            height: 640px;
+            background-color: #fff;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            border: 10px solid #212529;
+        }
+
+        .header {
+            background-color: #2e7d32;
+            color: white;
+            padding: 30px 20px 15px;
+            text-align: center;
+        }
+
+        .header h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        .content {
+            padding: 30px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            text-align: center;
+        }
+
+        .instruction {
+            font-size: 15px;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .otp-box {
+            width: 50px;
+            height: 60px;
+            font-size: 30px;
+            text-align: center;
+            border: 2px solid #ced4da;
+            border-radius: 12px;
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #2e7d32;
+            border: 2px solid #2e7d32;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .android-nav {
+            background-color: #f8f9fa;
+            height: 48px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .nav-icon {
+            background-color: #adb5bd;
+        }
+
+        .nav-back {
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 14px solid #adb5bd;
+        }
+
+        .nav-home {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .nav-recent {
+            width: 16px;
+            height: 16px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="mobile-frame">
+        <div class="header">
+            <h2>Recuperar PIN</h2>
+        </div>
+        <div class="content">
+            <p class="instruction">Ingresa el código de 4 dígitos que enviamos por SMS al número terminado en
+                <b>***3412</b></p>
+
+            <div class="otp-container">
+                <input type="number" class="otp-box" placeholder="-" maxlength="1">
+                <input type="number" class="otp-box" placeholder="-" maxlength="1">
+                <input type="number" class="otp-box" placeholder="-" maxlength="1">
+                <input type="number" class="otp-box" placeholder="-" maxlength="1">
+            </div>
+
+            <button class="btn-primary">Verificar Código</button>
+            <button class="btn-secondary">Reenviar SMS</button>
+        </div>
+        <div class="android-nav">
+            <div class="nav-back"></div>
+            <div class="nav-icon nav-home"></div>
+            <div class="nav-icon nav-recent"></div>
+        </div>
+    </div>
+</body>
+
+</html>
