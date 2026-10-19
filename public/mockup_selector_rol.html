@@ -77,22 +77,23 @@
     }
 
     .btn-header-profile {
-      background: #f1f5f9;
-      color: var(--text-main);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 13px;
-      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
       text-decoration: none;
-      border: 1px solid #cbd5e1;
+      border: 1.5px solid rgba(255, 255, 255, 0.35);
       display: flex;
       align-items: center;
-      gap: 4px;
+      justify-content: center;
       transition: all 0.2s;
     }
 
     .btn-header-profile:hover {
-      background: #e2e8f0;
+      background: rgba(255, 255, 255, 0.35);
+      transform: scale(1.06);
     }
   </style>
 </head>
@@ -114,11 +115,11 @@
     <div class="header">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="text-align: left;">
-          <h1 style="font-size: 22px;">🌾 AgroConecta</h1>
-          <p style="font-size: 13px; margin: 0; opacity: 0.9;">Menú Principal • Elección de Modo</p>
+          <h1 style="font-size: 22px;">AgroConecta</h1>
+          <p style="font-size: 13px; margin: 0; opacity: 0.9;">Elección de Modo</p>
         </div>
-        <a href="mockup_2_1_perfil_usuario.html" class="btn-header-profile" title="Abrir Mi Perfil">
-          <span>👤 Mi Perfil</span>
+        <a href="mockup_2_1_perfil_usuario.html" class="btn-header-profile" title="Mi Perfil">
+          <span>👤</span>
         </a>
       </div>
     </div>
@@ -229,9 +230,9 @@
         <span class="tab-icon">⇄</span>
         <span>Elegir Rol</span>
       </a>
-      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab" title="Mi Perfil">
+      <a href="mockup_2_1_perfil_usuario.html" class="app-nav-tab" title="Perfil">
         <span class="tab-icon">👤</span>
-        <span>Mi Perfil</span>
+        <span>Perfil</span>
       </a>
     </nav>
 
