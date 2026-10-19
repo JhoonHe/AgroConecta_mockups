@@ -199,17 +199,17 @@ const AgroConecta = {
   // ----------------------------------------------------
   // Captura Manual de Pantalla (lo que está dentro del recuadro mobile)
   // ----------------------------------------------------
-  async asegurarHtml2Canvas() {
-    if (typeof html2canvas !== 'undefined') return Promise.resolve();
+  async asegurarHtmlToImage() {
+    if (typeof htmlToImage !== 'undefined') return Promise.resolve();
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       // Detectar ruta relativa o absoluta
-      script.src = window.location.pathname.includes('/public/') ? 'js/html2canvas.min.js' : 'public/js/html2canvas.min.js';
+      script.src = window.location.pathname.includes('/public/') ? 'js/html-to-image.js' : 'public/js/html-to-image.js';
       script.onload = () => resolve();
       script.onerror = () => {
         // Fallback a CDN si falla la carga local
         const cdn = document.createElement('script');
-        cdn.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+        cdn.src = 'https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js';
         cdn.onload = () => resolve();
         cdn.onerror = (e) => reject(new Error('No se pudo cargar la librería de captura.'));
         document.head.appendChild(cdn);
@@ -227,7 +227,7 @@ const AgroConecta = {
     }
 
     try {
-      await this.asegurarHtml2Canvas();
+      await this.asegurarHtmlToImage();
       const mobileFrame = document.querySelector('.mobile-frame') || document.body;
 
       const mapaNombresOficiales = {
@@ -279,16 +279,31 @@ const AgroConecta = {
         }
       }
 
-      const canvas = await html2canvas(mobileFrame, {
-        backgroundColor: '#ffffff',
-        scale: 2,
-        logging: false,
-        useCORS: true,
-        allowTaint: true,
-        windowWidth: 375
+      // Desactivar animaciones y ocultar scrollbars temporalmente para capturar nítido y respetar scroll
+      const freezeStyle = document.createElement('style');
+      freezeStyle.id = 'freeze-capture-style';
+      freezeStyle.innerHTML = `
+        * {
+          animation: none !important;
+          transition: none !important;
+          scrollbar-width: none !important;
+        }
+        ::-webkit-scrollbar {
+          display: none !important;
+        }
+        .alert, .status-hero, .msg-bubble, [class*="alert"] {
+          opacity: 1 !important;
+          transform: none !important;
+        }
+      `;
+      document.head.appendChild(freezeStyle);
+
+      const dataUrl = await htmlToImage.toPng(mobileFrame, {
+        pixelRatio: 2,
+        backgroundColor: '#ffffff'
       });
 
-      const dataUrl = canvas.toDataURL('image/png');
+      freezeStyle.remove();
 
       // Intentar guardar directamente en la carpeta capturas/ del servidor
       let guardadoEnServidor = false;

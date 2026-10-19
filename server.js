@@ -103,10 +103,17 @@ async function generarCapturas(puerto) {
         waitUntil: "networkidle0",
       });
 
-      // Fondo transparente antes de la foto
+      // Fondo transparente y desactivar animaciones antes de la foto
       await page.evaluate(() => {
         document.body.style.backgroundColor = "transparent";
         document.documentElement.style.backgroundColor = "transparent";
+        const style = document.createElement("style");
+        style.innerHTML = `
+          * { animation: none !important; transition: none !important; scrollbar-width: none !important; }
+          ::-webkit-scrollbar { display: none !important; }
+          .alert, .status-hero, .msg-bubble { opacity: 1 !important; transform: none !important; }
+        `;
+        document.head.appendChild(style);
       });
 
       const elementoCelular = await page.$(".mobile-frame");
