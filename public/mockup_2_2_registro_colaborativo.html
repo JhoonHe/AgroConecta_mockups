@@ -10,13 +10,16 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Componente 2:</span>
-    <a href="mockup_selector_rol.html" class="test-chip">2.1 Selector Rol</a>
-    <a href="mockup_2_1_perfil_usuario.html" class="test-chip">2.1 Perfil</a>
-    <a href="mockup_2_3_gestion_pasivos.html" class="test-chip">2.3 Gestión Pasivos</a>
-    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">4.1 Directorio</a>
+    <div class="bar-title">🛠️ Registro Colaborativo • Vista Comunitaria</div>
+    <button class="test-chip" onclick="mostrarPaso(3)">📝 Formulario Inscripción</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarDatosValidos()">✨ Llenar Datos Nuevos</button>
+    <button class="test-chip danger" onclick="llenarCedulaDuplicada()">⚠️ Cédula Ya Registrada</button>
+    <button class="test-chip danger" onclick="llenarDatosVacios()">⚠️ Campos Vacíos</button>
+    <button class="test-chip" style="background: #1b5e20;" onclick="mostrarPaso(5, 'exito')">✅ Registro Exitoso</button>
+    <button class="test-chip danger" onclick="mostrarPaso(5, 'error')">❌ Error por Duplicado</button>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame">
@@ -32,11 +35,32 @@
       <p>Subcomponente 2.2: Registro Colaborativo</p>
     </div>
 
+    <!-- FEEDBACK DE MENSAJE: ÉXITO O ERROR (INTERFAZ 5) -->
+    <div id="alertaExitoColab" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-success" style="margin: 0; box-shadow: 0 4px 12px rgba(74, 222, 128, 0.25);">
+        <span style="font-size: 28px;">✅</span>
+        <div>
+          <strong style="font-size: 15px;">¡Jornalero Inscrito con Éxito!</strong><br>
+          <strong>Carlos Mario Ocampo (C.C. 10.948.991)</strong> fue añadido al directorio veredal y recibirá ofertas por llamada o SMS.
+        </div>
+      </div>
+    </div>
+
+    <div id="alertaErrorColab" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-danger" style="margin: 0; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+        <span style="font-size: 28px;">❌</span>
+        <div>
+          <strong style="font-size: 15px;">Error en la validación</strong><br>
+          <span id="textoErrorColab">La cédula ya está registrada en la base de datos o faltan campos obligatorios.</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Contenido: Registro Colaborativo de Jornalero Pasivo -->
     <div class="content">
 
       <!-- Badge Explicativo -->
-      <div class="alert alert-info">
+      <div class="alert alert-info" id="badgeExplicativoColab">
         <span style="font-size: 22px;">🤝</span>
         <div style="font-size: 13px; line-height: 1.35;">
           <strong>Registro Colaborativo Comunitario:</strong><br>
@@ -204,23 +228,70 @@
       }
     }
 
+    function llenarDatosValidos() {
+      mostrarPaso(3);
+      document.getElementById('nombrePasivo').value = "Carlos Mario Ocampo";
+      document.getElementById('cedulaPasivo').value = "1094899123";
+      document.getElementById('telPasivo').value = "310 456 7890";
+      document.getElementById('veredaPasivo').value = "📍 Vereda El Caimo (Armenia)";
+      document.getElementById('laborPasivo').value = "☕ Recolector de Café";
+      verificarCedulaEnVivo();
+    }
+
+    function llenarCedulaDuplicada() {
+      mostrarPaso(3);
+      document.getElementById('nombrePasivo').value = "José Albeiro Gómez";
+      document.getElementById('cedulaPasivo').value = "79854120";
+      document.getElementById('telPasivo').value = "312 450 8921";
+      verificarCedulaEnVivo();
+    }
+
+    function llenarDatosVacios() {
+      mostrarPaso(3);
+      document.getElementById('nombrePasivo').value = "";
+      document.getElementById('cedulaPasivo').value = "";
+      document.getElementById('telPasivo').value = "";
+      verificarCedulaEnVivo();
+    }
+
+    function mostrarPaso(paso, tipo) {
+      const alertaExito = document.getElementById('alertaExitoColab');
+      const alertaError = document.getElementById('alertaErrorColab');
+      const textoError = document.getElementById('textoErrorColab');
+
+      alertaExito.style.display = 'none';
+      alertaError.style.display = 'none';
+
+      if (paso === 3) {
+        // En vista de función principal
+      } else if (paso === 5 && tipo === 'exito') {
+        llenarDatosValidos();
+        alertaExito.style.display = 'block';
+      } else if (paso === 5 && tipo === 'error') {
+        llenarCedulaDuplicada();
+        textoError.innerText = "La cédula 79854120 ya existe en el sistema como usuario activo con smartphone. No se permite duplicar el registro.";
+        alertaError.style.display = 'block';
+      }
+    }
+
     function registrarJornaleroPasivo() {
       const nombre = document.getElementById('nombrePasivo').value.trim();
       const cedula = document.getElementById('cedulaPasivo').value.trim();
       const tel = document.getElementById('telPasivo').value.trim();
 
       if (!nombre || !cedula || !tel) {
-        alert("⚠️ Por favor completa los datos básicos (Nombre, Cédula y Teléfono).");
+        document.getElementById('textoErrorColab').innerText = "Por favor completa todos los campos obligatorios (Nombre, Cédula y Teléfono).";
+        mostrarPaso(5, 'error');
         return;
       }
 
       if (cedula === '79854120' || cedula === '10948572' || cedula === '10940000') {
-        alert("⚠️ No es posible registrar: la cédula ya se encuentra registrada en el sistema.");
+        document.getElementById('textoErrorColab').innerText = `La cédula ${cedula} ya se encuentra registrada en AgroConecta. No es posible crear duplicados.`;
+        mostrarPaso(5, 'error');
         return;
       }
 
-      alert(`✅ ¡Cédula ${cedula} verificada y vinculada!\n${nombre} ha sido agregado con éxito al directorio veredal.`);
-      window.location.href = "mockup_2_3_gestion_pasivos.html?registrado=1";
+      mostrarPaso(5, 'exito');
     }
   </script>
 

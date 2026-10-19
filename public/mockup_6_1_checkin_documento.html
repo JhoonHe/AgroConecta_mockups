@@ -15,11 +15,12 @@
       align-items: center;
       position: relative;
       background: radial-gradient(circle, #1e293b 0%, #000 100%);
-      padding: 20px;
+      padding: 16px;
+      min-height: 380px;
     }
     .target-box {
       width: 270px;
-      height: 180px;
+      height: 175px;
       border: 3px solid rgba(74, 222, 128, 0.9);
       border-radius: 14px;
       display: flex;
@@ -33,10 +34,15 @@
       font-size: 14px;
       background-color: rgba(0, 0, 0, 0.4);
       box-shadow: 0 0 20px rgba(74, 222, 128, 0.3);
+      position: relative;
+    }
+    .target-box.error-border {
+      border-color: #ef4444;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
     }
     .shutter-btn {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background-color: white;
       border: 6px solid #4caf50;
@@ -50,57 +56,159 @@
       transform: scale(0.92);
     }
     .shutter-btn-inner {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background-color: white;
+    }
+    .captured-card-sim {
+      width: 270px;
+      height: 175px;
+      background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+      border-radius: 12px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #1e293b;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .captured-card-sim.blurred {
+      filter: blur(2.5px);
+      opacity: 0.8;
+    }
+    .scan-line {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #4ade80;
+      box-shadow: 0 0 8px #4ade80;
+      animation: scanAnim 2s infinite ease-in-out;
+    }
+    @keyframes scanAnim {
+      0% { top: 5%; }
+      50% { top: 90%; }
+      100% { top: 5%; }
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador de Asistencia (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Componente 6:</span>
-    <a href="mockup_6_2_checkout_evidencia.html" class="test-chip">6.2 Check-out Evidencia</a>
-    <a href="mockup_productor_dashboard.html" class="test-chip">Dashboard Productor</a>
-    <a href="../index.html" class="test-chip">🏠 Menú Principal</a>
+    <div class="bar-title">🛠️ Asistencia: Captura de Documento • Vista Mayordomo</div>
+    <button class="test-chip" onclick="mostrarPaso(3)">📷 Visor de Cámara</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="mostrarPaso(5, 'exito')">✨ Cédula Nítida (Validada)</button>
+    <button class="test-chip danger" onclick="mostrarPaso(5, 'error')">⚠️ Cédula Borrosa (Ilegible)</button>
+    <button class="test-chip" onclick="mostrarPaso(4)">🖼️ Foto Capturada</button>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame" style="background: black; border-color: #0f172a;">
 
     <!-- Encabezado -->
-    <div class="header" style="background: rgba(0, 0, 0, 0.85); border-radius: 0;">
+    <div class="header" style="background: rgba(0, 0, 0, 0.88); border-radius: 0;">
       <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
       </a>
-      <h2 style="font-size: 18px; color: #4ade80;">📸 Check-in: Inicio de Labor</h2>
-      <p>Subcomponente 6.1: Captura de Documento</p>
+      <h2 id="headerTitulo" style="font-size: 18px; color: #4ade80;">📸 Check-in: Inicio de Labor</h2>
+      <p id="headerSubtitulo">Subcomponente 6.1: Captura de Documento</p>
     </div>
 
-    <!-- Visor de Cámara para Cédula -->
-    <div class="viewfinder">
-      <div class="target-box">
-        <span style="font-size: 38px; margin-bottom: 6px;">🪪</span>
-        <span style="color: #4ade80; font-weight: 800; font-size: 15px;">ENCUADRE LA CÉDULA</span>
-        <span style="font-size: 12.5px; opacity: 0.9; margin-top: 4px;">Valida identidad y registra la hora de llegada formal.</span>
+    <!-- ÁREA DE CONTENIDO VARIABLE -->
+    <div class="viewfinder" id="areaVisor">
+
+      <!-- ==============================================
+           ESTADO 3: FUNCIÓN PRINCIPAL (VISOR DE CÁMARA)
+           ============================================== -->
+      <div id="vistaPaso3" style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+        <div class="target-box">
+          <span style="font-size: 40px; margin-bottom: 6px;">🪪</span>
+          <span style="color: #4ade80; font-weight: 800; font-size: 15px; letter-spacing: 0.5px;">ENCUADRE LA CÉDULA</span>
+          <span style="font-size: 12.5px; opacity: 0.9; margin-top: 6px;">Alinee la cédula física dentro del marco verde.</span>
+        </div>
+        <span style="color: #94a3b8; font-size: 12.5px; text-align: center;">Pulse el disparador para registrar asistencia</span>
       </div>
 
-      <div id="checkinAlert" class="alert alert-success" style="display: none; margin-top: 20px; width: 85%;">
-        <span>✓</span>
-        <div>
-          <strong>¡Asistencia Registrada!</strong><br>
-          José Albeiro Gómez (C.C. 79.854.120)<br>
-          Hora formal: <strong>06:08 AM</strong>
+      <!-- ==============================================
+           ESTADO 4: RESULTADO (FOTO CAPTURADA)
+           ============================================== -->
+      <div id="vistaPaso4" style="display: none; flex-direction: column; align-items: center; gap: 14px;">
+        <div class="captured-card-sim" id="cardSimulada">
+          <div class="scan-line" id="lineaEscaneo"></div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span style="font-size: 10px; font-weight: 800; color: #475569; letter-spacing: 1px;">REPÚBLICA DE COLOMBIA</span>
+            <span style="font-size: 11px;">🇨🇴</span>
+          </div>
+          <div style="display: flex; gap: 12px; align-items: center; margin-top: 4px;">
+            <div style="width: 52px; height: 60px; background: #64748b; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 26px;">
+              👨‍🌾
+            </div>
+            <div>
+              <div style="font-size: 11px; color: #475569;">CÉDULA DE CIUDADANÍA</div>
+              <div style="font-size: 15px; font-weight: 900; color: #0f172a;">79.854.120</div>
+              <div style="font-size: 12px; font-weight: 700; color: #334155;">GÓMEZ JOSÉ ALBEIRO</div>
+            </div>
+          </div>
+          <div style="font-size: 9.5px; color: #64748b; display: flex; justify-content: space-between; border-top: 1px dashed #94a3b8; padding-top: 4px;">
+            <span>HUELLA DIGITAL REGISTRADA</span>
+            <span>AGROCONECTA OCR</span>
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid #334155; padding: 8px 14px; border-radius: 20px; color: #cbd5e1; font-size: 12px; display: flex; align-items: center; gap: 6px;">
+          <span>🔍</span> <span>Foto capturada lista para validación biométrica</span>
         </div>
       </div>
+
+      <!-- ==============================================
+           ESTADO 5A: MENSAJE DE ÉXITO
+           ============================================== -->
+      <div id="vistaPaso5Exito" style="display: none; flex-direction: column; align-items: center; width: 92%; gap: 12px;">
+        <div class="alert alert-success" style="width: 100%; box-shadow: 0 4px 16px rgba(74, 222, 128, 0.25);">
+          <span style="font-size: 32px;">✅</span>
+          <div>
+            <strong style="font-size: 15px;">¡Asistencia Confirmada!</strong><br>
+            <span style="font-size: 13.5px;">Trabajador: <strong>José Albeiro Gómez</strong></span><br>
+            <span style="font-size: 12px; opacity: 0.9;">C.C. 79.854.120 • Finca La Esperanza</span><br>
+            <span style="font-size: 12px; color: #15803d; font-weight: 800;">Hora formal: 06:08 AM</span>
+          </div>
+        </div>
+        <a href="mockup_productor_dashboard.html" class="btn-primary" style="width: 100%; padding: 12px; text-align: center; justify-content: center; font-size: 14px;">
+          ✓ Continuar al Dashboard
+        </a>
+      </div>
+
+      <!-- ==============================================
+           ESTADO 5B: MENSAJE DE ERROR
+           ============================================== -->
+      <div id="vistaPaso5Error" style="display: none; flex-direction: column; align-items: center; width: 92%; gap: 12px;">
+        <div class="alert alert-danger" style="width: 100%; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);">
+          <span style="font-size: 32px;">❌</span>
+          <div>
+            <strong style="font-size: 15px;">Error: Foto no legible</strong><br>
+            <span style="font-size: 13px; line-height: 1.4;">
+              El documento está borroso o con reflejo de luz. La cédula no pudo ser reconocida con certeza.
+            </span><br>
+            <span style="font-size: 12px; color: #991b1b; font-weight: 700;">Código de error: ERR_OCR_BLUR_402</span>
+          </div>
+        </div>
+        <button class="btn-secondary" style="width: 100%; padding: 12px; justify-content: center; font-size: 14px; border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.08);" onclick="mostrarPaso(3)">
+          🔄 Reintentar Captura de Cédula
+        </button>
+      </div>
+
     </div>
 
-    <!-- Botón Disparador -->
-    <div style="background: #000; padding: 16px 20px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; border-top: 1px solid #1e293b;">
+    <!-- Botón Disparador Inferior -->
+    <div id="barraDisparador" style="background: #000; padding: 14px 20px 10px; display: flex; flex-direction: column; align-items: center; gap: 6px; border-top: 1px solid #1e293b;">
       <div class="shutter-btn" onclick="tomarFotoCheckin()">
         <div class="shutter-btn-inner"></div>
       </div>
@@ -133,14 +241,60 @@
 
   </div>
 
+  <script src="js/agroconecta.js"></script>
   <script>
+    function ocultarTodos() {
+      document.getElementById('vistaPaso3').style.display = 'none';
+      document.getElementById('vistaPaso4').style.display = 'none';
+      document.getElementById('vistaPaso5Exito').style.display = 'none';
+      document.getElementById('vistaPaso5Error').style.display = 'none';
+      const card = document.getElementById('cardSimulada');
+      if (card) card.classList.remove('blurred');
+      const scan = document.getElementById('lineaEscaneo');
+      if (scan) scan.style.display = 'block';
+    }
+
+    function mostrarPaso(paso, tipo) {
+      ocultarTodos();
+      const titulo = document.getElementById('headerTitulo');
+      const subtitulo = document.getElementById('headerSubtitulo');
+      const barraDisparador = document.getElementById('barraDisparador');
+
+      // Título auténtico y fijo de la app
+      titulo.innerText = "📸 Check-in: Inicio de Labor";
+
+      if (paso === 3) {
+        document.getElementById('vistaPaso3').style.display = 'flex';
+        subtitulo.innerText = "Encuadre la cédula física del jornalero";
+        barraDisparador.style.display = 'flex';
+      } else if (paso === 4) {
+        document.getElementById('vistaPaso4').style.display = 'flex';
+        subtitulo.innerText = "Foto de cédula capturada • Verificando datos...";
+        barraDisparador.style.display = 'none';
+      } else if (paso === 5 && tipo === 'exito') {
+        document.getElementById('vistaPaso4').style.display = 'flex';
+        document.getElementById('vistaPaso5Exito').style.display = 'flex';
+        subtitulo.innerText = "Identidad validada y asistencia registrada";
+        barraDisparador.style.display = 'none';
+        document.getElementById('lineaEscaneo').style.display = 'none';
+      } else if (paso === 5 && tipo === 'error') {
+        document.getElementById('vistaPaso4').style.display = 'flex';
+        document.getElementById('cardSimulada').classList.add('blurred');
+        document.getElementById('vistaPaso5Error').style.display = 'flex';
+        subtitulo.innerText = "Foto no legible • Cédula fuera de foco";
+        barraDisparador.style.display = 'none';
+        document.getElementById('lineaEscaneo').style.display = 'none';
+      }
+    }
+
     function tomarFotoCheckin() {
-      document.getElementById('checkinAlert').style.display = 'flex';
+      // Al presionar el obturador pasa automáticamente a resultado y luego éxito
+      mostrarPaso(4);
+      setTimeout(() => {
+        mostrarPaso(5, 'exito');
+      }, 1000);
     }
   </script>
-
-  <script src="js/agroconecta.js"></script>
 </body>
 
 </html>
-

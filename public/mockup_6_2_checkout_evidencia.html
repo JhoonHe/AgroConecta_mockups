@@ -15,11 +15,12 @@
       align-items: center;
       position: relative;
       background: radial-gradient(circle, #2a1505 0%, #000 100%);
-      padding: 20px;
+      padding: 16px;
+      min-height: 380px;
     }
     .target-box {
       width: 270px;
-      height: 200px;
+      height: 180px;
       border: 3px dashed rgba(251, 146, 60, 0.9);
       border-radius: 14px;
       display: flex;
@@ -35,8 +36,8 @@
       box-shadow: 0 0 20px rgba(251, 146, 60, 0.3);
     }
     .shutter-btn {
-      width: 72px;
-      height: 72px;
+      width: 68px;
+      height: 68px;
       border-radius: 50%;
       background-color: white;
       border: 6px solid #fb923c;
@@ -50,60 +51,137 @@
       transform: scale(0.92);
     }
     .shutter-btn-inner {
-      width: 52px;
-      height: 52px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       background-color: white;
+    }
+    .photo-preview-box {
+      width: 270px;
+      height: 180px;
+      background: #334155;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      border: 2px solid #fb923c;
+    }
+    .photo-preview-box.blurred {
+      filter: blur(3px);
+      opacity: 0.75;
     }
   </style>
 </head>
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador de Liquidación (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Componente 6:</span>
-    <a href="mockup_6_1_checkin_documento.html" class="test-chip">6.1 Check-in Documento</a>
-    <a href="mockup_productor_dashboard.html" class="test-chip">Dashboard</a>
-    <a href="../index.html" class="test-chip">🏠 Menú Principal</a>
+    <div class="bar-title">🛠️ Check-out y Liquidación • Vista Mayordomo</div>
+    <button class="test-chip" onclick="mostrarPaso(3)">⚖️ Formulario Pesaje</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarPesajeValido()">✨ Pesaje 115 KG</button>
+    <button class="test-chip danger" onclick="llenarPesajeInvalido()">⚠️ Pesaje 0 KG</button>
+    <button class="test-chip" onclick="mostrarPaso(4)">🖼️ Foto Báscula</button>
+    <button class="test-chip" style="background: #1b5e20;" onclick="mostrarPaso(5, 'exito')">✅ Destajo Liquidado</button>
+    <button class="test-chip danger" onclick="mostrarPaso(5, 'error')">❌ Báscula Ilegible</button>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame" style="background: black; border-color: #0f172a;">
 
     <!-- Encabezado -->
-    <div class="header" style="background: rgba(0, 0, 0, 0.85); border-radius: 0;">
+    <div class="header" style="background: rgba(0, 0, 0, 0.88); border-radius: 0;">
       <a href="mockup_productor_dashboard.html" class="header-back-btn" title="Volver al Dashboard">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
       </a>
-      <h2 style="font-size: 18px; color: #fb923c;">⚖️ Check-out: Cierre de Jornada</h2>
-      <p>Subcomponente 6.2: Evidencia y Liquidación Destajo</p>
+      <h2 id="headerTituloCheckout" style="font-size: 18px; color: #fb923c;">⚖️ Check-out: Cierre de Jornada</h2>
+      <p id="headerSubtituloCheckout">Subcomponente 6.2: Evidencia y Liquidación Destajo</p>
     </div>
 
-    <!-- Visor de Cámara para Evidencia -->
-    <div class="viewfinder">
-      <div class="target-box">
-        <span style="font-size: 38px; margin-bottom: 6px;">⚖️</span>
-        <span style="color: #fb923c; font-weight: 800; font-size: 15px;">FOTO DEL TRABAJO CUMPLIDO</span>
-        <span style="font-size: 12.5px; opacity: 0.9; margin-top: 4px;">Encuadre los sacos pesados o el lote terminado como soporte visual.</span>
+    <!-- Visor de Cámara y Pantalla de Estados -->
+    <div class="viewfinder" id="areaVisorCheckout">
+
+      <!-- ==============================================
+           ESTADO 3: FUNCIÓN PRINCIPAL (VISOR DE CÁMARA)
+           ============================================== -->
+      <div id="vistaPaso3Checkout" style="display: flex; flex-direction: column; align-items: center; gap: 14px;">
+        <div class="target-box">
+          <span style="font-size: 40px; margin-bottom: 6px;">⚖️</span>
+          <span style="color: #fb923c; font-weight: 800; font-size: 15px;">FOTO DEL TRABAJO CUMPLIDO</span>
+          <span style="font-size: 12.5px; opacity: 0.9; margin-top: 4px;">Encuadre los sacos pesados o la báscula como soporte visual.</span>
+        </div>
+        <span style="color: #94a3b8; font-size: 12.5px; text-align: center;">Tome foto al lote o peso para cerrar el destajo</span>
       </div>
 
-      <div id="checkoutAlert" class="alert alert-success" style="display: none; margin-top: 16px; width: 85%;">
-        <span>✓</span>
-        <div>
-          <strong>¡Labor Liquidada y Registrada!</strong><br>
-          Cosecha: <strong>115 Kg de café</strong><br>
-          Liquidación hoy: <strong>$97.750 COP</strong>
+      <!-- ==============================================
+           ESTADO 4: RESULTADO (FOTO DEL PESAJE TOMADA)
+           ============================================== -->
+      <div id="vistaPaso4Checkout" style="display: none; flex-direction: column; align-items: center; gap: 14px;">
+        <div class="photo-preview-box" id="previewFotoCheckout">
+          <span style="font-size: 50px;">☕ ⚖️</span>
+          <span style="font-weight: 800; font-size: 14px; margin-top: 6px;">Sacos de Café Pesados</span>
+          <span style="font-size: 11.5px; opacity: 0.8;">Báscula: 115.00 Kg</span>
+          <div style="position: absolute; bottom: 8px; right: 10px; font-size: 10px; background: rgba(0,0,0,0.6); padding: 2px 6px; border-radius: 4px;">
+            GPS: 4.532° N, 75.681° W
+          </div>
+        </div>
+
+        <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid #334155; padding: 8px 14px; border-radius: 20px; color: #fed7aa; font-size: 12.5px;">
+          <span>📸</span> Soporte fotográfico capturado exitosamente
         </div>
       </div>
+
+      <!-- ==============================================
+           ESTADO 5A: MENSAJE DE ÉXITO (LIQUIDACIÓN)
+           ============================================== -->
+      <div id="vistaPaso5ExitoCheckout" style="display: none; flex-direction: column; align-items: center; width: 92%; gap: 12px;">
+        <div class="alert alert-success" style="width: 100%; box-shadow: 0 4px 16px rgba(74, 222, 128, 0.25);">
+          <span style="font-size: 32px;">✅</span>
+          <div>
+            <strong style="font-size: 15px;">¡Labor Liquidada y Registrada!</strong><br>
+            <span style="font-size: 13.5px;">Trabajador: <strong>José Albeiro Gómez</strong></span><br>
+            <span style="font-size: 13.5px;">Cosecha total: <strong>115 Kg de café</strong></span><br>
+            <span style="font-size: 14px; color: #15803d; font-weight: 900;">Total a Pagar: $97.750 COP</span>
+          </div>
+        </div>
+        <a href="mockup_productor_dashboard.html" class="btn-primary" style="width: 100%; padding: 12px; justify-content: center; font-size: 14px;">
+          ✓ Finalizar y Volver al Dashboard
+        </a>
+      </div>
+
+      <!-- ==============================================
+           ESTADO 5B: MENSAJE DE ERROR
+           ============================================== -->
+      <div id="vistaPaso5ErrorCheckout" style="display: none; flex-direction: column; align-items: center; width: 92%; gap: 12px;">
+        <div class="alert alert-danger" style="width: 100%; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);">
+          <span style="font-size: 32px;">❌</span>
+          <div>
+            <strong style="font-size: 15px;">Error: Báscula o pesaje no legible</strong><br>
+            <span style="font-size: 13px; line-height: 1.4;">
+              La foto del pesaje no permite corroborar los números de la romana o los kilos ingresados están en cero.
+            </span><br>
+            <span style="font-size: 12px; color: #991b1b; font-weight: 700;">Código de error: ERR_EVIDENCIA_BLUR_501</span>
+          </div>
+        </div>
+        <button class="btn-secondary" style="width: 100%; padding: 12px; justify-content: center; font-size: 14px; border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.08);" onclick="mostrarPaso(3)">
+          🔄 Reintentar Foto del Pesaje
+        </button>
+      </div>
+
     </div>
 
     <!-- Control de Pesaje y Disparador -->
-    <div style="background: #000; padding: 14px 20px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; border-top: 1px solid #1e293b;">
+    <div id="barraDisparadorCheckout" style="background: #000; padding: 14px 20px 8px; display: flex; flex-direction: column; align-items: center; gap: 8px; border-top: 1px solid #1e293b;">
       <div style="display: flex; gap: 8px; align-items: center;">
         <span style="color: white; font-size: 13px; font-weight: 700;">Pesaje registrado:</span>
-        <input type="number" value="115" style="width: 80px; padding: 6px; font-size: 18px; font-weight: 900; text-align: center; border-radius: 8px; border: 2px solid #fb923c;">
+        <input type="number" id="inputKilosPesaje" value="115" style="width: 80px; padding: 6px; font-size: 18px; font-weight: 900; text-align: center; border-radius: 8px; border: 2px solid #fb923c;">
         <span style="color: white; font-weight: 800;">KG</span>
       </div>
 
@@ -139,14 +217,71 @@
 
   </div>
 
+  <script src="js/agroconecta.js"></script>
   <script>
+    function ocultarTodosCheckout() {
+      document.getElementById('vistaPaso3Checkout').style.display = 'none';
+      document.getElementById('vistaPaso4Checkout').style.display = 'none';
+      document.getElementById('vistaPaso5ExitoCheckout').style.display = 'none';
+      document.getElementById('vistaPaso5ErrorCheckout').style.display = 'none';
+      const preview = document.getElementById('previewFotoCheckout');
+      if (preview) preview.classList.remove('blurred');
+    }
+
+    function mostrarPaso(paso, tipo) {
+      ocultarTodosCheckout();
+      const titulo = document.getElementById('headerTituloCheckout');
+      const subtitulo = document.getElementById('headerSubtituloCheckout');
+      const barraDisparador = document.getElementById('barraDisparadorCheckout');
+
+      // Título auténtico y fijo de la app
+      titulo.innerText = "⚖️ Check-out: Cierre de Jornada";
+
+      if (paso === 3) {
+        document.getElementById('vistaPaso3Checkout').style.display = 'flex';
+        subtitulo.innerText = "Liquidación de labor y soporte de báscula";
+        barraDisparador.style.display = 'flex';
+      } else if (paso === 4) {
+        document.getElementById('vistaPaso4Checkout').style.display = 'flex';
+        subtitulo.innerText = "Evidencia fotográfica capturada";
+        barraDisparador.style.display = 'none';
+      } else if (paso === 5 && tipo === 'exito') {
+        document.getElementById('vistaPaso4Checkout').style.display = 'flex';
+        document.getElementById('vistaPaso5ExitoCheckout').style.display = 'flex';
+        subtitulo.innerText = "Destajo liquidado correctamente ($97.750 COP)";
+        barraDisparador.style.display = 'none';
+      } else if (paso === 5 && tipo === 'error') {
+        document.getElementById('vistaPaso4Checkout').style.display = 'flex';
+        document.getElementById('previewFotoCheckout').classList.add('blurred');
+        document.getElementById('vistaPaso5ErrorCheckout').style.display = 'flex';
+        subtitulo.innerText = "Pesaje o báscula ilegible • Foto borrosa";
+        barraDisparador.style.display = 'none';
+      }
+    }
+
+    function llenarPesajeValido() {
+      mostrarPaso(3);
+      document.getElementById('inputKilosPesaje').value = "115";
+    }
+
+    function llenarPesajeInvalido() {
+      mostrarPaso(3);
+      document.getElementById('inputKilosPesaje').value = "0";
+      mostrarPaso(5, 'error');
+    }
+
     function tomarFotoCheckout() {
-      document.getElementById('checkoutAlert').style.display = 'flex';
+      const kg = parseFloat(document.getElementById('inputKilosPesaje').value);
+      if (isNaN(kg) || kg <= 0) {
+        mostrarPaso(5, 'error');
+        return;
+      }
+      mostrarPaso(4);
+      setTimeout(() => {
+        mostrarPaso(5, 'exito');
+      }, 1000);
     }
   </script>
-
-  <script src="js/agroconecta.js"></script>
 </body>
 
 </html>
-

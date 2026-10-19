@@ -43,8 +43,8 @@ app.post("/guardar-captura", (req, res) => {
   }
 });
 
-// Servir index.html en la raíz
-app.get("/", (req, res) => {
+// Servir index.html en la raíz y en /index.html
+app.get(["/", "/index.html"], (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 

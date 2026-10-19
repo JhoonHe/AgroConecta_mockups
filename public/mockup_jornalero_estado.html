@@ -126,9 +126,12 @@
 
   <!-- Barra de Pruebas DFD para Alternar Estados Requeridos (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Alternar Estado:</span>
-    <button class="test-chip" onclick="mostrarEstado('enviada')">⏳ 1. Postulación enviada</button>
-    <button class="test-chip" onclick="mostrarEstado('aceptada')">🎉 2. ¡Aceptado! Ir a finca</button>
+    <div class="bar-title">🛠️ Estado de Postulación • Subcomponente 3.2</div>
+    <a href="mockup_3_2_postulacion_jornalero.html" class="test-chip">🌾 Ver Vacante</a>
+    <button class="test-chip" onclick="mostrarEstado('enviada')">⏳ Postulación Enviada</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="mostrarEstado('aceptada')">✓ Aceptado (6:00 AM)</button>
+    <button class="test-chip danger" onclick="mostrarEstado('rechazada')">✕ Cupos Completados</button>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame">
@@ -141,7 +144,7 @@
         </svg>
       </a>
       <h1>🌾 Estado de Postulación</h1>
-      <p>Finca La Esperanza • Don Hernán</p>
+      <p>Finca La Esperanza • Don Hernán Restrepo</p>
     </div>
 
     <!-- Contenido: Pantalla de Notificaciones y Estado -->
@@ -200,10 +203,10 @@
         <div class="status-hero aceptada">
           <div class="hero-icon-bubble">✅</div>
           <h2 style="font-size: 24px; font-weight: 900; margin: 0; color: #15803d;">
-            ¡Aceptado! Ir a la finca
+            ¡Aceptado! Preséntate mañana a las 6:00 AM puntual
           </h2>
           <p style="font-size: 14.5px; margin: 0; line-height: 1.4; color: #166534; font-weight: 600;">
-            ¡Don Hernán confirmó tu cupo para la cosecha de café! Preséntate mañana temprano.
+            ¡Don Hernán confirmó tu cupo para la cosecha de café! Preséntate mañana temprano en el portón verde.
           </p>
         </div>
 
@@ -250,6 +253,35 @@
 
       </div>
 
+      <!-- ==========================================
+           ESTADO 3 (ERROR): CUPOS LLENOS / RECHAZADA
+           ========================================== -->
+      <div id="vistaEstadoRechazada" style="display: none; flex-direction: column; gap: 16px;">
+
+        <div class="status-hero" style="background: #fef2f2; border: 2px solid #fecaca; color: #991b1b;">
+          <div class="hero-icon-bubble" style="background: #fee2e2; border: 3px solid #f87171;">❌</div>
+          <h2 style="font-size: 24px; font-weight: 900; margin: 0; color: #991b1b;">
+            Cupos Completados
+          </h2>
+          <p style="font-size: 14.5px; margin: 0; line-height: 1.4; color: #7f1d1d; font-weight: 600;">
+            La vacante se cerró y los cupos fueron asignados a otros jornaleros. Don Hernán ya completó el grupo para la jornada de mañana.
+          </p>
+        </div>
+
+        <div class="card" style="padding: 16px; gap: 12px; text-align: center;">
+          <h4 style="font-size: 15px; font-weight: 800; color: var(--text-main); margin: 0;">
+            Otras oportunidades hoy
+          </h4>
+          <p style="font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+            Hay 2 fincas adicionales con vacantes abiertas en veredas vecinas esperando jornaleros.
+          </p>
+          <a href="mockup_4_2_directorio_fincas.html" class="btn-primary" style="padding: 12px; font-size: 15px; justify-content: center;">
+            <span>🏡 Explorar Otras Fincas</span>
+          </a>
+        </div>
+
+      </div>
+
     </div>
 
     <!-- Barra de Navegación Móvil de la App (Modo Jornalero) -->
@@ -280,6 +312,8 @@
     const paramEstado = AgroConecta.getQueryParam('estado');
     if (paramEstado === 'enviada') {
       mostrarEstado('enviada');
+    } else if (paramEstado === 'rechazada') {
+      mostrarEstado('rechazada');
     } else {
       mostrarEstado('aceptada'); // Por defecto para mostrar la pantalla de éxito
     }
@@ -287,12 +321,17 @@
     function mostrarEstado(estado) {
       const vistaEnviada = document.getElementById('vistaEstadoEnviada');
       const vistaAceptada = document.getElementById('vistaEstadoAceptada');
+      const vistaRechazada = document.getElementById('vistaEstadoRechazada');
+
+      vistaEnviada.style.display = 'none';
+      vistaAceptada.style.display = 'none';
+      vistaRechazada.style.display = 'none';
 
       if (estado === 'enviada') {
         vistaEnviada.style.display = 'flex';
-        vistaAceptada.style.display = 'none';
+      } else if (estado === 'rechazada') {
+        vistaRechazada.style.display = 'flex';
       } else {
-        vistaEnviada.style.display = 'none';
         vistaAceptada.style.display = 'flex';
       }
     }

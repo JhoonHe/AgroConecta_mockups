@@ -35,12 +35,16 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD para el Evaluador (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Simular:</span>
-    <button class="test-chip danger" onclick="simularErrorFormato()">⚠️ Error Formato</button>
-    <button class="test-chip danger" onclick="simularErrorCoincidencia()">❌ Error Coincidencia</button>
-    <button class="test-chip" onclick="simularExito()">✓ Flujo Correcto</button>
+    <div class="bar-title">🛠️ Creación de PIN • Vista Seguridad</div>
+    <button class="test-chip" onclick="volverAPaso1()">🔐 Ingresar PIN</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarPinValido()">✨ PIN Válido (1234)</button>
+    <button class="test-chip danger" onclick="simularErrorFormato()">⚠️ Error Formato (12)</button>
+    <button class="test-chip danger" onclick="simularErrorCoincidencia()">⚠️ Error No Coincide</button>
+    <button class="test-chip" onclick="irAPaso2Resultado()">📋 Confirmar PIN</button>
+    <button class="test-chip" style="background: #1b5e20;" onclick="simularExito()">✅ PIN Creado con Éxito</button>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame">
@@ -318,6 +322,18 @@
     }
 
     /* Funciones para demostración inmediata del Evaluador */
+    function llenarPinValido() {
+      volverAPaso1();
+      pin1.value = "1234";
+      pin1.focus();
+    }
+
+    function irAPaso2Resultado() {
+      volverAPaso1();
+      pin1.value = "1234";
+      procesarPaso1();
+    }
+
     function simularErrorFormato() {
       volverAPaso1();
       pin1.value = "12"; // Solo 2 dígitos

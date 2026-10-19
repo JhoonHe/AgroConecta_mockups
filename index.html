@@ -343,6 +343,76 @@
       box-shadow: none !important;
     }
 
+    /* Submenú de Pruebas y Validación de Entradas en el Simulador */
+    .simulator-test-suite {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border-radius: 16px;
+      padding: 12px 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+      border: 1.5px solid #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .test-suite-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #334155;
+      padding-bottom: 6px;
+    }
+
+    .simulator-test-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .sim-chip {
+      background: rgba(255, 255, 255, 0.12);
+      color: #f1f5f9;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      padding: 5px 11px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+      text-decoration: none;
+    }
+
+    .sim-chip:hover {
+      background: rgba(255, 255, 255, 0.24);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+    }
+
+    .sim-chip.success {
+      background: #166534 !important;
+      border-color: #22c55e !important;
+      color: #ffffff !important;
+    }
+
+    .sim-chip.danger {
+      background: #991b1b !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+    }
+
+    .sim-chip.primary {
+      background: #0369a1 !important;
+      border-color: #38bdf8 !important;
+      color: #ffffff !important;
+    }
+
     /* Toast flotante de confirmación */
     .toast-captura {
       position: fixed;
@@ -566,6 +636,20 @@
           <a id="openTabBtn" href="public/mockup_selector_rol.html" target="_blank" class="quick-btn" style="background: #ffffff; color: var(--text); border-color: #cbd5e1; font-size: 11px; padding: 4px 10px;">
             Abrir directo ↗
           </a>
+        </div>
+      </div>
+
+      <!-- SUBMENÚ DE PRUEBAS Y VALIDACIÓN DE ENTRADAS -->
+      <div class="simulator-test-suite" id="simulatorTestSuite">
+        <div class="test-suite-header">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span style="font-size: 15px;">🛠️</span>
+            <strong style="font-size: 12px; color: #f8fafc; letter-spacing: 0.3px;">Controles de Entrada y Simulación de Estados:</strong>
+          </div>
+          <span id="simulatorActivePageLabel" style="font-size: 11px; color: #94a3b8; font-weight: 700;">Selector de Rol (2.1)</span>
+        </div>
+        <div class="simulator-test-chips" id="simulatorTestChips">
+          <!-- Se inyectan dinámicamente según la pantalla activa en el celular -->
         </div>
       </div>
 
@@ -1084,8 +1168,110 @@
       }
     });
 
-    // Sincronizar título y estado cuando el iframe navega internamente
+    // Sincronizar título, estado y SUBMENÚ DE PRUEBAS cuando el iframe navega internamente
     const iframe = document.getElementById('deviceIframe');
+
+    function sincronizarMenuPruebas() {
+      const iframeEl = document.getElementById('deviceIframe');
+      const chipsContainer = document.getElementById('simulatorTestChips');
+      const pageLabel = document.getElementById('simulatorActivePageLabel');
+      if (!iframeEl || !chipsContainer) return;
+
+      try {
+        const iframeWindow = iframeEl.contentWindow;
+        const iframeDoc = iframeEl.contentDocument || iframeWindow.document;
+        if (!iframeDoc) return;
+
+        let fullHref = '';
+        try {
+          fullHref = iframeWindow.location.href;
+        } catch (e) {
+          fullHref = iframeEl.src || '';
+        }
+
+        const pageWithQuery = fullHref.split('/').pop() || '';
+        const pageOnly = pageWithQuery.split('?')[0] || 'mockup_selector_rol.html';
+
+        const mapaTitulos = {
+          'mockup_3_2_postulacion_jornalero.html': '3.2 Postulación Jornalero',
+          'mockup_jornalero_estado.html': '3.2 Estado de Postulación',
+          'mockup_3_1_publicar_vacante.html': '3.1 Publicar Vacante',
+          'mockup_6_1_checkin_documento.html': '6.1 Check-in Documento (Cédula)',
+          'mockup_6_2_checkout_evidencia.html': '6.2 Check-out Evidencia (Destajo)',
+          'mockup_4_1_directorio_trabajadores.html': '4.1 Directorio Trabajadores',
+          'mockup_4_2_directorio_fincas.html': '4.2 Directorio Fincas',
+          'mockup_5_1_chat_interno.html': '5.1 Chat Interno',
+          'mockup_crear_pin.html': '1.1 Creación de PIN',
+          'mockup_login.html': '1.1 Onboarding Cédula',
+          'mockup_2_2_registro_colaborativo.html': '2.2 Registro Colaborativo',
+          'mockup_selector_rol.html': '2.1 Selector de Rol'
+        };
+
+        if (pageLabel) {
+          pageLabel.textContent = mapaTitulos[pageOnly] || pageOnly;
+        }
+
+        chipsContainer.innerHTML = '';
+
+        // Buscar barra de pruebas interna en el iframe
+        const innerBar = iframeDoc.querySelector('.test-suite-bar');
+        if (innerBar) {
+          const items = innerBar.querySelectorAll('button, a.test-chip');
+          if (items.length > 0) {
+            items.forEach((item) => {
+              const text = item.textContent.trim();
+              if (text.includes('Menú') && (item.getAttribute('href') || '').includes('index.html')) {
+                return;
+              }
+
+              const chip = document.createElement('button');
+              chip.type = 'button';
+              chip.className = 'sim-chip';
+              chip.innerHTML = item.innerHTML;
+
+              // Estilos visuales
+              if (item.classList.contains('danger') || item.className.includes('danger')) {
+                chip.classList.add('danger');
+              } else if (item.style.background && (item.style.background.includes('2e7d32') || item.style.background.includes('1b5e20'))) {
+                chip.classList.add('success');
+              } else if (text.includes('Int. 3') || text.includes('Int. 4') || text.includes('Función') || text.includes('Resultado')) {
+                chip.classList.add('primary');
+              }
+
+              chip.onclick = (e) => {
+                e.preventDefault();
+                try {
+                  if (item.tagName.toLowerCase() === 'a' && item.getAttribute('href')) {
+                    const targetHref = item.getAttribute('href');
+                    if (targetHref.startsWith('http')) {
+                      window.open(targetHref, '_blank');
+                    } else if (targetHref.startsWith('../')) {
+                      // nada
+                    } else {
+                      cargarEnSimulador(`public/${targetHref}`, targetHref);
+                    }
+                  } else {
+                    item.click();
+                  }
+                } catch (err) {
+                  console.error('Error ejecutando acción:', err);
+                }
+              };
+
+              chipsContainer.appendChild(chip);
+            });
+            return;
+          }
+        }
+
+        chipsContainer.innerHTML = `
+          <span style="font-size: 11px; color: #94a3b8;">Usa los botones del celular o selecciona otra pantalla abajo en el catálogo.</span>
+        `;
+      } catch (err) {
+        console.warn('Error sincronizando pruebas:', err);
+      }
+    }
+
     if (iframe) {
       iframe.addEventListener('load', () => {
         try {
@@ -1110,11 +1296,19 @@
               statusBar.style.backgroundColor = '#1b5e20';
             }
           }
+          sincronizarMenuPruebas();
         } catch (err) {
           // fallback para restricciones locales
         }
       });
     }
+
+    // Escuchar mensajes de navegación interna desde los iframes
+    window.addEventListener('message', (e) => {
+      if (e.data && e.data.action === 'PAGINA_CARGADA') {
+        sincronizarMenuPruebas();
+      }
+    });
 
     // Interceptar clicks de botones de acceso rápido para cargarlos en el simulador
     document.querySelectorAll('.quick-btn').forEach(btn => {

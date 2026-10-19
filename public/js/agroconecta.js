@@ -362,6 +362,13 @@ AgroConecta.init();
 // Detectar si está embebido en el simulador de index.html
 if (window.self !== window.top) {
   document.documentElement.classList.add('in-iframe');
+  window.addEventListener('DOMContentLoaded', () => {
+    try {
+      if (window.parent) {
+        window.parent.postMessage({ action: 'PAGINA_CARGADA', href: window.location.href }, '*');
+      }
+    } catch (e) {}
+  });
 } else {
   // Standalone: Inyectar botón superior "Tomar captura" si no existe
   window.addEventListener('DOMContentLoaded', () => {

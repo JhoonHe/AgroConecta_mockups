@@ -10,13 +10,13 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
     <div class="bar-title">🛠️ Componente 4: Directorio • Vista Productor</div>
-    <a href="mockup_productor_dashboard.html" class="test-chip">🏠 Dashboard</a>
-    <a href="mockup_4_2_directorio_fincas.html" class="test-chip">🏡 4.2 Fincas</a>
-    <a href="mockup_5_1_chat_interno.html" class="test-chip">💬 5.1 Chat Activo</a>
-    <a href="mockup_5_2_contacto_externo.html" class="test-chip">📞 5.2 Llamada Pasivo</a>
+    <button class="test-chip" onclick="mostrarPaso(3)">🔍 Ver Buscador</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarFiltroValido()">✨ Vereda El Caimo (Disponibles)</button>
+    <button class="test-chip danger" onclick="llenarFiltroInvalido()">⚠️ Vereda La Linda (Sin Jornaleros)</button>
+    <button class="test-chip" onclick="mostrarPaso(4)">👥 Lista de Trabajadores</button>
     <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
@@ -33,13 +33,55 @@
       <p>Subcomponente 4.1: Lista por Región (Vista Productor)</p>
     </div>
 
-    <!-- Barra de Búsqueda y Filtro Rural -->
-    <div style="background: white; padding: 12px 16px; border-bottom: 1px solid var(--border-color);">
-      <input type="text" id="busquedaInput" class="input-field" placeholder="🔍 Filtrar por nombre, labor o vereda..." style="font-size: 15px; padding: 12px;" oninput="filtrarTrabajadores()">
+    <!-- Buscador y Filtros -->
+    <div id="seccionFiltrosBusqueda" style="background: white; padding: 14px 16px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;">
+      <div class="input-group" style="margin: 0;">
+        <label class="input-label" style="font-size: 13px;">Labor Requerida:</label>
+        <select id="filtroLabor" class="input-field" style="font-size: 14px; padding: 10px;">
+          <option value="todas">☕ Todas las labores (Café, Guadaña, Fumigación)</option>
+          <option value="cafe">☕ Recolección de Café</option>
+          <option value="guadana">🌿 Guadaña y Desyerba</option>
+          <option value="fumigacion">💨 Fumigación y Tratamiento</option>
+        </select>
+      </div>
+
+      <div class="input-group" style="margin: 0;">
+        <label class="input-label" style="font-size: 13px;">Vereda o Sector:</label>
+        <select id="filtroVereda" class="input-field" style="font-size: 14px; padding: 10px;">
+          <option value="caimo">📍 Vereda El Caimo (Armenia)</option>
+          <option value="pantanillo">📍 Vereda Pantanillo (Armenia)</option>
+          <option value="sin_resultados">📍 Vereda La Linda (Montenegro)</option>
+        </select>
+      </div>
+
+      <button class="btn-primary" style="padding: 12px; font-size: 15px; justify-content: center;" onclick="ejecutarBusqueda()">
+        <span>🔍 Buscar Trabajadores Disponibles</span>
+      </button>
+    </div>
+
+    <!-- MENSAJES DE ESTADO DE LA APLICACIÓN -->
+    <div id="mensajeExito" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-success" style="margin: 0; box-shadow: 0 2px 8px rgba(74, 222, 128, 0.25);">
+        <span>✅</span>
+        <div>
+          <strong>¡Búsqueda Exitosa!</strong><br>
+          Se encontraron <strong>3 jornaleros</strong> en Vereda El Caimo con disponibilidad inmediata.
+        </div>
+      </div>
+    </div>
+
+    <div id="mensajeError" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-danger" style="margin: 0; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">
+        <span>❌</span>
+        <div>
+          <strong>Sin resultados de búsqueda</strong><br>
+          No hay trabajadores registrados en este sector con la labor seleccionada.
+        </div>
+      </div>
     </div>
 
     <!-- ACCIÓN DESTACADA: REGISTRO COLABORATIVO (SUBCOMPONENTE 2.2) -->
-    <div style="padding: 12px 16px 0;">
+    <div id="bannerColaborativo" style="padding: 12px 16px 0;">
       <a href="mockup_2_2_registro_colaborativo.html" class="collab-banner">
         <div style="display: flex; align-items: center; gap: 10px;">
           <span style="font-size: 26px;">🤝</span>
@@ -52,7 +94,7 @@
       </a>
     </div>
 
-    <!-- Contenido: Lista de Trabajadores de la Región -->
+    <!-- RESULTADO: LISTA DE TRABAJADORES -->
     <div class="content" id="listaTrabajadores">
 
       <!-- TRABAJADOR ACTIVO 1 -->
@@ -95,7 +137,6 @@
             </a>
           </div>
         </div>
-        <!-- ACCIÓN SUBCOMPONENTE 2.3: GESTIÓN DE PERFIL PASIVO Y SOLICITAR CAMBIO DE DATOS -->
         <div style="border-top: 1px dashed #cbd5e1; padding-top: 8px; display: flex; justify-content: space-between; align-items: center;">
           <span style="font-size: 11.5px; color: var(--text-muted);">Inscrito por ti • Celular básico</span>
           <a href="mockup_2_3_gestion_pasivos.html" class="badge badge-orange" style="text-decoration: none; font-size: 11.5px; padding: 4px 8px;">
@@ -123,6 +164,18 @@
             </a>
           </div>
         </div>
+      </div>
+
+      <!-- ESTADO VACÍO CUANDO NO HAY RESULTADOS -->
+      <div id="emptyState" class="card" style="display: none; text-align: center; padding: 30px 20px; gap: 12px;">
+        <span style="font-size: 42px;">🏜️</span>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0;">No se encontró personal disponible</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+          No hay trabajadores registrados en este sector para la labor especificada.
+        </p>
+        <button class="btn-secondary" style="justify-content: center; padding: 10px; font-size: 14px;" onclick="mostrarPaso(3)">
+          🔄 Cambiar Filtros de Búsqueda
+        </button>
       </div>
 
     </div>
@@ -154,12 +207,60 @@
 
   <script src="js/agroconecta.js"></script>
   <script>
-    function filtrarTrabajadores() {
-      const q = document.getElementById('busquedaInput').value.toLowerCase();
-      document.querySelectorAll('.worker-item').forEach(card => {
-        const text = card.innerText.toLowerCase();
-        card.style.display = text.includes(q) ? 'flex' : 'none';
-      });
+    function mostrarPaso(paso, tipo) {
+      const seccionFiltros = document.getElementById('seccionFiltrosBusqueda');
+      const mensajeExito = document.getElementById('mensajeExito');
+      const mensajeError = document.getElementById('mensajeError');
+      const emptyState = document.getElementById('emptyState');
+      const workerItems = document.querySelectorAll('.worker-item');
+      const bannerColaborativo = document.getElementById('bannerColaborativo');
+
+      mensajeExito.style.display = 'none';
+      mensajeError.style.display = 'none';
+      emptyState.style.display = 'none';
+
+      if (paso === 3) {
+        seccionFiltros.style.display = 'flex';
+        bannerColaborativo.style.display = 'block';
+        workerItems.forEach(card => card.style.display = 'flex');
+      } else if (paso === 4) {
+        seccionFiltros.style.display = 'none';
+        bannerColaborativo.style.display = 'none';
+        workerItems.forEach(card => card.style.display = 'flex');
+      } else if (paso === 5 && tipo === 'exito') {
+        seccionFiltros.style.display = 'none';
+        bannerColaborativo.style.display = 'none';
+        mensajeExito.style.display = 'block';
+        workerItems.forEach(card => card.style.display = 'flex');
+      } else if (paso === 5 && tipo === 'error') {
+        seccionFiltros.style.display = 'none';
+        bannerColaborativo.style.display = 'none';
+        mensajeError.style.display = 'block';
+        emptyState.style.display = 'flex';
+        workerItems.forEach(card => card.style.display = 'none');
+      }
+    }
+
+    function llenarFiltroValido() {
+      mostrarPaso(3);
+      document.getElementById('filtroLabor').value = "cafe";
+      document.getElementById('filtroVereda').value = "caimo";
+      ejecutarBusqueda();
+    }
+
+    function llenarFiltroInvalido() {
+      mostrarPaso(3);
+      document.getElementById('filtroVereda').value = "sin_resultados";
+      ejecutarBusqueda();
+    }
+
+    function ejecutarBusqueda() {
+      const vereda = document.getElementById('filtroVereda').value;
+      if (vereda === 'sin_resultados') {
+        mostrarPaso(5, 'error');
+      } else {
+        mostrarPaso(5, 'exito');
+      }
     }
   </script>
 

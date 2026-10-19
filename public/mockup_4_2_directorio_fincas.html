@@ -10,12 +10,13 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
     <div class="bar-title">🛠️ Componente 4: Directorio • Vista Jornalero</div>
-    <a href="mockup_jornalero_directorio.html" class="test-chip">🌾 Vacantes Vereda</a>
-    <a href="mockup_4_1_directorio_trabajadores.html" class="test-chip">👥 4.1 Trabajadores</a>
-    <a href="mockup_selector_rol.html" class="test-chip danger">⇄ Cambiar Rol</a>
+    <button class="test-chip" onclick="mostrarPaso(3)">🔍 Ver Buscador</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarVeredaConVacantes()">✨ Vereda El Caimo (Con Vacantes)</button>
+    <button class="test-chip danger" onclick="llenarVeredaSinVacantes()">⚠️ Vereda La Linda (Sin Ofertas)</button>
+    <button class="test-chip" onclick="mostrarPaso(4)">🏡 Lista de Fincas</button>
     <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
@@ -32,18 +33,47 @@
       <p>Subcomponente 4.2: Productores en la Región (Vista Jornalero)</p>
     </div>
 
-    <div style="background: white; padding: 12px 16px; border-bottom: 1px solid var(--border-color);">
-      <select class="input-field" style="font-size: 15px; padding: 10px;">
-        <option>📍 Vereda El Caimo (Armenia)</option>
-        <option>📍 Vereda Pantanillo (Armenia)</option>
-        <option>📍 Vereda La Linda (Montenegro)</option>
-      </select>
+    <!-- Buscador y Selector de Veredas -->
+    <div id="seccionBusquedaFincas" style="background: white; padding: 14px 16px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 10px;">
+      <div class="input-group" style="margin: 0;">
+        <label class="input-label" style="font-size: 13px;">Seleccionar Vereda:</label>
+        <select id="selectVeredaFincas" class="input-field" style="font-size: 15px; padding: 10px;">
+          <option value="caimo">📍 Vereda El Caimo (Armenia)</option>
+          <option value="pantanillo">📍 Vereda Pantanillo (Armenia)</option>
+          <option value="vacia">📍 Vereda La Linda (Montenegro)</option>
+        </select>
+      </div>
+      <button class="btn-primary" style="padding: 12px; font-size: 15px; justify-content: center; background: #e65100;" onclick="ejecutarBusquedaFincas()">
+        <span>🔍 Consultar Fincas y Ofertas</span>
+      </button>
     </div>
 
-    <div class="content">
+    <!-- MENSAJES DE ESTADO DE LA APLICACIÓN -->
+    <div id="mensajeExitoFincas" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-success" style="margin: 0; box-shadow: 0 2px 8px rgba(74, 222, 128, 0.25);">
+        <span>✅</span>
+        <div>
+          <strong>¡Fincas Disponibles!</strong><br>
+          Se encontraron <strong>2 fincas con trabajo abierto</strong> en Vereda El Caimo.
+        </div>
+      </div>
+    </div>
+
+    <div id="mensajeErrorFincas" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-danger" style="margin: 0; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.25);">
+        <span>❌</span>
+        <div>
+          <strong>No hay vacantes activas</strong><br>
+          En este momento los mayordomos de esta vereda no tienen pedidos de jornaleros.
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULTADO: LISTA DE FINCAS -->
+    <div class="content" id="contenedorFincas">
 
       <!-- Finca 1 -->
-      <div class="card" style="text-align: center; gap: 8px;">
+      <div class="card finca-item" style="text-align: center; gap: 8px;">
         <div style="font-size: 38px;">🏡</div>
         <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: var(--text-main);">Finca La Esperanza</h3>
         <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Mayordomo: Don Hernán Restrepo</p>
@@ -56,7 +86,7 @@
       </div>
 
       <!-- Finca 2 -->
-      <div class="card" style="text-align: center; gap: 8px;">
+      <div class="card finca-item" style="text-align: center; gap: 8px;">
         <div style="font-size: 38px;">🧑‍🌾</div>
         <h3 style="font-size: 18px; font-weight: 800; margin: 0; color: var(--text-main);">Finca El Paraíso</h3>
         <p style="font-size: 13.5px; color: var(--text-muted); margin: 0;">Propietaria: Doña Clara Inés</p>
@@ -66,6 +96,18 @@
           <span>Ver Finca y Postularme</span>
           <span>➔</span>
         </a>
+      </div>
+
+      <!-- ESTADO VACÍO CUANDO NO HAY FINCAS EN LA VEREDA -->
+      <div id="emptyStateFincas" class="card" style="display: none; text-align: center; padding: 30px 20px; gap: 12px;">
+        <span style="font-size: 42px;">🏕️</span>
+        <h3 style="font-size: 16px; font-weight: 800; color: var(--text-main); margin: 0;">Sin labores abiertas en esta zona</h3>
+        <p style="font-size: 13.5px; color: var(--text-muted); margin: 0; line-height: 1.4;">
+          Ningún productor ha publicado cupos para hoy en esta vereda. Intente consultar en veredas vecinas.
+        </p>
+        <button class="btn-secondary" style="justify-content: center; padding: 10px; font-size: 14px;" onclick="mostrarPaso(3)">
+          🔄 Cambiar de Vereda
+        </button>
       </div>
 
     </div>
@@ -78,7 +120,7 @@
       </a>
       <a href="mockup_4_2_directorio_fincas.html" class="app-nav-tab active accent">
         <span class="tab-icon">🏡</span>
-        <span>Fincas (4.2)</span>
+        <span>Fincas</span>
       </a>
       <a href="mockup_jornalero_estado.html" class="app-nav-tab">
         <span class="tab-icon">🔔</span>
@@ -92,7 +134,57 @@
   </div>
 
   <script src="js/agroconecta.js"></script>
+  <script>
+    function mostrarPaso(paso, tipo) {
+      const seccionBusqueda = document.getElementById('seccionBusquedaFincas');
+      const mensajeExito = document.getElementById('mensajeExitoFincas');
+      const mensajeError = document.getElementById('mensajeErrorFincas');
+      const emptyState = document.getElementById('emptyStateFincas');
+      const fincaItems = document.querySelectorAll('.finca-item');
+
+      mensajeExito.style.display = 'none';
+      mensajeError.style.display = 'none';
+      emptyState.style.display = 'none';
+
+      if (paso === 3) {
+        seccionBusqueda.style.display = 'flex';
+        fincaItems.forEach(item => item.style.display = 'flex');
+      } else if (paso === 4) {
+        seccionBusqueda.style.display = 'none';
+        fincaItems.forEach(item => item.style.display = 'flex');
+      } else if (paso === 5 && tipo === 'exito') {
+        seccionBusqueda.style.display = 'none';
+        mensajeExito.style.display = 'block';
+        fincaItems.forEach(item => item.style.display = 'flex');
+      } else if (paso === 5 && tipo === 'error') {
+        seccionBusqueda.style.display = 'none';
+        mensajeError.style.display = 'block';
+        emptyState.style.display = 'flex';
+        fincaItems.forEach(item => item.style.display = 'none');
+      }
+    }
+
+    function llenarVeredaConVacantes() {
+      mostrarPaso(3);
+      document.getElementById('selectVeredaFincas').value = "caimo";
+      ejecutarBusquedaFincas();
+    }
+
+    function llenarVeredaSinVacantes() {
+      mostrarPaso(3);
+      document.getElementById('selectVeredaFincas').value = "vacia";
+      ejecutarBusquedaFincas();
+    }
+
+    function ejecutarBusquedaFincas() {
+      const sel = document.getElementById('selectVeredaFincas').value;
+      if (sel === 'vacia') {
+        mostrarPaso(5, 'error');
+      } else {
+        mostrarPaso(5, 'exito');
+      }
+    }
+  </script>
 </body>
 
 </html>
-

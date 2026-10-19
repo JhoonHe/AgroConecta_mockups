@@ -79,12 +79,17 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Componente 3:</span>
-    <a href="mockup_productor_dashboard.html" class="test-chip">Dashboard</a>
+    <div class="bar-title">🛠️ Ofertas de Empleo • Vista Productor</div>
+    <button class="test-chip" onclick="mostrarPaso(3)">📝 Formulario Vacante</button>
+    <button class="test-chip" style="background: #2e7d32;" onclick="llenarDatosValidos()">✨ Llenar 5 Cupos</button>
+    <button class="test-chip danger" onclick="llenarDatosInvalidos()">⚠️ Llenar 0 Cupos</button>
+    <button class="test-chip" onclick="mostrarPaso(4)">📋 Ficha Resumen</button>
+    <button class="test-chip" style="background: #1b5e20;" onclick="mostrarPaso(5, 'exito')">✅ Vacante Publicada</button>
+    <button class="test-chip danger" onclick="mostrarPaso(5, 'error')">❌ Error Validación</button>
     <button class="test-chip danger" onclick="simularCierreVacante()">🔒 Probar Cerrar Vacante</button>
-    <a href="mockup_productor_revision.html" class="test-chip">3.3 Postulaciones</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame">
@@ -96,12 +101,62 @@
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
       </a>
-      <h1>🌾 Publicación y Cierre</h1>
-      <p>Subcomponente 3.1: Ofertas de Empleo (Vista Productor)</p>
+      <h1 id="headerTituloVacante">🌾 Publicación y Cierre</h1>
+      <p id="headerSubtituloVacante">Subcomponente 3.1: Ofertas de Empleo (Vista Productor)</p>
+    </div>
+
+    <!-- FEEDBACK DE MENSAJE: ÉXITO O ERROR (INTERFAZ 5) -->
+    <div id="alertaExitoVacante" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-success" style="margin: 0; box-shadow: 0 4px 12px rgba(74, 222, 128, 0.25);">
+        <span style="font-size: 28px;">✅</span>
+        <div>
+          <strong style="font-size: 15px;">¡Vacante Publicada con Éxito!</strong><br>
+          La oferta de <strong>Recolección de Café (5 personas)</strong> ya es visible para todos los jornaleros de Vereda El Caimo.
+        </div>
+      </div>
+    </div>
+
+    <div id="alertaErrorVacante" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-danger" style="margin: 0; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);">
+        <span style="font-size: 28px;">❌</span>
+        <div>
+          <strong style="font-size: 15px;">Error al publicar vacante</strong><br>
+          La cantidad de trabajadores no puede ser 0 y se debe seleccionar una labor obligatoria.
+        </div>
+      </div>
     </div>
 
     <!-- Contenido -->
     <div class="content">
+
+      <!-- ==============================================
+           INTERFAZ 4: RESULTADO (FICHA RESUMEN DE LA VACANTE GENERADA)
+           ============================================== -->
+      <div id="seccionResultadoVacante" class="card" style="display: none; border: 2.5px solid var(--primary); background: #f0fdf4; padding: 16px; gap: 10px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span class="badge badge-green">Nueva Vacante Registrada</span>
+          <span style="font-size: 12px; color: var(--text-muted); font-weight: 700;">ID: VAC-0982</span>
+        </div>
+        <h3 id="resumenLabor" style="font-size: 19px; font-weight: 900; color: var(--primary-dark); margin: 0;">
+          ☕ Recolección de Café
+        </h3>
+        <p style="font-size: 13.5px; margin: 0; color: var(--text-muted);">
+          Finca La Esperanza • Don Hernán Restrepo
+        </p>
+        <div style="background: white; border: 1.5px solid var(--primary-border); border-radius: 10px; padding: 10px; display: flex; justify-content: space-between;">
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">CUPOS</div>
+            <div id="resumenCupos" style="font-size: 16px; font-weight: 800; color: var(--text-main);">5 cupos</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; color: var(--text-muted); font-weight: 700;">TARIFA</div>
+            <div id="resumenPago" style="font-size: 16px; font-weight: 800; color: var(--primary-dark);">$850 / kilo</div>
+          </div>
+        </div>
+        <button class="btn-primary" style="padding: 12px; font-size: 14px; justify-content: center;" onclick="mostrarPaso(5, 'exito')">
+          📢 Confirmar y Notificar a Jornaleros de la Vereda
+        </button>
+      </div>
 
       <!-- VACANTE ACTIVA ACTUAL CON OPCIÓN DE CIERRE (Requerido por Subcomponente 3.1) -->
       <div class="card" id="cardVacanteActiva" style="border: 2px solid var(--primary); background: #f0fdf4; padding: 14px;">
@@ -123,8 +178,10 @@
         </div>
       </div>
 
-      <!-- FORMULARIO DE PUBLICACIÓN DE NUEVA VACANTE -->
-      <div class="card" style="padding: 18px; gap: 14px;">
+      <!-- ==============================================
+           INTERFAZ 3: FUNCIÓN PRINCIPAL (FORMULARIO)
+           ============================================== -->
+      <div id="seccionFormularioVacante" class="card" style="padding: 18px; gap: 14px;">
         <h3 style="font-size: 17px; font-weight: 800; color: var(--text-main); margin: 0;">
           ➕ Publicar Nueva Necesidad
         </h3>
@@ -133,19 +190,19 @@
         <div class="input-group">
           <label class="input-label" style="font-size: 15px;">1. Labor a realizar</label>
           <div class="labor-grid">
-            <button type="button" class="labor-btn active" onclick="seleccionarLabor(this, 'Recolección de Café')">
+            <button type="button" id="btnLaborCafe" class="labor-btn active" onclick="seleccionarLabor(this, 'Recolección de Café')">
               <span style="font-size: 24px;">☕</span>
               <span>Recolección</span>
             </button>
-            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Guadaña / Desyerba')">
+            <button type="button" id="btnLaborGuadana" class="labor-btn" onclick="seleccionarLabor(this, 'Guadaña / Desyerba')">
               <span style="font-size: 24px;">🌿</span>
               <span>Guadaña</span>
             </button>
-            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Fumigación y Plateo')">
+            <button type="button" id="btnLaborFumigacion" class="labor-btn" onclick="seleccionarLabor(this, 'Fumigación y Plateo')">
               <span style="font-size: 24px;">🛡️</span>
               <span>Fumigación</span>
             </button>
-            <button type="button" class="labor-btn" onclick="seleccionarLabor(this, 'Carga y Acarreo')">
+            <button type="button" id="btnLaborCarga" class="labor-btn" onclick="seleccionarLabor(this, 'Carga y Acarreo')">
               <span style="font-size: 24px;">🐴</span>
               <span>Carga</span>
             </button>
@@ -155,7 +212,7 @@
         <!-- Cantidad de personas -->
         <div class="input-group">
           <label class="input-label" style="font-size: 15px;">2. Cantidad de personas</label>
-          <div class="counter-box">
+          <div class="counter-box" id="boxCounter">
             <button type="button" class="btn-counter" onclick="cambiarCantidad(-1)">-</button>
             <div class="counter-value" id="cantPersonas">5 personas</div>
             <button type="button" class="btn-counter" onclick="cambiarCantidad(1)">+</button>
@@ -171,7 +228,7 @@
           </select>
         </div>
 
-        <button class="btn-primary" style="margin-top: 6px;" onclick="publicarNuevaVacante()">
+        <button class="btn-primary" style="margin-top: 6px;" onclick="validarYPublicar()">
           <span>Publicar Oferta en la Vereda</span>
           <span>📢</span>
         </button>
@@ -217,8 +274,77 @@
     }
 
     function cambiarCantidad(delta) {
-      cantidad = Math.max(1, Math.min(50, cantidad + delta));
+      cantidad = Math.max(0, Math.min(50, cantidad + delta));
       document.getElementById('cantPersonas').innerText = `${cantidad} ${cantidad === 1 ? 'persona' : 'personas'}`;
+    }
+
+    function llenarDatosValidos() {
+      mostrarPaso(3);
+      cantidad = 5;
+      document.getElementById('cantPersonas').innerText = "5 personas";
+      document.getElementById('boxCounter').style.borderColor = 'var(--border-color)';
+      seleccionarLabor(document.getElementById('btnLaborCafe'), 'Recolección de Café');
+      document.getElementById('pagoSelect').value = "A destajo ($850 / kilo)";
+    }
+
+    function llenarDatosInvalidos() {
+      mostrarPaso(3);
+      cantidad = 0;
+      document.getElementById('cantPersonas').innerHTML = '<span style="color: #dc2626; font-weight: 900;">0 personas</span>';
+      document.getElementById('boxCounter').style.borderColor = '#ef4444';
+      document.querySelectorAll('.labor-btn').forEach(btn => btn.classList.remove('active'));
+      laborSeleccionada = "";
+    }
+
+    function validarYPublicar() {
+      if (cantidad <= 0 || !laborSeleccionada) {
+        mostrarPaso(5, 'error');
+      } else {
+        mostrarPaso(4);
+      }
+    }
+
+    function mostrarPaso(paso, tipo) {
+      const alertaExito = document.getElementById('alertaExitoVacante');
+      const alertaError = document.getElementById('alertaErrorVacante');
+      const seccionResultado = document.getElementById('seccionResultadoVacante');
+      const seccionFormulario = document.getElementById('seccionFormularioVacante');
+      const cardActiva = document.getElementById('cardVacanteActiva');
+      const titulo = document.getElementById('headerTituloVacante');
+      const subtitulo = document.getElementById('headerSubtituloVacante');
+
+      alertaExito.style.display = 'none';
+      alertaError.style.display = 'none';
+
+      // El título principal de la app siempre se mantiene limpio
+      titulo.innerText = "🌾 Publicación de Vacantes";
+
+      if (paso === 3) {
+        subtitulo.innerText = "Formulario de Necesidad Agrícola";
+        seccionFormulario.style.display = 'flex';
+        seccionResultado.style.display = 'none';
+        cardActiva.style.display = 'flex';
+      } else if (paso === 4) {
+        subtitulo.innerText = "Ficha de Vacante Registrada en Cartelera";
+        seccionFormulario.style.display = 'none';
+        cardActiva.style.display = 'none';
+        seccionResultado.style.display = 'flex';
+        document.getElementById('resumenLabor').innerText = `☕ ${laborSeleccionada || 'Recolección de Café'}`;
+        document.getElementById('resumenCupos').innerText = `${cantidad || 5} cupos`;
+        document.getElementById('resumenPago').innerText = document.getElementById('pagoSelect').value;
+      } else if (paso === 5 && tipo === 'exito') {
+        subtitulo.innerText = "Oferta Registrada y Notificada";
+        seccionFormulario.style.display = 'flex';
+        seccionResultado.style.display = 'none';
+        cardActiva.style.display = 'flex';
+        alertaExito.style.display = 'block';
+      } else if (paso === 5 && tipo === 'error') {
+        subtitulo.innerText = "Faltan campos obligatorios en la oferta";
+        seccionFormulario.style.display = 'flex';
+        seccionResultado.style.display = 'none';
+        cardActiva.style.display = 'flex';
+        alertaError.style.display = 'block';
+      }
     }
 
     function simularCierreVacante() {
@@ -239,14 +365,8 @@
 
       alert("🔒 Vacante marcada como 'Completada / Cerrada'. Ya no es visible para postulaciones en el directorio.");
     }
-
-    function publicarNuevaVacante() {
-      alert("📢 ¡Nueva vacante publicada con éxito!");
-      window.location.href = "mockup_productor_dashboard.html";
-    }
   </script>
 
 </body>
 
 </html>
-

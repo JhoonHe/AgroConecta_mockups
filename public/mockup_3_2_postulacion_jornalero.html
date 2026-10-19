@@ -41,12 +41,15 @@
 
 <body>
 
-  <!-- Barra de Pruebas DFD (FUERA del marco del celular) -->
+  <!-- Barra de Pruebas DFD: Simulador y Validaciones de Entrada (FUERA del marco del celular) -->
   <div class="test-suite-bar">
-    <span style="opacity: 0.8;">Componente 3:</span>
-    <a href="mockup_3_1_publicar_vacante.html" class="test-chip">3.1 Publicar Vacante</a>
-    <a href="mockup_jornalero_estado.html" class="test-chip">Estado Postulación</a>
-    <a href="mockup_productor_revision.html" class="test-chip">3.3 Gestión Productor</a>
+    <div class="bar-title">🛠️ Ofertas de Empleo • Vista Jornalero</div>
+    <button class="test-chip" onclick="simularVacanteAbierta()">🌾 Vacante Abierta (3 Cupos)</button>
+    <button class="test-chip danger" onclick="simularVacanteSinCupos()">⚠️ Vacante Sin Cupos (0 Cupos)</button>
+    <a href="mockup_jornalero_estado.html?estado=enviada" class="test-chip">⏳ Postulación Enviada</a>
+    <a href="mockup_jornalero_estado.html?estado=aceptada" class="test-chip" style="background: #1b5e20;">✅ Postulación Aceptada</a>
+    <a href="mockup_jornalero_estado.html?estado=rechazada" class="test-chip danger">❌ Cupos Completados</a>
+    <a href="../index.html" class="test-chip hub">🏠 Menú Principal</a>
   </div>
 
   <div class="mobile-frame">
@@ -58,17 +61,28 @@
           <path d="M19 12H5M12 19l-7-7 7-7"/>
         </svg>
       </a>
-      <h1>🌾 Postulación</h1>
-      <p>Subcomponente 3.2: Ofertas de Empleo (Vista Jornalero)</p>
+      <h1 id="headerTituloPostulacion">🌾 Postulación</h1>
+      <p id="headerSubtituloPostulacion">Detalle de Oferta Agrícola</p>
+    </div>
+
+    <!-- Banner de Alerta cuando está cerrada -->
+    <div id="alertaVacanteCerrada" style="display: none; padding: 12px 16px 0;">
+      <div class="alert alert-danger" style="margin: 0;">
+        <span>❌</span>
+        <div>
+          <strong>¡Vacante sin cupos disponibles!</strong><br>
+          Esta vacante se completó hoy. Los cupos requeridos ya fueron asignados a otros jornaleros.
+        </div>
+      </div>
     </div>
 
     <!-- Contenido: Tarjeta de Vacante y Acción de Postularse -->
     <div class="content">
 
-      <div class="detail-card">
+      <div class="detail-card" id="tarjetaVacante">
         <div>
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-            <span class="badge badge-green" style="font-size: 11px;">Vacante Abierta Hoy</span>
+            <span id="badgeEstadoVacante" class="badge badge-green" style="font-size: 11px;">Vacante Abierta Hoy</span>
             <span style="font-size: 13px; font-weight: 800; color: var(--accent);">📍 A 1.2 km</span>
           </div>
           <h2 style="font-size: 20px; font-weight: 900; color: var(--text-main); margin: 0 0 2px;">
@@ -89,10 +103,10 @@
         </div>
 
         <div class="detail-row">
-          <div class="detail-icon">👥</div>
+          <div class="detail-icon" id="iconoCupos">👥</div>
           <div>
             <div style="font-size: 11px; font-weight: 700; color: var(--text-muted);">CUPOS DISPONIBLES</div>
-            <div style="font-size: 15px; font-weight: 800; color: var(--text-main);">3 cupos libres de 5</div>
+            <div id="textoCupos" style="font-size: 15px; font-weight: 800; color: var(--text-main);">3 cupos libres de 5</div>
           </div>
         </div>
 
@@ -115,12 +129,12 @@
       </div>
 
       <!-- BOTÓN PROTAGÓNICO DESTACADO [Postularme] -->
-      <button class="btn-primary" style="padding: 18px; font-size: 19px; box-shadow: 0 6px 18px rgba(46, 125, 50, 0.4);" onclick="postularmeAhora()">
-        <span style="font-size: 24px;">🙋‍♂️</span>
-        <span>¡Postularme a esta Finca!</span>
+      <button id="btnPostularme" class="btn-primary" style="padding: 18px; font-size: 19px; box-shadow: 0 6px 18px rgba(46, 125, 50, 0.4);" onclick="ejecutarPostulacion()">
+        <span id="btnIconoPostularme" style="font-size: 24px;">🙋‍♂️</span>
+        <span id="btnTextoPostularme">¡Postularme a esta Finca!</span>
       </button>
 
-      <div style="text-align: center; font-size: 12.5px; color: var(--text-muted);">
+      <div id="helperPostularme" style="text-align: center; font-size: 12.5px; color: var(--text-muted);">
         ⚡ Postúlate desde tu casa sin tener que madrugar a la plaza.
       </div>
 
@@ -150,14 +164,50 @@
 
   <script src="js/agroconecta.js"></script>
   <script>
-    function postularmeAhora() {
-      AgroConecta.setJornaleroEstado('enviada');
-      alert("✅ ¡Postulación enviada!\nDon Hernán ha recibido tu solicitud. Revisa el estado de tu confirmación.");
-      window.location.href = "mockup_jornalero_estado.html?id=vac-01&estado=enviada";
+    let hayCupos = true;
+
+    function simularVacanteAbierta() {
+      hayCupos = true;
+      document.getElementById('badgeEstadoVacante').className = 'badge badge-green';
+      document.getElementById('badgeEstadoVacante').innerText = 'Vacante Abierta Hoy (3 Cupos)';
+      document.getElementById('textoCupos').innerHTML = '<strong>3 cupos libres</strong> de 5';
+      document.getElementById('alertaVacanteCerrada').style.display = 'none';
+
+      const btn = document.getElementById('btnPostularme');
+      btn.className = 'btn-primary';
+      btn.style.background = '';
+      document.getElementById('btnIconoPostularme').innerText = '🙋‍♂️';
+      document.getElementById('btnTextoPostularme').innerText = '¡Postularme a esta Finca!';
+      document.getElementById('helperPostularme').innerText = '⚡ Postúlate desde tu casa sin tener que madrugar a la plaza.';
+    }
+
+    function simularVacanteSinCupos() {
+      hayCupos = false;
+      document.getElementById('badgeEstadoVacante').className = 'badge badge-gray';
+      document.getElementById('badgeEstadoVacante').innerText = 'Cupos Agotados (Cerrada)';
+      document.getElementById('textoCupos').innerHTML = '<span style="color: #dc2626; font-weight: 900;">0 cupos libres (Completa)</span>';
+      document.getElementById('alertaVacanteCerrada').style.display = 'block';
+
+      const btn = document.getElementById('btnPostularme');
+      btn.className = 'btn-secondary';
+      btn.style.borderColor = '#cbd5e1';
+      btn.style.color = '#64748b';
+      document.getElementById('btnIconoPostularme').innerText = '🔒';
+      document.getElementById('btnTextoPostularme').innerText = 'Vacante Cerrada por Cupos Llenos';
+      document.getElementById('helperPostularme').innerText = 'El productor Don Hernán ya completó el grupo requerido para mañana.';
+    }
+
+    function ejecutarPostulacion() {
+      if (hayCupos) {
+        AgroConecta.setJornaleroEstado('enviada');
+        window.location.href = "mockup_jornalero_estado.html?id=vac-01&estado=enviada";
+      } else {
+        AgroConecta.setJornaleroEstado('rechazada');
+        window.location.href = "mockup_jornalero_estado.html?id=vac-01&estado=rechazada";
+      }
     }
   </script>
 
 </body>
 
 </html>
-
