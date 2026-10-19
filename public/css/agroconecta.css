@@ -394,7 +394,8 @@ body {
   animation: fadeIn 0.3s ease;
 }
 
-.alert-error {
+.alert-error,
+.alert-danger {
   background-color: var(--error-bg);
   color: var(--error-text);
   border: 1.5px solid var(--error-border);

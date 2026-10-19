@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AgroConecta - Mapa Arquitectónico y Mockups DFD (6 Componentes)</title>
-  <script src="public/js/html-to-image.js"></script>
+  <script src="public/js/html2canvas.min.js"></script>
   <style>
     :root {
       --primary: #2e7d32;
@@ -1057,12 +1057,30 @@
         `;
         iframeDoc.head.appendChild(style);
 
-        const dataUrl = await htmlToImage.toPng(targetElement, {
-          pixelRatio: 2,
-          backgroundColor: '#ffffff'
+        // Asegurar que html2canvas esté disponible
+        if (typeof html2canvas === 'undefined') {
+          await new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'public/js/html2canvas.min.js';
+            s.onload = resolve;
+            s.onerror = reject;
+            document.head.appendChild(s);
+          });
+        }
+
+        const iframeWin = iframe.contentWindow || iframeDoc.defaultView;
+        const canvas = await html2canvas(targetElement, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: null,
+          logging: false,
+          scrollY: iframeWin ? -iframeWin.pageYOffset : 0,
+          scrollX: iframeWin ? -iframeWin.pageXOffset : 0
         });
 
         style.remove();
+        const dataUrl = canvas.toDataURL('image/png');
         await guardarCapturaEnDestino(filename, dataUrl);
       } catch (err) {
         console.warn('Acceso directo restringido o error de renderizado, enviando postMessage al iframe:', err);

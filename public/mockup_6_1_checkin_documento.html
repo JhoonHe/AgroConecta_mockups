@@ -11,12 +11,16 @@
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-start;
       align-items: center;
       position: relative;
       background: radial-gradient(circle, #1e293b 0%, #000 100%);
       padding: 16px;
       min-height: 380px;
+      overflow-y: auto;
+    }
+    #vistaPaso3 {
+      margin: auto 0;
     }
     .target-box {
       width: 270px;
@@ -192,12 +196,12 @@
       <div id="vistaPaso5Error" style="display: none; flex-direction: column; align-items: center; width: 92%; gap: 12px;">
         <div class="alert alert-danger" style="width: 100%; box-shadow: 0 4px 16px rgba(239, 68, 68, 0.25);">
           <span style="font-size: 32px;">❌</span>
-          <div>
+          <div style="color: #991b1b;">
             <strong style="font-size: 15px;">Error: Foto no legible</strong><br>
             <span style="font-size: 13px; line-height: 1.4;">
               El documento está borroso o con reflejo de luz. La cédula no pudo ser reconocida con certeza.
             </span><br>
-            <span style="font-size: 12px; color: #991b1b; font-weight: 700;">Código de error: ERR_OCR_BLUR_402</span>
+            <!-- <span style="font-size: 12px; color: #991b1b; font-weight: 700;">Código de error: ERR_OCR_BLUR_402</span> -->
           </div>
         </div>
         <button class="btn-secondary" style="width: 100%; padding: 12px; justify-content: center; font-size: 14px; border-color: #ef4444; color: #ef4444; background: rgba(239, 68, 68, 0.08);" onclick="mostrarPaso(3)">

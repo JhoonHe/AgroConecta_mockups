@@ -199,17 +199,17 @@ const AgroConecta = {
   // ----------------------------------------------------
   // Captura Manual de Pantalla (lo que está dentro del recuadro mobile)
   // ----------------------------------------------------
-  async asegurarHtmlToImage() {
-    if (typeof htmlToImage !== 'undefined') return Promise.resolve();
+  async asegurarHtml2Canvas() {
+    if (typeof html2canvas !== 'undefined') return Promise.resolve();
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       // Detectar ruta relativa o absoluta
-      script.src = window.location.pathname.includes('/public/') ? 'js/html-to-image.js' : 'public/js/html-to-image.js';
+      script.src = window.location.pathname.includes('/public/') ? 'js/html2canvas.min.js' : 'public/js/html2canvas.min.js';
       script.onload = () => resolve();
       script.onerror = () => {
         // Fallback a CDN si falla la carga local
         const cdn = document.createElement('script');
-        cdn.src = 'https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js';
+        cdn.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
         cdn.onload = () => resolve();
         cdn.onerror = (e) => reject(new Error('No se pudo cargar la librería de captura.'));
         document.head.appendChild(cdn);
@@ -227,7 +227,7 @@ const AgroConecta = {
     }
 
     try {
-      await this.asegurarHtmlToImage();
+      await this.asegurarHtml2Canvas();
       const mobileFrame = document.querySelector('.mobile-frame') || document.body;
 
       const mapaNombresOficiales = {
@@ -298,12 +298,18 @@ const AgroConecta = {
       `;
       document.head.appendChild(freezeStyle);
 
-      const dataUrl = await htmlToImage.toPng(mobileFrame, {
-        pixelRatio: 2,
-        backgroundColor: '#ffffff'
+      const canvas = await html2canvas(mobileFrame, {
+        scale: 2,
+        backgroundColor: null,
+        useCORS: true,
+        allowTaint: true,
+        logging: false,
+        scrollY: -window.pageYOffset,
+        scrollX: -window.pageXOffset
       });
 
       freezeStyle.remove();
+      const dataUrl = canvas.toDataURL('image/png');
 
       // Intentar guardar directamente en la carpeta capturas/ del servidor
       let guardadoEnServidor = false;
